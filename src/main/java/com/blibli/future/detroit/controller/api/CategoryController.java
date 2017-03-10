@@ -5,6 +5,7 @@ import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
 import com.blibli.future.detroit.repository.CategoryRepository;
+import com.blibli.future.detroit.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,13 @@ public class CategoryController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @GetMapping(value = GET_ALL_CATEGORY, produces = "application/json")
+    @GetMapping(value = GET_ALL_CATEGORY, produces = Constant.API_MEDIA_TYPE)
     @ResponseBody
     public BaseRestListResponse<Category> getCategories() {
         return new BaseRestListResponse<>(categoryRepository.findAll());
     }
 
-    @PostMapping(value = CREATE_CATEGORY, produces = "application/json", consumes = "application/json")
+    @PostMapping(value = CREATE_CATEGORY, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
     public BaseRestResponse postCategories(@RequestBody NewCategoryRequest request) {
         Category newCategory = new Category();
@@ -40,7 +41,7 @@ public class CategoryController {
         return new BaseRestResponse();
     }
 
-    @DeleteMapping(value = DELETE_CATEGORY, produces = "application/json")
+    @DeleteMapping(value = DELETE_CATEGORY, produces = Constant.API_MEDIA_TYPE)
     @ResponseBody
     public BaseRestResponse deleteCategories(@PathVariable Long categoryId) {
         categoryRepository.delete(categoryId);
