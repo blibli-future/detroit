@@ -5,6 +5,7 @@ import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
 import com.blibli.future.detroit.repository.CategoryRepository;
+import com.blibli.future.detroit.service.CategoryService;
 import com.blibli.future.detroit.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,33 +19,25 @@ public class CategoryController {
     public static final String DELETE_CATEGORY = BASE_PATH + "/{categoryId}";
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
     @GetMapping(value = GET_ALL_CATEGORY, produces = Constant.API_MEDIA_TYPE)
     @ResponseBody
     public BaseRestListResponse<Category> getCategories() {
-        return new BaseRestListResponse<>(categoryRepository.findAll());
+        return new BaseRestListResponse<>(categoryService.getAllCategory());
     }
 
     @PostMapping(value = CREATE_CATEGORY, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
     public BaseRestResponse postCategories(@RequestBody NewCategoryRequest request) {
-        Category newCategory = new Category();
-        newCategory.setName(request.getName());
-        newCategory.setActive(request.isActive());
-        newCategory.setDescription(request.getDescription());
-        newCategory.setWeight(request.getWeight());
-        newCategory.setBulkStatus(request.isBulkStatus());
-
-        categoryRepository.save(newCategory);
-
+        Category newCategory = categoryService.createCategory(request);
         return new BaseRestResponse();
     }
 
     @DeleteMapping(value = DELETE_CATEGORY, produces = Constant.API_MEDIA_TYPE)
     @ResponseBody
     public BaseRestResponse deleteCategories(@PathVariable Long categoryId) {
-        categoryRepository.delete(categoryId);
+        categoryService.deleteCategory(categoryId);
         return new BaseRestResponse();
     }
 }
