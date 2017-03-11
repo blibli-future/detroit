@@ -50,7 +50,7 @@ public class CategoryController {
     @GetMapping(value = GET_ONE_CATEGORY, produces = Constant.API_MEDIA_TYPE)
     @ResponseBody
     public BaseRestResponse<Category> getOneCategory(@PathVariable Long categoryId) {
-        Category category = categoryService.getOneCategory(categoryId)
+        Category category = categoryService.getOneCategory(categoryId);
         return new BaseRestResponse<>(category);
     }
 
