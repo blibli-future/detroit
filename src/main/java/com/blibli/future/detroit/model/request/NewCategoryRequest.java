@@ -4,7 +4,6 @@ public class NewCategoryRequest {
     private Long id;
     private String name;
     private String description;
-    private float weight;
     private boolean bulkStatus;
     private boolean isActive;
 
@@ -32,14 +31,6 @@ public class NewCategoryRequest {
         this.description = description;
     }
 
-    public float getWeight() {
-        return weight;
-    }
-
-    public void setWeight(float weight) {
-        this.weight = weight;
-    }
-
     public boolean isBulkStatus() {
         return bulkStatus;
     }
@@ -62,7 +53,6 @@ public class NewCategoryRequest {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", weight=" + weight +
                 ", bulkStatus=" + bulkStatus +
                 ", isActive=" + isActive +
                 '}';
