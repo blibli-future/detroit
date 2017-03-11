@@ -5,6 +5,9 @@ import java.util.List;
 public class SimpleListRequest<T> {
     private List<T> list;
 
+    public SimpleListRequest() {
+    }
+
     public SimpleListRequest(List<T> list) {
         this.list = list;
     }
