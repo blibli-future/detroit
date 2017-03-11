@@ -3,11 +3,17 @@ package com.blibli.future.detroit.model.response;
 public class BaseRestResponse<T> {
     private boolean success;
     private String errorMessage;
-    private int errorCode;
+    private String errorCode;
     private T content;
 
     public BaseRestResponse() {
         this.success = true;
+    }
+
+    public BaseRestResponse(boolean success, String errorMessage, String errorCode) {
+        this.success = success;
+        this.errorMessage = errorMessage;
+        this.errorCode = errorCode;
     }
 
     public BaseRestResponse(T content) {
@@ -31,11 +37,11 @@ public class BaseRestResponse<T> {
         this.errorMessage = errorMessage;
     }
 
-    public int getErrorCode() {
+    public String getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(int errorCode) {
+    public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
     }
 
