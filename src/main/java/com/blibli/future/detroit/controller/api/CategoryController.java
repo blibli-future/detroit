@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class CategoryController {
-    public static final String BASE_PATH = "/api/v1/categories";
+    public static final String BASE_PATH = Constant.API_PATH_V1 + "/categories";
     public static final String GET_ALL_CATEGORY = BASE_PATH;
     public static final String CREATE_CATEGORY = BASE_PATH;
     public static final String DELETE_CATEGORY = BASE_PATH + "/{categoryId}";
