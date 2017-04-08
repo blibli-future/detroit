@@ -3,6 +3,7 @@ package com.blibli.future.detroit.service;
 import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
+import com.blibli.future.detroit.model.dto.UserDto;
 import com.blibli.future.detroit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class UserService {
         return userRepository.findOne(userId);
     }
 
-    public User createUser(NewUserRequest request) {
+    public User createUser(UserDto request) {
         User newUser = new User();
         newUser.setFullname(request.getFullname());
         newUser.setNickname(request.getNickname());
@@ -49,8 +50,7 @@ public class UserService {
         return true;
     }
 
-    public boolean updateUser(Long userId, NewUserRequest request) {
-        // TODO throw error if userId doesn't exist
+    public boolean updateUser(Long userId, UserDto request) {
         User user = userRepository.findOne(userId);
         user.setFullname(request.getFullname());
         user.setNickname(request.getNickname());

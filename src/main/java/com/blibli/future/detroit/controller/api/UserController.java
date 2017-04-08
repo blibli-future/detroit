@@ -2,12 +2,11 @@ package com.blibli.future.detroit.controller.api;
 
 
 import com.blibli.future.detroit.model.User;
-import com.blibli.future.detroit.model.request.NewUserRequest;
+import com.blibli.future.detroit.model.dto.UserDto;
 import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
 import com.blibli.future.detroit.service.UserService;
 import com.blibli.future.detroit.util.Constant;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +34,10 @@ public class UserController {
 
     @PostMapping(value = CREATE_USER, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse createUser(@RequestBody NewUserRequest request) {
+    public BaseRestResponse createUser(@RequestBody UserDto request) {
         userService.createUser(request);
         return new BaseRestResponse();
+
     }
 
     @DeleteMapping(value = DELETE_USER, produces = Constant.API_MEDIA_TYPE)
@@ -56,7 +56,7 @@ public class UserController {
 
     @PatchMapping(value = UPDATE_USER, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse updateUser(@PathVariable Long userId, @RequestBody NewUserRequest request) {
+    public BaseRestResponse updateUser(@PathVariable Long userId, @RequestBody UserDto request) {
         userService.updateUser(userId, request);
         return new BaseRestResponse();
     }
