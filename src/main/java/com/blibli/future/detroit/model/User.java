@@ -6,8 +6,10 @@ import com.blibli.future.detroit.model.enums.UserType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "detroit_users")
 public class User {
     @Id
     @GeneratedValue

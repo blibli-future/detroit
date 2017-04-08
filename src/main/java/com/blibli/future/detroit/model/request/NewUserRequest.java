@@ -1,9 +1,10 @@
 package com.blibli.future.detroit.model.request;
 
+import java.io.Serializable;
 
-public class NewUserRequest {
-    private Long id;
 import com.blibli.future.detroit.model.enums.UserType;
+
+public class NewUserRequest implements Serializable {
     private String fullname;
     private String nickname;
     private String email;
@@ -13,10 +14,6 @@ import com.blibli.future.detroit.model.enums.UserType;
     private String gender;
     private String location;
     private String phoneNumber;
-
-    public Long getId() {
-        return id;
-    }
     private UserType userType;
 
     public String getFullname() {

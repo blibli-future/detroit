@@ -56,7 +56,7 @@ public class UserController {
 
     @PatchMapping(value = UPDATE_USER, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse updateUser(@PathVariable Long userId, @RequestBody User request) {
+    public BaseRestResponse updateUser(@PathVariable Long userId, @RequestBody NewUserRequest request) {
         userService.updateUser(userId, request);
         return new BaseRestResponse();
     }

@@ -46,7 +46,8 @@ public class UserService {
         return true;
     }
 
-    public boolean updateUser(Long userId, User request) {
+    public boolean updateUser(Long userId, NewUserRequest request) {
+        // TODO throw error if userId doesn't exist
         User user = userRepository.findOne(userId);
         user.setFullname(request.getFullname());
         user.setNickname(request.getNickname());
