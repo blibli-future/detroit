@@ -3,6 +3,7 @@ package com.blibli.future.detroit.model.request;
 
 public class NewUserRequest {
     private Long id;
+import com.blibli.future.detroit.model.enums.UserType;
     private String fullname;
     private String nickname;
     private String email;
@@ -16,6 +17,7 @@ public class NewUserRequest {
     public Long getId() {
         return id;
     }
+    private UserType userType;
 
     public String getFullname() {
         return fullname;
@@ -87,5 +89,13 @@ public class NewUserRequest {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 }
