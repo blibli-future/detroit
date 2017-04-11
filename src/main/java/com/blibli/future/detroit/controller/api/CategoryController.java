@@ -35,7 +35,7 @@ public class CategoryController {
 
     @PostMapping(value = CREATE_CATEGORY, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse createCategoriy(@RequestBody NewCategoryRequest request) {
+    public BaseRestResponse createCategory(@RequestBody NewCategoryRequest request) {
         categoryService.createCategory(request);
         return new BaseRestResponse();
     }

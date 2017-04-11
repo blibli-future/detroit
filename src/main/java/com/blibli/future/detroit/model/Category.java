@@ -14,8 +14,8 @@ public class Category {
     private String name;
     private String description;
     private float weight;
-    private boolean bulkStatus;
-    private boolean isActive;
+    private boolean bulkStatus = false;
+    private boolean isActive = true;
     @OneToMany
     private List<Parameter> parameters;
 

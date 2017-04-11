@@ -6,6 +6,15 @@ public class NewCategoryRequest {
     private String description;
     private boolean bulkStatus;
     private boolean isActive;
+    private float weight;
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
 
     public Long getId() {
         return id;
