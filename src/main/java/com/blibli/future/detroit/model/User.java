@@ -1,11 +1,15 @@
 package com.blibli.future.detroit.model;
 
 
+import com.blibli.future.detroit.model.enums.UserType;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "detroit_users")
 public class User {
     @Id
     @GeneratedValue
@@ -19,6 +23,7 @@ public class User {
     private String gender;
     private String location;
     private String phoneNumber;
+    private UserType role;
 
     public Long getId() {
         return id;
@@ -94,5 +99,29 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public UserType getRole() {
+        return role;
+    }
+
+    public void setRole(UserType role) {
+        this.role = role;
+    }
+
+    public boolean isReviewer() {
+        return this.role.equals(UserType.REVIEWER);
+    }
+
+    public boolean isAgent() {
+        return this.role.equals(UserType.AGENT);
+    }
+
+    public boolean isSuperAdmin() {
+        return this.role.equals(UserType.SUPER_ADMIN);
     }
 }

@@ -1,6 +1,7 @@
 package com.blibli.future.detroit.service;
 
 import com.blibli.future.detroit.model.User;
+import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.repository.UserRepository;
@@ -34,6 +35,7 @@ public class UserService {
         newUser.setGender(request.getGender());
         newUser.setLocation(request.getLocation());
         newUser.setPhoneNumber(request.getPhoneNumber());
+        newUser.setRole(request.getUserType());
         userRepository.save(newUser);
 
         return newUser;
@@ -44,7 +46,8 @@ public class UserService {
         return true;
     }
 
-    public boolean updateUser(Long userId, User request) {
+    public boolean updateUser(Long userId, NewUserRequest request) {
+        // TODO throw error if userId doesn't exist
         User user = userRepository.findOne(userId);
         user.setFullname(request.getFullname());
         user.setNickname(request.getNickname());
