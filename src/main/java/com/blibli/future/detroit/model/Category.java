@@ -3,6 +3,8 @@ package com.blibli.future.detroit.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class Category {
@@ -14,6 +16,8 @@ public class Category {
     private float weight;
     private boolean bulkStatus;
     private boolean isActive;
+    @OneToMany
+    private List<Parameter> parameters;
 
     public void setId(Long id) {
         this.id = id;
@@ -61,5 +65,13 @@ public class Category {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public List<Parameter> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<Parameter> parameters) {
+        this.parameters = parameters;
     }
 }
