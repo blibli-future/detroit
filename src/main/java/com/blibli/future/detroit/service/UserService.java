@@ -3,7 +3,6 @@ package com.blibli.future.detroit.service;
 import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
-import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
