@@ -13,7 +13,7 @@ public class Category {
     private Long id;
     private String name;
     private String description;
-    private float weight;
+    private Float weight;
     private boolean bulkStatus = false;
     private boolean isActive = true;
     @OneToMany
@@ -43,11 +43,11 @@ public class Category {
         this.description = description;
     }
 
-    public float getWeight() {
+    public Float getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(Float weight) {
         this.weight = weight;
     }
 

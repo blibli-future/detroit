@@ -59,19 +59,19 @@ public class CategoryControllerTest {
         category.setDescription("Lorem ipsum");
         category.setName("Kategori");
         category.setActive(true);
-        category.setWeight(100);
+        category.setWeight(100F);
 
         category2.setId(2L);
         category2.setDescription("Lorem ipsum");
         category2.setName("Kategori");
         category2.setActive(true);
-        category2.setWeight(100);
+        category2.setWeight(100F);
 
         request.setId(1L);
         request.setDescription("Lorem ipsum");
         request.setName("Kategori");
         request.setActive(true);
-        request.setWeight(100);
+        request.setWeight(100f);
 
         List<Category> list = new ArrayList<>();
         list.add(category);
@@ -119,7 +119,6 @@ public class CategoryControllerTest {
             .body(containsString("true"))
             .statusCode(200);
 
-        /* TODO : bikin verify yang bisa nyocokkin beneran */
         verify(categoryService).createCategory(eq(request));
     }
 

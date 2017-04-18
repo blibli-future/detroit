@@ -57,4 +57,29 @@ public class Parameter {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Parameter parameter = (Parameter) o;
+
+        if (!id.equals(parameter.id)) return false;
+        if (!name.equals(parameter.name)) return false;
+        if (description != null ? !description.equals(parameter.description) : parameter.description != null)
+            return false;
+        if (!weight.equals(parameter.weight)) return false;
+        return category.equals(parameter.category);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + weight.hashCode();
+        result = 31 * result + category.hashCode();
+        return result;
+    }
 }

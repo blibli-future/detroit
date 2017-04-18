@@ -30,7 +30,7 @@ public class CategoryService {
         newCategory.setName(request.getName());
         newCategory.setActive(request.isActive());
         newCategory.setDescription(request.getDescription());
-        newCategory.setWeight(0);
+        newCategory.setWeight(0f);
         newCategory.setBulkStatus(request.isBulkStatus());
         categoryRepository.save(newCategory);
 
