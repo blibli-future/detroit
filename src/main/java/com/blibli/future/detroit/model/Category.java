@@ -74,4 +74,33 @@ public class Category {
     public void setParameters(List<Parameter> parameters) {
         this.parameters = parameters;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Category category = (Category) o;
+
+        if (Float.compare(category.weight, weight) != 0) return false;
+        if (bulkStatus != category.bulkStatus) return false;
+        if (isActive != category.isActive) return false;
+        if (!id.equals(category.id)) return false;
+        if (!name.equals(category.name)) return false;
+        if (description != null ? !description.equals(category.description) : category.description != null)
+            return false;
+        return parameters != null ? parameters.equals(category.parameters) : category.parameters == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (weight != +0.0f ? Float.floatToIntBits(weight) : 0);
+        result = 31 * result + (bulkStatus ? 1 : 0);
+        result = 31 * result + (isActive ? 1 : 0);
+        result = 31 * result + (parameters != null ? parameters.hashCode() : 0);
+        return result;
+    }
 }

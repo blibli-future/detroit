@@ -1,6 +1,6 @@
 package com.blibli.future.detroit.model.Exception;
 
-public class WeightPercentageNotValid extends Exception {
+public class WeightPercentageNotValid extends RuntimeException {
     public WeightPercentageNotValid() {
     }
 

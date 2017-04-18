@@ -25,7 +25,7 @@ public class CategoryService {
         return categoryRepository.findOne(categoryId);
     }
 
-    public Boolean createCategory(NewCategoryRequest request) {
+    public Category createCategory(NewCategoryRequest request) {
         Category newCategory = new Category();
         newCategory.setName(request.getName());
         newCategory.setActive(request.isActive());
@@ -34,7 +34,7 @@ public class CategoryService {
         newCategory.setBulkStatus(request.isBulkStatus());
         categoryRepository.save(newCategory);
 
-        return true;
+        return newCategory;
     }
 
     public boolean deleteCategory(Long categoryId) {

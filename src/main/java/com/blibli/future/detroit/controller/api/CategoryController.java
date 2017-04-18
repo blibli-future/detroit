@@ -58,10 +58,13 @@ public class CategoryController {
     @ResponseBody
     public BaseRestResponse batchUpdateCategory(@RequestBody SimpleListRequest<Category> request) {
         try {
-            categoryService.batchUpdateCategory(request);
+            assert categoryService.batchUpdateCategory(request);
             return new BaseRestResponse();
         }
         catch (WeightPercentageNotValid e) {
+            return new BaseRestResponse(false, e.getMessage(), e.getClass().getSimpleName());
+        }
+        catch (AssertionError e) {
             return new BaseRestResponse(false, e.getMessage(), e.getClass().getSimpleName());
         }
     }
