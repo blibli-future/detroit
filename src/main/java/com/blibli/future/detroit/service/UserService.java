@@ -20,6 +20,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<User> getAllUser(UserType userType) {
+        return userRepository.findByUserType(userType);
+    }
+
     public User getOneUser(long userId) {
         return userRepository.findOne(userId);
     }
@@ -35,7 +39,7 @@ public class UserService {
         newUser.setGender(request.getGender());
         newUser.setLocation(request.getLocation());
         newUser.setPhoneNumber(request.getPhoneNumber());
-        newUser.setRole(request.getUserType());
+        newUser.setUserType(request.getUserType());
         userRepository.save(newUser);
 
         return newUser;

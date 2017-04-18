@@ -23,7 +23,7 @@ public class User {
     private String gender;
     private String location;
     private String phoneNumber;
-    private UserType role;
+    private UserType userType;
 
     public Long getId() {
         return id;
@@ -105,23 +105,23 @@ public class User {
         this.id = id;
     }
 
-    public UserType getRole() {
-        return role;
+    public UserType getUserType() {
+        return userType;
     }
 
-    public void setRole(UserType role) {
-        this.role = role;
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     public boolean isReviewer() {
-        return this.role.equals(UserType.REVIEWER);
+        return this.userType.equals(UserType.REVIEWER);
     }
 
     public boolean isAgent() {
-        return this.role.equals(UserType.AGENT);
+        return this.userType.equals(UserType.AGENT);
     }
 
     public boolean isSuperAdmin() {
-        return this.role.equals(UserType.SUPER_ADMIN);
+        return this.userType.equals(UserType.SUPER_ADMIN);
     }
 }
