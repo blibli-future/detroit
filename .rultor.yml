@@ -1,0 +1,5 @@
+docker:
+  image: "yegor256/java8"
+
+merge:
+  fast-forward: only
