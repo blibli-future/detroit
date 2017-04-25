@@ -5,7 +5,6 @@ import com.blibli.future.detroit.model.UserRole;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.repository.UserRepository;
 import com.blibli.future.detroit.repository.UserRoleRepository;
-import com.blibli.future.detroit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -25,6 +24,7 @@ public class DataSeeder implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
+        // API KEY = YWdlbnRAZXhhbXBsZS5jb206c2VjcmV0
         User agent = new User();
         agent.setEmail("agent@example.com");
         agent.setNickname("agent");
