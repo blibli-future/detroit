@@ -1,0 +1,4 @@
+# Disable security when unit testing
+security:
+  basic:
+    enabled: false
