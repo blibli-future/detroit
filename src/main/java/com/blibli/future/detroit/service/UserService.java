@@ -1,9 +1,12 @@
 package com.blibli.future.detroit.service;
 
 import com.blibli.future.detroit.model.User;
+import com.blibli.future.detroit.model.UserRole;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
 import com.blibli.future.detroit.repository.UserRepository;
+import com.blibli.future.detroit.repository.UserRoleRepository;
+import com.blibli.future.detroit.util.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,12 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
+
+    @Autowired
+    Converter modelMapper;
 
     public List<User> getAllUser() {
         return userRepository.findAll();
@@ -28,18 +37,14 @@ public class UserService {
     }
 
     public User createUser(NewUserRequest request) {
-        User newUser = new User();
-        newUser.setFullname(request.getFullname());
-        newUser.setNickname(request.getNickname());
-        newUser.setEmail(request.getEmail());
-        newUser.setChannel(request.getChannel());
-        newUser.setTeamLeader(request.getTeamLeader());
-        newUser.setDateOfBirth(request.getDateOfBirth());
-        newUser.setGender(request.getGender());
-        newUser.setLocation(request.getLocation());
-        newUser.setPhoneNumber(request.getPhoneNumber());
-        newUser.setUserType(request.getUserType());
-        userRepository.save(newUser);
+        User newUser = modelMapper.modelMapper()
+            .map(request, User.class);
+        newUser = userRepository.saveAndFlush(newUser);
+
+        UserRole role = new UserRole();
+        role.setEmail(newUser.getEmail());
+        role.setRole(newUser.getUserType().toString());
+        userRoleRepository.save(role);
 
         return newUser;
     }
@@ -51,16 +56,8 @@ public class UserService {
 
     public boolean updateUser(Long userId, NewUserRequest request) {
         // TODO throw error if userId doesn't exist
-        User user = userRepository.findOne(userId);
-        user.setFullname(request.getFullname());
-        user.setNickname(request.getNickname());
-        user.setEmail(request.getEmail());
-        user.setChannel(request.getChannel());
-        user.setTeamLeader(request.getTeamLeader());
-        user.setDateOfBirth(request.getDateOfBirth());
-        user.setGender(request.getGender());
-        user.setLocation(request.getLocation());
-        user.setPhoneNumber(request.getPhoneNumber());
+        User user = modelMapper.modelMapper()
+            .map(request, User.class);
         userRepository.save(user);
 
         return true;
