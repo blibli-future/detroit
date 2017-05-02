@@ -2,6 +2,8 @@ package com.blibli.future.detroit.model.request;
 
 import java.io.Serializable;
 
+import com.blibli.future.detroit.model.AgentChannel;
+import com.blibli.future.detroit.model.AgentPosition;
 import com.blibli.future.detroit.model.enums.UserType;
 
 public class NewUserRequest implements Serializable {
@@ -15,43 +17,9 @@ public class NewUserRequest implements Serializable {
     private String gender;
     private String location;
     private String phoneNumber;
+    private AgentChannel agentChannel;
+    private AgentPosition agentPosition;
     private UserType userType;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        NewUserRequest that = (NewUserRequest) o;
-
-        if (!id.equals(that.id)) return false;
-        if (fullname != null ? !fullname.equals(that.fullname) : that.fullname != null) return false;
-        if (nickname != null ? !nickname.equals(that.nickname) : that.nickname != null) return false;
-        if (!email.equals(that.email)) return false;
-        if (channel != null ? !channel.equals(that.channel) : that.channel != null) return false;
-        if (teamLeader != null ? !teamLeader.equals(that.teamLeader) : that.teamLeader != null) return false;
-        if (dateOfBirth != null ? !dateOfBirth.equals(that.dateOfBirth) : that.dateOfBirth != null) return false;
-        if (gender != null ? !gender.equals(that.gender) : that.gender != null) return false;
-        if (location != null ? !location.equals(that.location) : that.location != null) return false;
-        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
-        return userType == that.userType;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + (fullname != null ? fullname.hashCode() : 0);
-        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
-        result = 31 * result + email.hashCode();
-        result = 31 * result + (channel != null ? channel.hashCode() : 0);
-        result = 31 * result + (teamLeader != null ? teamLeader.hashCode() : 0);
-        result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (location != null ? location.hashCode() : 0);
-        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
-        result = 31 * result + userType.hashCode();
-        return result;
-    }
 
     public Long getId() {
         return id;
@@ -133,11 +101,68 @@ public class NewUserRequest implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public AgentChannel getAgentChannel() {
+        return agentChannel;
+    }
+
+    public void setAgentChannel(AgentChannel agentChannel) {
+        this.agentChannel = agentChannel;
+    }
+
+    public AgentPosition getAgentPosition() {
+        return agentPosition;
+    }
+
+    public void setAgentPosition(AgentPosition agentPosition) {
+        this.agentPosition = agentPosition;
+    }
+
     public UserType getUserType() {
         return userType;
     }
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        NewUserRequest that = (NewUserRequest) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (fullname != null ? !fullname.equals(that.fullname) : that.fullname != null) return false;
+        if (nickname != null ? !nickname.equals(that.nickname) : that.nickname != null) return false;
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (channel != null ? !channel.equals(that.channel) : that.channel != null) return false;
+        if (teamLeader != null ? !teamLeader.equals(that.teamLeader) : that.teamLeader != null) return false;
+        if (dateOfBirth != null ? !dateOfBirth.equals(that.dateOfBirth) : that.dateOfBirth != null) return false;
+        if (gender != null ? !gender.equals(that.gender) : that.gender != null) return false;
+        if (location != null ? !location.equals(that.location) : that.location != null) return false;
+        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
+        if (agentChannel != null ? !agentChannel.equals(that.agentChannel) : that.agentChannel != null) return false;
+        if (agentPosition != null ? !agentPosition.equals(that.agentPosition) : that.agentPosition != null)
+            return false;
+        return userType == that.userType;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (fullname != null ? fullname.hashCode() : 0);
+        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (channel != null ? channel.hashCode() : 0);
+        result = 31 * result + (teamLeader != null ? teamLeader.hashCode() : 0);
+        result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        result = 31 * result + (location != null ? location.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        result = 31 * result + (agentChannel != null ? agentChannel.hashCode() : 0);
+        result = 31 * result + (agentPosition != null ? agentPosition.hashCode() : 0);
+        result = 31 * result + (userType != null ? userType.hashCode() : 0);
+        return result;
     }
 }

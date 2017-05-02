@@ -1,11 +1,14 @@
 package com.blibli.future.detroit.service;
 
-import com.blibli.future.detroit.model.Parameter;
+import com.blibli.future.detroit.model.Category;
+import com.blibli.future.detroit.model.Category;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
+import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,25 +19,19 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private ParameterService parameterService;
 
-    public List<Parameter> getAllCategory() {
-        return categoryRepository.findAll();
-    }
+    public Category createCategory(NewCategoryRequest request, Long parameterId) {
+        Category newCategory = new Category();
+        newCategory.setName(request.getName());
+        newCategory.setDescription(request.getDescription());
+        newCategory.setWeight(request.getWeight());
+        Parameter newParameter = parameterService.getOneParameter(parameterId);
+        newCategory.setParameter(newParameter);
+        categoryRepository.saveAndFlush(newCategory);
 
-    public Parameter getOneCategory(long categoryId) {
-        return categoryRepository.findOne(categoryId);
-    }
-
-    public Parameter createCategory(NewCategoryRequest request) {
-        Parameter newParameter = new Parameter();
-        newParameter.setName(request.getName());
-        newParameter.setActive(request.isActive());
-        newParameter.setDescription(request.getDescription());
-        newParameter.setWeight(0f);
-        newParameter.setBulkStatus(request.isBulkStatus());
-        categoryRepository.save(newParameter);
-
-        return newParameter;
+        return newCategory;
     }
 
     public boolean deleteCategory(Long categoryId) {
@@ -43,43 +40,32 @@ public class CategoryService {
         return true;
     }
 
-    /**
-     * Update all the categories at the same time. A valid update
-     * *must* have sum 100% in weight across all the categories.
-     * @param request
-     * @return edit success status
-     */
-    public boolean batchUpdateCategory(SimpleListRequest<Parameter> request) throws WeightPercentageNotValid {
-        // TODO is better/more efficient query required?
-        List<Parameter> parameterList = new ArrayList<>();
-        for(Parameter input: request.getList()) {
-            Parameter parameter = categoryRepository.findOne(input.getId());
-            parameter.setWeight(input.getWeight());
-            parameter.setName(input.getName());
-            parameter.setDescription(input.getDescription());
-            parameterList.add(parameter);
+    public boolean batchUpdateCategory(SimpleListRequest<Category> request, Long parameterId) throws WeightPercentageNotValid {
+        List<Category> categoryList = new ArrayList<>();
+        for(Category input: request.getList()) {
+            Category Category = new Category();
+            Category.setId(input.getId()); //Tambah SetId di model user dan Category, newRequest juga
+            Category.setParameter(input.getParameter());
+            Category.setName(input.getName());
+            Category.setDescription(input.getDescription());
+            Category.setWeight(input.getWeight());
+            categoryList.add(Category);
         }
-        boolean isValidUpdate = isAllCategoryHaveBalancedWeight();
+        boolean isValidUpdate = isAllCategoryHaveBalancedWeight(parameterId);
         if (!isValidUpdate) {
             throw new WeightPercentageNotValid("Total percentage of all weight in category is not 100%");
         }
-        categoryRepository.save(parameterList);
+        categoryRepository.save(categoryList);
         return true;
     }
 
-    /**
-     * Check if the combined weight of all category is exactly 100%
-     * @return
-     */
-    public boolean isAllCategoryHaveBalancedWeight() {
-        // TODO is better/more efficient query required?
+    public boolean isAllCategoryHaveBalancedWeight(Long parameterId) {
         float sum = 0;
-        for(Parameter parameter : getAllCategory()) {
-            sum += parameter.getWeight();
+        Parameter parameter = parameterService.getOneParameter(parameterId);
+        List<Category> categories = parameter.getCategories();
+        for(Category category : categories) {
+            sum += category.getWeight();
         }
-
         return sum == 100;
     }
-
-
 }

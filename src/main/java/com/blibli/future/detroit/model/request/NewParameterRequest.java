@@ -1,30 +1,27 @@
 package com.blibli.future.detroit.model.request;
 
-import com.blibli.future.detroit.model.Parameter;
-
-import java.io.Serializable;
-
-public class NewParameterRequest implements Serializable {
+public class NewParameterRequest {
     private Long id;
     private String name;
     private String description;
-    private Float weight;
-    private Parameter parameter;
+    private boolean bulkStatus;
+    private boolean isActive;
+    private float weight;
 
-    public Parameter getParameter() {
-        return parameter;
+    public float getWeight() {
+        return weight;
     }
 
-    public void setParameter(Parameter parameter) {
-        this.parameter = parameter;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setWeight(float weight) {
+        this.weight = weight;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -43,12 +40,31 @@ public class NewParameterRequest implements Serializable {
         this.description = description;
     }
 
-    public Float getWeight() {
-        return weight;
+    public boolean isBulkStatus() {
+        return bulkStatus;
     }
 
-    public void setWeight(Float weight) {
-        this.weight = weight;
+    public void setBulkStatus(boolean bulkStatus) {
+        this.bulkStatus = bulkStatus;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    @Override
+    public String toString() {
+        return "NewParameterRequest{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", bulkStatus=" + bulkStatus +
+                ", isActive=" + isActive +
+                '}';
     }
 
     @Override
@@ -58,20 +74,22 @@ public class NewParameterRequest implements Serializable {
 
         NewParameterRequest that = (NewParameterRequest) o;
 
-        if (!id.equals(that.id)) return false;
-        if (!name.equals(that.name)) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (!weight.equals(that.weight)) return false;
-        return parameter.equals(that.parameter);
+        if (bulkStatus != that.bulkStatus) return false;
+        if (isActive != that.isActive) return false;
+        if (Float.compare(that.weight, weight) != 0) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        return description != null ? description.equals(that.description) : that.description == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + weight.hashCode();
-        result = 31 * result + parameter.hashCode();
+        result = 31 * result + (bulkStatus ? 1 : 0);
+        result = 31 * result + (isActive ? 1 : 0);
+        result = 31 * result + (weight != +0.0f ? Float.floatToIntBits(weight) : 0);
         return result;
     }
 }

@@ -1,6 +1,5 @@
 package com.blibli.future.detroit.service;
 
-import com.blibli.future.detroit.model.Category;
 import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
 import com.blibli.future.detroit.model.request.NewParameterRequest;
@@ -17,18 +16,25 @@ public class ParameterService {
 
     @Autowired
     private ParameterRepository parameterRepository;
-    private CategoryService categoryService;
 
-    public Category createParameter(NewParameterRequest request, Long categoryId) {
-        Category newCategory = new Category();
-        newCategory.setName(request.getName());
-        newCategory.setDescription(request.getDescription());
-        newCategory.setWeight(request.getWeight());
-        Parameter newParameter = categoryService.getOneCategory(categoryId);
-        newCategory.setParameter(newParameter);
-        parameterRepository.save(newCategory);
+    public List<Parameter> getAllParameter() {
+        return parameterRepository.findAll();
+    }
 
-        return newCategory;
+    public Parameter getOneParameter(long parameterId) {
+        return parameterRepository.findOne(parameterId);
+    }
+
+    public Parameter createParameter(NewParameterRequest request) {
+        Parameter newParameter = new Parameter();
+        newParameter.setName(request.getName());
+        newParameter.setActive(request.isActive());
+        newParameter.setDescription(request.getDescription());
+        newParameter.setWeight(0f);
+        newParameter.setBulkStatus(request.isBulkStatus());
+        parameterRepository.save(newParameter);
+
+        return newParameter;
     }
 
     public boolean deleteParameter(Long parameterId) {
@@ -37,32 +43,43 @@ public class ParameterService {
         return true;
     }
 
-    public boolean batchUpdateParameter(SimpleListRequest<Category> request, Long categoryId) throws WeightPercentageNotValid {
-        List<Category> categoryList = new ArrayList<>();
-        for(Category input: request.getList()) {
-            Category Category = new Category();
-            Category.setId(input.getId()); //Tambah SetId di model user dan Category, newRequest juga
-            Category.setParameter(input.getParameter());
-            Category.setName(input.getName());
-            Category.setDescription(input.getDescription());
-            Category.setWeight(input.getWeight());
-            categoryList.add(Category);
+    /**
+     * Update all the categories at the same time. A valid update
+     * *must* have sum 100% in weight across all the categories.
+     * @param request
+     * @return edit success status
+     */
+    public boolean batchUpdateParameter(SimpleListRequest<Parameter> request) throws WeightPercentageNotValid {
+        // TODO is better/more efficient query required?
+        List<Parameter> parameterList = new ArrayList<>();
+        for(Parameter input: request.getList()) {
+            Parameter parameter = parameterRepository.findOne(input.getId());
+            parameter.setWeight(input.getWeight());
+            parameter.setName(input.getName());
+            parameter.setDescription(input.getDescription());
+            parameterList.add(parameter);
         }
-        boolean isValidUpdate = isAllParameterHaveBalancedWeight(categoryId);
+        boolean isValidUpdate = isAllParameterHaveBalancedWeight();
         if (!isValidUpdate) {
             throw new WeightPercentageNotValid("Total percentage of all weight in parameter is not 100%");
         }
-        parameterRepository.save(categoryList);
+        parameterRepository.save(parameterList);
         return true;
     }
 
-    public boolean isAllParameterHaveBalancedWeight(Long categoryId) {
+    /**
+     * Check if the combined weight of all parameter is exactly 100%
+     * @return
+     */
+    public boolean isAllParameterHaveBalancedWeight() {
+        // TODO is better/more efficient query required?
         float sum = 0;
-        Parameter parameter = categoryService.getOneCategory(categoryId);
-        List<Category> Categories = parameter.getCategories();
-        for(Category Category : Categories) {
-            sum += Category.getWeight();
+        for(Parameter parameter : getAllParameter()) {
+            sum += parameter.getWeight();
         }
+
         return sum == 100;
     }
+
+
 }

@@ -23,7 +23,7 @@ public class ReviewService {
     @Autowired
     UserService userService;
     @Autowired
-    CategoryService categoryService;
+    ParameterService parameterService;
     @Autowired
     Converter modelMapper;
 
@@ -44,7 +44,7 @@ public class ReviewService {
     public Review createReview(NewReviewRequest request) {
         Review newReview = modelMapper.modelMapper()
             .map(request, Review.class);
-        reviewRepository.save(newReview);
+        reviewRepository.saveAndFlush(newReview);
         return newReview;
     }
 
@@ -60,7 +60,7 @@ public class ReviewService {
 
     public List<AgentOverviewResponse> getReviewOverview() {
         List<User> agentList = userService.getAllUser(UserType.AGENT);
-        List<Parameter> parameterList = categoryService.getAllCategory();
+        List<Parameter> parameterList = parameterService.getAllParameter();
         List<AgentOverviewResponse> agentOverviewResponses = new ArrayList<>();
         for (User agent: agentList) {
             HashMap<String, Integer> map = new HashMap<>();

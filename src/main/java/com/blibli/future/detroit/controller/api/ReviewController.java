@@ -5,7 +5,7 @@ import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.AgentOverviewResponse;
 import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
-import com.blibli.future.detroit.service.CategoryService;
+import com.blibli.future.detroit.service.ParameterService;
 import com.blibli.future.detroit.service.ReviewService;
 import com.blibli.future.detroit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ReviewController {
     UserService userService;
 
     @Autowired
-    CategoryService categoryService;
+    ParameterService parameterService;
 
     @GetMapping(GET_ALL_REVIEW)
     public BaseRestListResponse<Review> getAllReview(@PathVariable Long userId) {

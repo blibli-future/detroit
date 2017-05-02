@@ -3,12 +3,7 @@ package com.blibli.future.detroit.model;
 
 import com.blibli.future.detroit.model.enums.UserType;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,7 +17,6 @@ public class User implements Serializable {
     private String nickname;
     private String email;
     private String password;
-    private String channel;
     private String teamLeader;
     private String dateOfBirth;
     private String gender;
@@ -32,9 +26,30 @@ public class User implements Serializable {
     @OneToMany
     @JoinColumn(name = "email", referencedColumnName = "email")
     private List<UserRole> userRole;
+    @ManyToOne
+    private AgentChannel agentChannel;
+    @ManyToOne
+    private AgentPosition agentPosition;
 
+    public boolean isReviewer() {
+        return this.userType.equals(UserType.REVIEWER);
+    }
+
+    public boolean isAgent() {
+        return this.userType.equals(UserType.AGENT);
+    }
+
+    public boolean isSuperAdmin() {
+        return this.userType.equals(UserType.SUPER_ADMIN);
+    }
+
+    //Semua yang dibawah ini auto-generate
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFullname() {
@@ -67,14 +82,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
     }
 
     public String getTeamLeader() {
@@ -117,28 +124,12 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public UserType getUserType() {
         return userType;
     }
 
     public void setUserType(UserType userType) {
         this.userType = userType;
-    }
-
-    public boolean isReviewer() {
-        return this.userType.equals(UserType.REVIEWER);
-    }
-
-    public boolean isAgent() {
-        return this.userType.equals(UserType.AGENT);
-    }
-
-    public boolean isSuperAdmin() {
-        return this.userType.equals(UserType.SUPER_ADMIN);
     }
 
     public List<UserRole> getUserRole() {
@@ -149,6 +140,21 @@ public class User implements Serializable {
         this.userRole = userRole;
     }
 
+    public AgentChannel getAgentChannel() {
+        return agentChannel;
+    }
+
+    public void setAgentChannel(AgentChannel agentChannel) {
+        this.agentChannel = agentChannel;
+    }
+
+    public AgentPosition getAgentPosition() {
+        return agentPosition;
+    }
+
+    public void setAgentPosition(AgentPosition agentPosition) {
+        this.agentPosition = agentPosition;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -157,32 +163,38 @@ public class User implements Serializable {
 
         User user = (User) o;
 
-        if (!id.equals(user.id)) return false;
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
         if (fullname != null ? !fullname.equals(user.fullname) : user.fullname != null) return false;
         if (nickname != null ? !nickname.equals(user.nickname) : user.nickname != null) return false;
-        if (!email.equals(user.email)) return false;
-        if (channel != null ? !channel.equals(user.channel) : user.channel != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (teamLeader != null ? !teamLeader.equals(user.teamLeader) : user.teamLeader != null) return false;
         if (dateOfBirth != null ? !dateOfBirth.equals(user.dateOfBirth) : user.dateOfBirth != null) return false;
         if (gender != null ? !gender.equals(user.gender) : user.gender != null) return false;
         if (location != null ? !location.equals(user.location) : user.location != null) return false;
         if (phoneNumber != null ? !phoneNumber.equals(user.phoneNumber) : user.phoneNumber != null) return false;
-        return userType == user.userType;
+        if (userType != user.userType) return false;
+        if (userRole != null ? !userRole.equals(user.userRole) : user.userRole != null) return false;
+        if (agentChannel != null ? !agentChannel.equals(user.agentChannel) : user.agentChannel != null) return false;
+        return agentPosition != null ? agentPosition.equals(user.agentPosition) : user.agentPosition == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (fullname != null ? fullname.hashCode() : 0);
         result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
-        result = 31 * result + email.hashCode();
-        result = 31 * result + (channel != null ? channel.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (teamLeader != null ? teamLeader.hashCode() : 0);
         result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
         result = 31 * result + (location != null ? location.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
-        result = 31 * result + userType.hashCode();
+        result = 31 * result + (userType != null ? userType.hashCode() : 0);
+        result = 31 * result + (userRole != null ? userRole.hashCode() : 0);
+        result = 31 * result + (agentChannel != null ? agentChannel.hashCode() : 0);
+        result = 31 * result + (agentPosition != null ? agentPosition.hashCode() : 0);
         return result;
     }
 }

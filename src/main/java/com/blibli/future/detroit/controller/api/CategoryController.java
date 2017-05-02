@@ -1,10 +1,9 @@
 package com.blibli.future.detroit.controller.api;
 
-import com.blibli.future.detroit.model.Parameter;
+import com.blibli.future.detroit.model.Category;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
 import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
-import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
 import com.blibli.future.detroit.service.CategoryService;
 import com.blibli.future.detroit.util.Constant;
@@ -12,60 +11,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 public class CategoryController {
-    public static final String BASE_PATH = Constant.API_PATH_V1 + "/categories";
-    public static final String GET_ALL_CATEGORY = BASE_PATH;
+    public static final String BASE_PATH = Constant.API_PATH_V1 + "/parameters" + "/{parameterId}" + "/categories";
     public static final String CREATE_CATEGORY = BASE_PATH;
     public static final String DELETE_CATEGORY = BASE_PATH + "/{categoryId}";
-    public static final String GET_ONE_CATEGORY = BASE_PATH + "/{categoryId}";
     public static final String BATCH_UPDATE_CATEGORY = BASE_PATH;
 
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping(value = GET_ALL_CATEGORY, produces = Constant.API_MEDIA_TYPE)
-    @ResponseBody
-    public BaseRestListResponse<Parameter> getAllCategories() {
-        List<Parameter> allParameter = categoryService.getAllCategory();
-        return new BaseRestListResponse<>(allParameter);
-    }
-
     @PostMapping(value = CREATE_CATEGORY, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse createCategory(@RequestBody NewCategoryRequest request) {
-        categoryService.createCategory(request);
+    public BaseRestResponse createCategory(@RequestBody NewCategoryRequest request, @PathVariable Long parameterId) {
+        categoryService.createCategory(request, parameterId);
         return new BaseRestResponse();
     }
 
-    @DeleteMapping(value = DELETE_CATEGORY, produces = Constant.API_MEDIA_TYPE)
+    @PatchMapping(value = BATCH_UPDATE_CATEGORY, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse deleteCategory(@PathVariable Long categoryId) {
+    public BaseRestResponse batchUpdateCategory(@RequestBody SimpleListRequest<Category> request,
+                                                 @PathVariable Long parameterId) {
+        try{
+            categoryService.batchUpdateCategory(request, parameterId);
+            return new BaseRestResponse();
+        } catch (WeightPercentageNotValid e) {
+            return new BaseRestResponse(false, e.getMessage(), e.getClass().getSimpleName());
+        }
+    }
+
+    @DeleteMapping(value = DELETE_CATEGORY, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
+    @ResponseBody
+    public BaseRestResponse<Category> deleteCategory(@PathVariable Long parameterId, @PathVariable Long categoryId) {
         categoryService.deleteCategory(categoryId);
         return new BaseRestResponse();
-    }
-
-    @GetMapping(value = GET_ONE_CATEGORY, produces = Constant.API_MEDIA_TYPE)
-    @ResponseBody
-    public BaseRestResponse<Parameter> getOneCategory(@PathVariable Long categoryId) {
-        Parameter parameter = categoryService.getOneCategory(categoryId);
-        return new BaseRestResponse<>(parameter);
-    }
-
-    @PatchMapping(value = BATCH_UPDATE_CATEGORY, consumes = Constant.API_MEDIA_TYPE)
-    @ResponseBody
-    public BaseRestResponse batchUpdateCategory(@RequestBody SimpleListRequest<Parameter> request) {
-        try {
-            assert categoryService.batchUpdateCategory(request);
-            return new BaseRestResponse();
-        }
-        catch (WeightPercentageNotValid e) {
-            return new BaseRestResponse(false, e.getMessage(), e.getClass().getSimpleName());
-        }
-        catch (AssertionError e) {
-            return new BaseRestResponse(false, e.getMessage(), e.getClass().getSimpleName());
-        }
     }
 }

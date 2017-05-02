@@ -1,5 +1,7 @@
 package com.blibli.future.detroit.controller.api;
 
+import com.blibli.future.detroit.model.AgentChannel;
+import com.blibli.future.detroit.model.AgentPosition;
 import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
@@ -37,19 +39,28 @@ public class UserControllerTest {
     User user = new User();
     NewUserRequest request = new NewUserRequest();
     ObjectMapper mapper = new ObjectMapper();
+    AgentChannel agentChannel = new AgentChannel();
+    AgentPosition agentPosition = new AgentPosition();
 
     @Before
     public void setUp() {
+        agentChannel.setId(1L);
+        agentChannel.setName("Chat");
+
+        agentPosition.setId(1L);
+        agentPosition.setName("Inbound");
+
         user.setId(1L);
         user.setFullname("Detroit Project");
         user.setNickname("Detroit");
         user.setEmail("detroit@gdn-commerce.com");
-        user.setChannel("cs");
         user.setTeamLeader("1");
         user.setDateOfBirth("01/01/1996");
         user.setGender("M");
         user.setLocation("Jakarta");
         user.setPhoneNumber("123456789");
+        user.setAgentChannel(agentChannel);
+        user.setAgentPosition(agentPosition);
         user.setUserType(UserType.AGENT);
 
         request.setId(1L);
@@ -62,6 +73,8 @@ public class UserControllerTest {
         request.setGender("M");
         request.setLocation("Jakarta");
         request.setPhoneNumber("123456789");
+        request.setAgentChannel(agentChannel);
+        request.setAgentPosition(agentPosition);
         request.setUserType(UserType.AGENT);
     }
 
@@ -79,12 +92,13 @@ public class UserControllerTest {
             .body(containsString("Detroit Project"))
             .body(containsString("Detroit"))
             .body(containsString("detroit@gdn-commerce.com"))
-            .body(containsString("cs"))
             .body(containsString("01/01/1996"))
             .body(containsString("M"))
             .body(containsString("Jakarta"))
             .body(containsString("123456789"))
             .body(containsString("true"))
+            .body(containsString("Inbound"))
+            .body(containsString("Chat"))
             .body(containsString("AGENT"))
             .statusCode(200);
 
@@ -144,12 +158,13 @@ public class UserControllerTest {
             .body(containsString("Detroit Project"))
             .body(containsString("Detroit"))
             .body(containsString("detroit@gdn-commerce.com"))
-            .body(containsString("cs"))
             .body(containsString("01/01/1996"))
             .body(containsString("M"))
             .body(containsString("Jakarta"))
             .body(containsString("123456789"))
             .body(containsString("true"))
+            .body(containsString("Inbound"))
+            .body(containsString("Chat"))
             .body(containsString("AGENT"))
             .statusCode(200);
 

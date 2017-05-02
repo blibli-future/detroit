@@ -2,9 +2,9 @@ package com.blibli.future.detroit.controller.api;
 
 import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
-import com.blibli.future.detroit.model.request.NewCategoryRequest;
+import com.blibli.future.detroit.model.request.NewParameterRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
-import com.blibli.future.detroit.service.CategoryService;
+import com.blibli.future.detroit.service.ParameterService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,14 +33,14 @@ import static org.mockito.Mockito.when;
 public class ParameterControllerTest {
 
     @MockBean
-    private CategoryService categoryService;
+    private ParameterService parameterService;
 
     @LocalServerPort
     private int serverPort;
 
     /* Deklarasi untuk data yang dipakai dalam testing, misal insert dll */
     Parameter parameter = new Parameter();
-    NewCategoryRequest request = new NewCategoryRequest();
+    NewParameterRequest request = new NewParameterRequest();
     ObjectMapper mapper = new ObjectMapper();
     Parameter parameter2 = new Parameter();
 
@@ -73,14 +73,14 @@ public class ParameterControllerTest {
     }
 
     @Test
-    public void getAllCategoriesTest() {
-        when(categoryService.getAllCategory()).thenReturn(Arrays.asList(parameter));
+    public void getAllParametersTest() {
+        when(parameterService.getAllParameter()).thenReturn(Arrays.asList(parameter));
 
         given()
             .contentType("application/json")
             .when()
             .port(serverPort)
-            .get(CategoryController.GET_ALL_CATEGORY)
+            .get(ParameterController.GET_ALL_PARAMETER)
             .then()
             .body(containsString("Lorem ipsum"))
             .body(containsString("Kategori"))
@@ -88,58 +88,58 @@ public class ParameterControllerTest {
             .body(containsString("100"))
             .statusCode(200);
 
-        verify(categoryService).getAllCategory();
+        verify(parameterService).getAllParameter();
     }
 
 
     @Test
-    public void createCategoryTest() {
+    public void createParameterTest() {
         String jsonRequest = "";
         try {
             jsonRequest = mapper.writeValueAsString(request);
         } catch (Exception e) {
             assert false;
         }
-        when(categoryService.createCategory(eq(request))).thenReturn(parameter);
+        when(parameterService.createParameter(eq(request))).thenReturn(parameter);
 
         given()
             .contentType("application/json")
             .content(jsonRequest)
             .when()
             .port(serverPort)
-            .post(CategoryController.CREATE_CATEGORY)
+            .post(ParameterController.CREATE_PARAMETER)
             .then()
             .body(containsString("true"))
             .statusCode(200);
 
-        verify(categoryService).createCategory(eq(request));
+        verify(parameterService).createParameter(eq(request));
     }
 
     @Test
-    public void deleteCategoryTest() {
-        when(categoryService.deleteCategory(1L)).thenReturn(true);
+    public void deleteParameterTest() {
+        when(parameterService.deleteParameter(1L)).thenReturn(true);
 
         given()
             .contentType("application/json")
             .when()
             .port(serverPort)
-            .delete(CategoryController.BASE_PATH + "/1")
+            .delete(ParameterController.BASE_PATH + "/1")
             .then()
             .body(containsString("true"))
             .statusCode(200);
 
-        verify(categoryService).deleteCategory(1L);
+        verify(parameterService).deleteParameter(1L);
     }
 
     @Test
-    public void getOneCategory() {
-        when(categoryService.getOneCategory(1L)).thenReturn(parameter);
+    public void getOneParameter() {
+        when(parameterService.getOneParameter(1L)).thenReturn(parameter);
 
         given()
             .contentType("application/json")
             .when()
             .port(serverPort)
-            .get(CategoryController.BASE_PATH + "/1")
+            .get(ParameterController.BASE_PATH + "/1")
             .then()
             .body(containsString("Lorem ipsum"))
             .body(containsString("Kategori"))
@@ -147,53 +147,53 @@ public class ParameterControllerTest {
             .body(containsString("100"))
             .statusCode(200);
 
-        verify(categoryService).getOneCategory(1L);
+        verify(parameterService).getOneParameter(1L);
     }
 
     @Test
-    public void batchUpdateCategory() {
+    public void batchUpdateParameter() {
         String jsonRequest = "";
         try {
             jsonRequest = mapper.writeValueAsString(listRequest);
         } catch (Exception e) {
             assert false;
         }
-        when(categoryService.batchUpdateCategory(eq(listRequest))).thenReturn(true);
+        when(parameterService.batchUpdateParameter(eq(listRequest))).thenReturn(true);
 
         given()
             .contentType("application/json")
             .content(jsonRequest)
             .when()
             .port(serverPort)
-            .patch(CategoryController.BATCH_UPDATE_CATEGORY)
+            .patch(ParameterController.BATCH_UPDATE_PARAMETER)
             .then()
             .body(containsString("true"))
             .statusCode(200);
 
-        verify(categoryService).batchUpdateCategory(eq(listRequest));
+        verify(parameterService).batchUpdateParameter(eq(listRequest));
     }
 
     @Test
-    public void batchUpdateCategory_checkWeightPercentage() {
+    public void batchUpdateParameter_checkWeightPercentage() {
         String jsonRequest = "";
         try {
             jsonRequest = mapper.writeValueAsString(listRequest);
         } catch (Exception e) {
             assert false;
         }
-       when(categoryService.batchUpdateCategory(eq(listRequest))).thenThrow(new WeightPercentageNotValid());
+       when(parameterService.batchUpdateParameter(eq(listRequest))).thenThrow(new WeightPercentageNotValid());
 
         given()
             .contentType("application/json")
             .content(jsonRequest)
             .when()
             .port(serverPort)
-            .patch(CategoryController.BATCH_UPDATE_CATEGORY)
+            .patch(ParameterController.BATCH_UPDATE_PARAMETER)
             .then()
             .body(containsString("false"))
             .statusCode(200);
 
-        verify(categoryService).batchUpdateCategory(eq(listRequest));
+        verify(parameterService).batchUpdateParameter(eq(listRequest));
     }
 
 }

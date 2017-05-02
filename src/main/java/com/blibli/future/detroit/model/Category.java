@@ -17,13 +17,15 @@ public class Category {
     private Float weight;
     @ManyToOne
     private Parameter parameter;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @ManyToOne
+    private AgentChannel agentChannel;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -58,28 +60,38 @@ public class Category {
         this.parameter = parameter;
     }
 
+    public AgentChannel getAgentChannel() {
+        return agentChannel;
+    }
+
+    public void setAgentChannel(AgentChannel agentChannel) {
+        this.agentChannel = agentChannel;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Category Category = (Category) o;
+        Category category = (Category) o;
 
-        if (!id.equals(Category.id)) return false;
-        if (!name.equals(Category.name)) return false;
-        if (description != null ? !description.equals(Category.description) : Category.description != null)
+        if (id != null ? !id.equals(category.id) : category.id != null) return false;
+        if (name != null ? !name.equals(category.name) : category.name != null) return false;
+        if (description != null ? !description.equals(category.description) : category.description != null)
             return false;
-        if (!weight.equals(Category.weight)) return false;
-        return parameter.equals(Category.parameter);
+        if (weight != null ? !weight.equals(category.weight) : category.weight != null) return false;
+        if (parameter != null ? !parameter.equals(category.parameter) : category.parameter != null) return false;
+        return agentChannel != null ? agentChannel.equals(category.agentChannel) : category.agentChannel == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + weight.hashCode();
-        result = 31 * result + parameter.hashCode();
+        result = 31 * result + (weight != null ? weight.hashCode() : 0);
+        result = 31 * result + (parameter != null ? parameter.hashCode() : 0);
+        result = 31 * result + (agentChannel != null ? agentChannel.hashCode() : 0);
         return result;
     }
 }
