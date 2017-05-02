@@ -1,8 +1,7 @@
 package com.blibli.future.detroit.model.request;
 
-import com.blibli.future.detroit.model.Category;
+import com.blibli.future.detroit.model.Parameter;
 
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 public class NewParameterRequest implements Serializable {
@@ -10,14 +9,14 @@ public class NewParameterRequest implements Serializable {
     private String name;
     private String description;
     private Float weight;
-    private Category category;
+    private Parameter parameter;
 
-    public Category getCategory() {
-        return category;
+    public Parameter getParameter() {
+        return parameter;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setParameter(Parameter parameter) {
+        this.parameter = parameter;
     }
 
     public void setId(Long id) {
@@ -63,7 +62,7 @@ public class NewParameterRequest implements Serializable {
         if (!name.equals(that.name)) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (!weight.equals(that.weight)) return false;
-        return category.equals(that.category);
+        return parameter.equals(that.parameter);
     }
 
     @Override
@@ -72,7 +71,7 @@ public class NewParameterRequest implements Serializable {
         result = 31 * result + name.hashCode();
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + weight.hashCode();
-        result = 31 * result + category.hashCode();
+        result = 31 * result + parameter.hashCode();
         return result;
     }
 }

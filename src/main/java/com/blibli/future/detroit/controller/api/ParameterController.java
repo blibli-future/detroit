@@ -2,20 +2,14 @@ package com.blibli.future.detroit.controller.api;
 
 import com.blibli.future.detroit.model.Category;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
-import com.blibli.future.detroit.model.Parameter;
-import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.request.NewParameterRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
-import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
 import com.blibli.future.detroit.service.ParameterService;
 import com.blibli.future.detroit.util.Constant;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 public class ParameterController {
@@ -37,7 +31,7 @@ public class ParameterController {
 
     @PatchMapping(value = BATCH_UPDATE_PARAMETER, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse batchUpdateParameter(@RequestBody SimpleListRequest<Parameter> request,
+    public BaseRestResponse batchUpdateParameter(@RequestBody SimpleListRequest<Category> request,
                                                  @PathVariable Long categoryId) {
         try{
             parameterService.batchUpdateParameter(request, categoryId);
@@ -49,7 +43,7 @@ public class ParameterController {
 
     @DeleteMapping(value = DELETE_PARAMETER, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse<Parameter> deleteParameter(@PathVariable Long categoryId, @PathVariable Long parameterId) {
+    public BaseRestResponse<Category> deleteParameter(@PathVariable Long categoryId, @PathVariable Long parameterId) {
         parameterService.deleteParameter(parameterId);
         return new BaseRestResponse();
     }

@@ -1,6 +1,6 @@
 package com.blibli.future.detroit.service;
 
-import com.blibli.future.detroit.model.Category;
+import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.Review;
 import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.enums.UserType;
@@ -60,13 +60,13 @@ public class ReviewService {
 
     public List<AgentOverviewResponse> getReviewOverview() {
         List<User> agentList = userService.getAllUser(UserType.AGENT);
-        List<Category> categoryList = categoryService.getAllCategory();
+        List<Parameter> parameterList = categoryService.getAllCategory();
         List<AgentOverviewResponse> agentOverviewResponses = new ArrayList<>();
         for (User agent: agentList) {
             HashMap<String, Integer> map = new HashMap<>();
-            for (Category category: categoryList) {
-                List<Review> reviewList = reviewRepository.findByAgentAndCategory(agent, category);
-                map.put(category.getName(), reviewList.size());
+            for (Parameter parameter : parameterList) {
+                List<Review> reviewList = reviewRepository.findByAgentAndParameter(agent, parameter);
+                map.put(parameter.getName(), reviewList.size());
             }
             agentOverviewResponses.add(new AgentOverviewResponse(agent, map));
         }

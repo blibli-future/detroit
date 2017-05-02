@@ -1,6 +1,6 @@
 package com.blibli.future.detroit.controller.api;
 
-import com.blibli.future.detroit.model.Category;
+import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
 import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
@@ -28,9 +28,9 @@ public class CategoryController {
 
     @GetMapping(value = GET_ALL_CATEGORY, produces = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestListResponse<Category> getAllCategories() {
-        List<Category> allCategory = categoryService.getAllCategory();
-        return new BaseRestListResponse<>(allCategory);
+    public BaseRestListResponse<Parameter> getAllCategories() {
+        List<Parameter> allParameter = categoryService.getAllCategory();
+        return new BaseRestListResponse<>(allParameter);
     }
 
     @PostMapping(value = CREATE_CATEGORY, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
@@ -49,14 +49,14 @@ public class CategoryController {
 
     @GetMapping(value = GET_ONE_CATEGORY, produces = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse<Category> getOneCategory(@PathVariable Long categoryId) {
-        Category category = categoryService.getOneCategory(categoryId);
-        return new BaseRestResponse<>(category);
+    public BaseRestResponse<Parameter> getOneCategory(@PathVariable Long categoryId) {
+        Parameter parameter = categoryService.getOneCategory(categoryId);
+        return new BaseRestResponse<>(parameter);
     }
 
     @PatchMapping(value = BATCH_UPDATE_CATEGORY, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse batchUpdateCategory(@RequestBody SimpleListRequest<Category> request) {
+    public BaseRestResponse batchUpdateCategory(@RequestBody SimpleListRequest<Parameter> request) {
         try {
             assert categoryService.batchUpdateCategory(request);
             return new BaseRestResponse();

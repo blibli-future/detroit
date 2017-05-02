@@ -1,6 +1,6 @@
 package com.blibli.future.detroit.model.request;
 
-import com.blibli.future.detroit.model.Category;
+import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.User;
 
 import java.io.Serializable;
@@ -11,7 +11,7 @@ public class NewReviewRequest implements Serializable {
     private String interactionType;
     private String customerName;
     private String tlName;
-    private Category category;
+    private Parameter parameter;
     private User agent;
     private User reviewer;
 
@@ -55,12 +55,12 @@ public class NewReviewRequest implements Serializable {
         this.tlName = tlName;
     }
 
-    public Category getCategory() {
-        return category;
+    public Parameter getParameter() {
+        return parameter;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setParameter(Parameter parameter) {
+        this.parameter = parameter;
     }
 
     public User getAgent() {

@@ -3,21 +3,20 @@ package com.blibli.future.detroit.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.List;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Category {
+
+
     @Id
     @GeneratedValue
     private Long id;
     private String name;
     private String description;
     private Float weight;
-    private boolean bulkStatus = false;
-    private boolean isActive = true;
-    @OneToMany
-    private List<Parameter> parameters;
+    @ManyToOne
+    private Parameter parameter;
 
     public void setId(Long id) {
         this.id = id;
@@ -51,28 +50,12 @@ public class Category {
         this.weight = weight;
     }
 
-    public boolean isBulkStatus() {
-        return bulkStatus;
+    public Parameter getParameter() {
+        return parameter;
     }
 
-    public void setBulkStatus(boolean bulkStatus) {
-        this.bulkStatus = bulkStatus;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public List<Parameter> getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(List<Parameter> parameters) {
-        this.parameters = parameters;
+    public void setParameter(Parameter parameter) {
+        this.parameter = parameter;
     }
 
     @Override
@@ -80,16 +63,14 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Category category = (Category) o;
+        Category Category = (Category) o;
 
-        if (Float.compare(category.weight, weight) != 0) return false;
-        if (bulkStatus != category.bulkStatus) return false;
-        if (isActive != category.isActive) return false;
-        if (!id.equals(category.id)) return false;
-        if (!name.equals(category.name)) return false;
-        if (description != null ? !description.equals(category.description) : category.description != null)
+        if (!id.equals(Category.id)) return false;
+        if (!name.equals(Category.name)) return false;
+        if (description != null ? !description.equals(Category.description) : Category.description != null)
             return false;
-        return parameters != null ? parameters.equals(category.parameters) : category.parameters == null;
+        if (!weight.equals(Category.weight)) return false;
+        return parameter.equals(Category.parameter);
     }
 
     @Override
@@ -97,10 +78,8 @@ public class Category {
         int result = id.hashCode();
         result = 31 * result + name.hashCode();
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (weight != +0.0f ? Float.floatToIntBits(weight) : 0);
-        result = 31 * result + (bulkStatus ? 1 : 0);
-        result = 31 * result + (isActive ? 1 : 0);
-        result = 31 * result + (parameters != null ? parameters.hashCode() : 0);
+        result = 31 * result + weight.hashCode();
+        result = 31 * result + parameter.hashCode();
         return result;
     }
 }

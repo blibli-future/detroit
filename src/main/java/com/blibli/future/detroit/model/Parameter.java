@@ -3,20 +3,21 @@ package com.blibli.future.detroit.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class Parameter {
-
-
     @Id
     @GeneratedValue
     private Long id;
     private String name;
     private String description;
     private Float weight;
-    @ManyToOne
-    private Category category;
+    private boolean bulkStatus = false;
+    private boolean isActive = true;
+    @OneToMany
+    private List<Category> Categories;
 
     public void setId(Long id) {
         this.id = id;
@@ -50,12 +51,28 @@ public class Parameter {
         this.weight = weight;
     }
 
-    public Category getCategory() {
-        return category;
+    public boolean isBulkStatus() {
+        return bulkStatus;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setBulkStatus(boolean bulkStatus) {
+        this.bulkStatus = bulkStatus;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public List<Category> getCategories() {
+        return Categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.Categories = categories;
     }
 
     @Override
@@ -65,12 +82,14 @@ public class Parameter {
 
         Parameter parameter = (Parameter) o;
 
+        if (Float.compare(parameter.weight, weight) != 0) return false;
+        if (bulkStatus != parameter.bulkStatus) return false;
+        if (isActive != parameter.isActive) return false;
         if (!id.equals(parameter.id)) return false;
         if (!name.equals(parameter.name)) return false;
         if (description != null ? !description.equals(parameter.description) : parameter.description != null)
             return false;
-        if (!weight.equals(parameter.weight)) return false;
-        return category.equals(parameter.category);
+        return Categories != null ? Categories.equals(parameter.Categories) : parameter.Categories == null;
     }
 
     @Override
@@ -78,8 +97,10 @@ public class Parameter {
         int result = id.hashCode();
         result = 31 * result + name.hashCode();
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + weight.hashCode();
-        result = 31 * result + category.hashCode();
+        result = 31 * result + (weight != +0.0f ? Float.floatToIntBits(weight) : 0);
+        result = 31 * result + (bulkStatus ? 1 : 0);
+        result = 31 * result + (isActive ? 1 : 0);
+        result = 31 * result + (Categories != null ? Categories.hashCode() : 0);
         return result;
     }
 }

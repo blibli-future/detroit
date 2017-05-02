@@ -1,6 +1,6 @@
 package com.blibli.future.detroit.service;
 
-import com.blibli.future.detroit.model.Category;
+import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
 import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
@@ -17,24 +17,24 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<Category> getAllCategory() {
+    public List<Parameter> getAllCategory() {
         return categoryRepository.findAll();
     }
 
-    public Category getOneCategory(long categoryId) {
+    public Parameter getOneCategory(long categoryId) {
         return categoryRepository.findOne(categoryId);
     }
 
-    public Category createCategory(NewCategoryRequest request) {
-        Category newCategory = new Category();
-        newCategory.setName(request.getName());
-        newCategory.setActive(request.isActive());
-        newCategory.setDescription(request.getDescription());
-        newCategory.setWeight(0f);
-        newCategory.setBulkStatus(request.isBulkStatus());
-        categoryRepository.save(newCategory);
+    public Parameter createCategory(NewCategoryRequest request) {
+        Parameter newParameter = new Parameter();
+        newParameter.setName(request.getName());
+        newParameter.setActive(request.isActive());
+        newParameter.setDescription(request.getDescription());
+        newParameter.setWeight(0f);
+        newParameter.setBulkStatus(request.isBulkStatus());
+        categoryRepository.save(newParameter);
 
-        return newCategory;
+        return newParameter;
     }
 
     public boolean deleteCategory(Long categoryId) {
@@ -49,21 +49,21 @@ public class CategoryService {
      * @param request
      * @return edit success status
      */
-    public boolean batchUpdateCategory(SimpleListRequest<Category> request) throws WeightPercentageNotValid {
+    public boolean batchUpdateCategory(SimpleListRequest<Parameter> request) throws WeightPercentageNotValid {
         // TODO is better/more efficient query required?
-        List<Category> categoryList = new ArrayList<>();
-        for(Category input: request.getList()) {
-            Category category = categoryRepository.findOne(input.getId());
-            category.setWeight(input.getWeight());
-            category.setName(input.getName());
-            category.setDescription(input.getDescription());
-            categoryList.add(category);
+        List<Parameter> parameterList = new ArrayList<>();
+        for(Parameter input: request.getList()) {
+            Parameter parameter = categoryRepository.findOne(input.getId());
+            parameter.setWeight(input.getWeight());
+            parameter.setName(input.getName());
+            parameter.setDescription(input.getDescription());
+            parameterList.add(parameter);
         }
         boolean isValidUpdate = isAllCategoryHaveBalancedWeight();
         if (!isValidUpdate) {
             throw new WeightPercentageNotValid("Total percentage of all weight in category is not 100%");
         }
-        categoryRepository.save(categoryList);
+        categoryRepository.save(parameterList);
         return true;
     }
 
@@ -74,8 +74,8 @@ public class CategoryService {
     public boolean isAllCategoryHaveBalancedWeight() {
         // TODO is better/more efficient query required?
         float sum = 0;
-        for(Category category: getAllCategory()) {
-            sum += category.getWeight();
+        for(Parameter parameter : getAllCategory()) {
+            sum += parameter.getWeight();
         }
 
         return sum == 100;

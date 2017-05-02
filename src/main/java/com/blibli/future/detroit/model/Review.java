@@ -13,7 +13,7 @@ public class Review {
     private String customerName;
     private String tlName;
     @ManyToOne
-    private Category category;
+    private Parameter parameter;
     @ManyToOne
     private User agent;
     @ManyToOne
@@ -61,12 +61,12 @@ public class Review {
         this.tlName = tlName;
     }
 
-    public Category getCategory() {
-        return category;
+    public Parameter getParameter() {
+        return parameter;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setParameter(Parameter parameter) {
+        this.parameter = parameter;
     }
 
     public User getAgent() {
