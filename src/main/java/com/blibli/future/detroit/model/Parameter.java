@@ -13,10 +13,14 @@ public class Parameter {
     private Float weight;
     private boolean bulkStatus = false;
     private boolean isActive = true;
-    @OneToMany
+    @OneToMany(fetch=FetchType.EAGER)
     private List<Category> Categories;
     @ManyToOne
     private AgentPosition agentPosition;
+
+    public int getTest() {
+        return this.Categories.size();
+    }
 
     public Long getId() {
         return id;

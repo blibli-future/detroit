@@ -5,6 +5,7 @@ import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.AgentOverviewResponse;
 import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
+import com.blibli.future.detroit.model.response.UserReviewResponse;
 import com.blibli.future.detroit.service.ParameterService;
 import com.blibli.future.detroit.service.ReviewService;
 import com.blibli.future.detroit.service.UserService;
@@ -16,7 +17,7 @@ import java.util.List;
 @RestController
 public class ReviewController {
     public static final String BASE_PATH = "/api/v1/reviews";
-    public static final String GET_ALL_REVIEW = BASE_PATH + "/{userId}"; // TODO get userId from auth system
+    public static final String GET_ALL_REVIEW = BASE_PATH + "/user/{userId}"; // TODO get userId from auth system
     public static final String GET_ONE_REVIEW = BASE_PATH + "/{reviewId}";
     public static final String CREATE_REVIEW  = BASE_PATH;
     public static final String UPDATE_REVIEW  = BASE_PATH + "/{reviewId}";
@@ -32,9 +33,8 @@ public class ReviewController {
     ParameterService parameterService;
 
     @GetMapping(GET_ALL_REVIEW)
-    public BaseRestListResponse<Review> getAllReview(@PathVariable Long userId) {
-        List<Review> reviewList = reviewService.getAllReview(userId);
-        return new BaseRestListResponse<>(reviewList);
+    public BaseRestListResponse<UserReviewResponse> getAllReview(@PathVariable Long userId) {
+        return new BaseRestListResponse<>(reviewService.getAllReview(userId));
     }
 
     @GetMapping(GET_ONE_REVIEW)
