@@ -1,5 +1,7 @@
 package com.blibli.future.detroit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,11 +12,12 @@ public class DetailReview {
     @Id
     @GeneratedValue
     private Long id;
-    private Long parameterId;
     private float score;
     private String note;
     @ManyToOne
     private Review review;
+    @ManyToOne
+    private Category category;
 
     public Long getId() {
         return id;
@@ -22,14 +25,6 @@ public class DetailReview {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getParameterId() {
-        return parameterId;
-    }
-
-    public void setParameterId(Long parameterId) {
-        this.parameterId = parameterId;
     }
 
     public float getScore() {
@@ -48,11 +43,20 @@ public class DetailReview {
         this.note = note;
     }
 
+    @JsonIgnore
     public Review getReview() {
         return review;
     }
 
     public void setReview(Review review) {
         this.review = review;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

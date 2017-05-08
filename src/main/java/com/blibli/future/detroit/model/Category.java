@@ -1,5 +1,7 @@
 package com.blibli.future.detroit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -52,6 +54,7 @@ public class Category {
         this.weight = weight;
     }
 
+    @JsonIgnore
     public Parameter getParameter() {
         return parameter;
     }
