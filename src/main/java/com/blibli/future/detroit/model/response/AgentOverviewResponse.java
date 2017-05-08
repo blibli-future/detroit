@@ -26,7 +26,10 @@ public class AgentOverviewResponse {
         this.name = name;
     }
 
-    public HashMap<String, Integer> getData() {
+    public HashMap<String, Integer> getData()
+
+
+    {
         return data;
     }
 

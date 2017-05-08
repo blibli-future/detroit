@@ -1,22 +1,29 @@
-package com.blibli.future.detroit.model.request;
+package com.blibli.future.detroit.model.response;
 
-import com.blibli.future.detroit.model.DetailReview;
-import com.blibli.future.detroit.model.Parameter;
-import com.blibli.future.detroit.model.User;
+import com.blibli.future.detroit.model.Review;
 
-import java.io.Serializable;
-import java.util.List;
-
-public class NewReviewRequest implements Serializable {
+public class UserReviewResponse {
     private Long id;
     private String casemgnt;
     private String interactionType;
     private String customerName;
     private String tlName;
-    private Parameter parameter;
-    private User agent;
-    private User reviewer;
-    private List<DetailReview> detailReviews;
+    private Float score;
+    private Long parameter;
+    private Long agent;
+    private Long reviewer;
+
+    public UserReviewResponse(Review review) {
+        this.id = review.getId();
+        this.casemgnt = review.getCasemgnt();
+        this.interactionType = review.getInteractionType();
+        this.customerName = review.getCustomerName();
+        this.tlName = review.getTlName();
+        this.score = review.getScore();
+        this.parameter = review.getParameter().getId();
+        this.agent = review.getAgent().getId();
+        this.reviewer = review.getReviewer().getId();
+    }
 
     public Long getId() {
         return id;
@@ -58,35 +65,35 @@ public class NewReviewRequest implements Serializable {
         this.tlName = tlName;
     }
 
-    public Parameter getParameter() {
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
+    }
+
+    public Long getParameter() {
         return parameter;
     }
 
-    public void setParameter(Parameter parameter) {
+    public void setParameter(Long parameter) {
         this.parameter = parameter;
     }
 
-    public User getAgent() {
+    public Long getAgent() {
         return agent;
     }
 
-    public void setAgent(User agent) {
+    public void setAgent(Long agent) {
         this.agent = agent;
     }
 
-    public User getReviewer() {
+    public Long getReviewer() {
         return reviewer;
     }
 
-    public void setReviewer(User reviewer) {
+    public void setReviewer(Long reviewer) {
         this.reviewer = reviewer;
-    }
-
-    public List<DetailReview> getDetailReviews() {
-        return detailReviews;
-    }
-
-    public void setDetailReviews(List<DetailReview> detailReviews) {
-        this.detailReviews = detailReviews;
     }
 }
