@@ -1,14 +1,13 @@
 package com.blibli.future.detroit.service;
 
 import com.blibli.future.detroit.model.Category;
-import com.blibli.future.detroit.model.Category;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
 import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.repository.CategoryRepository;
+import com.blibli.future.detroit.util.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,16 +20,13 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ParameterService parameterService;
+    @Autowired
+    Converter modelMapper;
 
-    public Category createCategory(NewCategoryRequest request, Long parameterId) {
-        Category newCategory = new Category();
-        newCategory.setName(request.getName());
-        newCategory.setDescription(request.getDescription());
-        newCategory.setWeight(request.getWeight());
-        Parameter newParameter = parameterService.getOneParameter(parameterId);
-        newCategory.setParameter(newParameter);
+    public Category createCategory(NewCategoryRequest request) {
+        Category newCategory = modelMapper.modelMapper()
+            .map(request, Category.class);
         categoryRepository.saveAndFlush(newCategory);
-
         return newCategory;
     }
 
@@ -40,15 +36,11 @@ public class CategoryService {
         return true;
     }
 
-    public boolean batchUpdateCategory(SimpleListRequest<Category> request, Long parameterId) throws WeightPercentageNotValid {
+    public boolean batchUpdateCategory(SimpleListRequest<NewCategoryRequest> request, Long parameterId) throws WeightPercentageNotValid {
         List<Category> categoryList = new ArrayList<>();
-        for(Category input: request.getList()) {
-            Category Category = new Category();
-            Category.setId(input.getId()); //Tambah SetId di model user dan Category, newRequest juga
-            Category.setParameter(input.getParameter());
-            Category.setName(input.getName());
-            Category.setDescription(input.getDescription());
-            Category.setWeight(input.getWeight());
+        for(NewCategoryRequest input: request.getList()) {
+            Category Category = modelMapper.modelMapper()
+                .map(input, Category.class);
             categoryList.add(Category);
         }
         boolean isValidUpdate = isAllCategoryHaveBalancedWeight(parameterId);

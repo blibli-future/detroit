@@ -56,7 +56,7 @@ public class ParameterController {
 
     @PatchMapping(value = BATCH_UPDATE_PARAMETER, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse batchUpdateParameter(@RequestBody SimpleListRequest<Parameter> request) {
+    public BaseRestResponse batchUpdateParameter(@RequestBody SimpleListRequest<NewParameterRequest> request) {
         try {
             assert parameterService.batchUpdateParameter(request);
             return new BaseRestResponse();

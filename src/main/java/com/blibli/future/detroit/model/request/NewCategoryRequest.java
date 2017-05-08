@@ -1,5 +1,6 @@
 package com.blibli.future.detroit.model.request;
 
+import com.blibli.future.detroit.model.AgentChannel;
 import com.blibli.future.detroit.model.Parameter;
 
 import java.io.Serializable;
@@ -10,21 +11,14 @@ public class NewCategoryRequest implements Serializable {
     private String description;
     private Float weight;
     private Parameter parameter;
+    private AgentChannel agentChannel;
 
-    public Parameter getParameter() {
-        return parameter;
-    }
-
-    public void setParameter(Parameter parameter) {
-        this.parameter = parameter;
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {
@@ -51,6 +45,22 @@ public class NewCategoryRequest implements Serializable {
         this.weight = weight;
     }
 
+    public Parameter getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(Parameter parameter) {
+        this.parameter = parameter;
+    }
+
+    public AgentChannel getAgentChannel() {
+        return agentChannel;
+    }
+
+    public void setAgentChannel(AgentChannel agentChannel) {
+        this.agentChannel = agentChannel;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,20 +68,22 @@ public class NewCategoryRequest implements Serializable {
 
         NewCategoryRequest that = (NewCategoryRequest) o;
 
-        if (!id.equals(that.id)) return false;
-        if (!name.equals(that.name)) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (!weight.equals(that.weight)) return false;
-        return parameter.equals(that.parameter);
+        if (weight != null ? !weight.equals(that.weight) : that.weight != null) return false;
+        if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
+        return agentChannel != null ? agentChannel.equals(that.agentChannel) : that.agentChannel == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + weight.hashCode();
-        result = 31 * result + parameter.hashCode();
+        result = 31 * result + (weight != null ? weight.hashCode() : 0);
+        result = 31 * result + (parameter != null ? parameter.hashCode() : 0);
+        result = 31 * result + (agentChannel != null ? agentChannel.hashCode() : 0);
         return result;
     }
 }

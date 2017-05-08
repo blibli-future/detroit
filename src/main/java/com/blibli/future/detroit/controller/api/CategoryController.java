@@ -24,13 +24,13 @@ public class CategoryController {
     @PostMapping(value = CREATE_CATEGORY, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
     public BaseRestResponse createCategory(@RequestBody NewCategoryRequest request, @PathVariable Long parameterId) {
-        categoryService.createCategory(request, parameterId);
+        categoryService.createCategory(request);
         return new BaseRestResponse();
     }
 
     @PatchMapping(value = BATCH_UPDATE_CATEGORY, produces = Constant.API_MEDIA_TYPE, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse batchUpdateCategory(@RequestBody SimpleListRequest<Category> request,
+    public BaseRestResponse batchUpdateCategory(@RequestBody SimpleListRequest<NewCategoryRequest> request,
                                                  @PathVariable Long parameterId) {
         try{
             categoryService.batchUpdateCategory(request, parameterId);

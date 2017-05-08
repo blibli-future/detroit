@@ -1,20 +1,18 @@
 package com.blibli.future.detroit.model.request;
 
+import com.blibli.future.detroit.model.AgentPosition;
+import com.blibli.future.detroit.model.Category;
+
+import java.util.List;
+
 public class NewParameterRequest {
     private Long id;
     private String name;
     private String description;
+    private Float weight;
     private boolean bulkStatus;
     private boolean isActive;
-    private float weight;
-
-    public float getWeight() {
-        return weight;
-    }
-
-    public void setWeight(float weight) {
-        this.weight = weight;
-    }
+    private AgentPosition agentPosition;
 
     public Long getId() {
         return id;
@@ -40,6 +38,14 @@ public class NewParameterRequest {
         this.description = description;
     }
 
+    public Float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Float weight) {
+        this.weight = weight;
+    }
+
     public boolean isBulkStatus() {
         return bulkStatus;
     }
@@ -56,15 +62,12 @@ public class NewParameterRequest {
         isActive = active;
     }
 
-    @Override
-    public String toString() {
-        return "NewParameterRequest{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", bulkStatus=" + bulkStatus +
-                ", isActive=" + isActive +
-                '}';
+    public AgentPosition getAgentPosition() {
+        return agentPosition;
+    }
+
+    public void setAgentPosition(AgentPosition agentPosition) {
+        this.agentPosition = agentPosition;
     }
 
     @Override
@@ -76,10 +79,11 @@ public class NewParameterRequest {
 
         if (bulkStatus != that.bulkStatus) return false;
         if (isActive != that.isActive) return false;
-        if (Float.compare(that.weight, weight) != 0) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return description != null ? description.equals(that.description) : that.description == null;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (weight != null ? !weight.equals(that.weight) : that.weight != null) return false;
+        return agentPosition != null ? agentPosition.equals(that.agentPosition) : that.agentPosition == null;
     }
 
     @Override
@@ -87,9 +91,10 @@ public class NewParameterRequest {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (weight != null ? weight.hashCode() : 0);
         result = 31 * result + (bulkStatus ? 1 : 0);
         result = 31 * result + (isActive ? 1 : 0);
-        result = 31 * result + (weight != +0.0f ? Float.floatToIntBits(weight) : 0);
+        result = 31 * result + (agentPosition != null ? agentPosition.hashCode() : 0);
         return result;
     }
 }

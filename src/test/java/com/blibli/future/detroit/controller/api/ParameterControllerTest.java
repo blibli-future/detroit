@@ -41,10 +41,11 @@ public class ParameterControllerTest {
     /* Deklarasi untuk data yang dipakai dalam testing, misal insert dll */
     Parameter parameter = new Parameter();
     NewParameterRequest request = new NewParameterRequest();
+    NewParameterRequest request2 = new NewParameterRequest();
     ObjectMapper mapper = new ObjectMapper();
     Parameter parameter2 = new Parameter();
 
-    SimpleListRequest<Parameter> listRequest = new SimpleListRequest<>();
+    SimpleListRequest<NewParameterRequest> listRequest = new SimpleListRequest<>();
 
     @Before
     public void setUp() {
@@ -66,9 +67,15 @@ public class ParameterControllerTest {
         request.setActive(true);
         request.setWeight(100f);
 
-        List<Parameter> list = new ArrayList<>();
-        list.add(parameter);
-        list.add(parameter2);
+        request2.setId(2L);
+        request2.setDescription("Lorem ipsum");
+        request2.setName("Kategori");
+        request2.setActive(true);
+        request2.setWeight(100f);
+
+        List<NewParameterRequest> list = new ArrayList<>();
+        list.add(request);
+        list.add(request2);
         listRequest.setList(list);
     }
 

@@ -45,7 +45,8 @@ public class CategoryControllerTest {
     Category Category = new Category();
     Category category2 = new Category();
     NewCategoryRequest request = new NewCategoryRequest();
-    SimpleListRequest<Category> listRequest = new SimpleListRequest<>();
+    NewCategoryRequest request2 = new NewCategoryRequest();
+    SimpleListRequest<NewCategoryRequest> listRequest = new SimpleListRequest<>();
 
 
     @Before
@@ -74,9 +75,15 @@ public class CategoryControllerTest {
         request.setWeight(100F);
         request.setParameter(parameter);
 
-        List<Category> list = new ArrayList<>();
-        list.add(Category);
-        list.add(category2);
+        request2.setId(2L);
+        request2.setDescription("Lorem Ipsum");
+        request2.setName("Parameter2");
+        request2.setWeight(100f);
+        request2.setParameter(parameter);
+
+        List<NewCategoryRequest> list = new ArrayList<>();
+        list.add(request);
+        list.add(request2);
         listRequest.setList(list);
     }
 
@@ -88,7 +95,7 @@ public class CategoryControllerTest {
         } catch (Exception e) {
             assert false;
         }
-        when(categoryService.createCategory(eq(request), eq(PARAMETER_ID))).thenReturn(Category);
+        when(categoryService.createCategory(eq(request))).thenReturn(Category);
 
         given()
             .contentType("application/json")
@@ -100,7 +107,7 @@ public class CategoryControllerTest {
             .body(containsString("true"))
             .statusCode(200);
 
-        verify(categoryService).createCategory(eq(request), eq(PARAMETER_ID));
+        verify(categoryService).createCategory(eq(request));
     }
 
     @Test

@@ -5,9 +5,11 @@ import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
 import com.blibli.future.detroit.model.request.NewParameterRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.repository.ParameterRepository;
+import com.blibli.future.detroit.util.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Convert;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,8 @@ public class ParameterService {
 
     @Autowired
     private ParameterRepository parameterRepository;
+    @Autowired
+    Converter modelMapper;
 
     public List<Parameter> getAllParameter() {
         return parameterRepository.findAll();
@@ -26,13 +30,9 @@ public class ParameterService {
     }
 
     public Parameter createParameter(NewParameterRequest request) {
-        Parameter newParameter = new Parameter();
-        newParameter.setName(request.getName());
-        newParameter.setActive(request.isActive());
-        newParameter.setDescription(request.getDescription());
-        newParameter.setWeight(0f);
-        newParameter.setBulkStatus(request.isBulkStatus());
-        parameterRepository.save(newParameter);
+        Parameter newParameter = modelMapper.modelMapper()
+            .map(request, Parameter.class);
+        parameterRepository.saveAndFlush(newParameter);
 
         return newParameter;
     }
@@ -49,14 +49,11 @@ public class ParameterService {
      * @param request
      * @return edit success status
      */
-    public boolean batchUpdateParameter(SimpleListRequest<Parameter> request) throws WeightPercentageNotValid {
+    public boolean batchUpdateParameter(SimpleListRequest<NewParameterRequest> request) throws WeightPercentageNotValid {
         // TODO is better/more efficient query required?
         List<Parameter> parameterList = new ArrayList<>();
-        for(Parameter input: request.getList()) {
-            Parameter parameter = parameterRepository.findOne(input.getId());
-            parameter.setWeight(input.getWeight());
-            parameter.setName(input.getName());
-            parameter.setDescription(input.getDescription());
+        for(NewParameterRequest input: request.getList()) {
+            Parameter parameter = modelMapper.modelMapper().map(input, Parameter.class);
             parameterList.add(parameter);
         }
         boolean isValidUpdate = isAllParameterHaveBalancedWeight();
