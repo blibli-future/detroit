@@ -2,6 +2,8 @@ package com.blibli.future.detroit.controller.api;
 
 import com.blibli.future.detroit.model.Category;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
+import com.blibli.future.detroit.model.Parameter;
+import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.request.NewParameterRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
