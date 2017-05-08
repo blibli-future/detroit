@@ -12,6 +12,7 @@ public class Review {
     private String interactionType;
     private String customerName;
     private String tlName;
+    private Float score;
     @ManyToOne
     private Parameter parameter;
     @ManyToOne
@@ -59,6 +60,14 @@ public class Review {
 
     public void setTlName(String tlName) {
         this.tlName = tlName;
+    }
+
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
     }
 
     public Parameter getParameter() {

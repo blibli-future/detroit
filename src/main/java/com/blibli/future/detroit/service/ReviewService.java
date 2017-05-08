@@ -1,11 +1,14 @@
 package com.blibli.future.detroit.service;
 
+import com.blibli.future.detroit.model.DetailReview;
 import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.Review;
 import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.AgentOverviewResponse;
+import com.blibli.future.detroit.model.response.UserReviewResponse;
+import com.blibli.future.detroit.repository.DetailReviewRepository;
 import com.blibli.future.detroit.repository.ReviewRepository;
 import com.blibli.future.detroit.util.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +24,25 @@ public class ReviewService {
     @Autowired
     ReviewRepository reviewRepository;
     @Autowired
+    DetailReviewRepository detailReviewRepository;
+    @Autowired
     UserService userService;
     @Autowired
     ParameterService parameterService;
     @Autowired
     Converter modelMapper;
 
-    public List<Review> getAllReview(Long userId) {
+    public List<UserReviewResponse> getAllReview(Long userId) {
         // TODO different fetching logic based on
         //      UserType.
+        List<UserReviewResponse> userReviewResponses = new ArrayList<>();
         User user = userService.getOneUser(userId);
         if (user.isAgent()) {
-            return reviewRepository.findByReviewerId(userId);
+            List<Review> reviews = reviewRepository.findByAgentId(userId);
+            for (Review review : reviews) {
+                userReviewResponses.add(new UserReviewResponse(review));
+            }
+            return  new ArrayList<>(userReviewResponses);
         }
         return new ArrayList<>();
     }
@@ -42,9 +52,18 @@ public class ReviewService {
     }
 
     public Review createReview(NewReviewRequest request) {
+        Float score = 0f;
+
+        for (DetailReview detailReview : request.getDetailReviews()) {
+            score = score + (detailReview.getCategory().getWeight() / 100) * detailReview.getScore();
+        }
+
         Review newReview = modelMapper.modelMapper()
             .map(request, Review.class);
-        reviewRepository.saveAndFlush(newReview);
+        newReview.setScore(score);
+        newReview = reviewRepository.saveAndFlush(newReview);
+
+        detailReviewRepository.save(request.getDetailReviews());
         return newReview;
     }
 
@@ -55,6 +74,7 @@ public class ReviewService {
             throw new EntityNotFoundException();
         }
         reviewRepository.save(updatedReview);
+        detailReviewRepository.save(request.getDetailReviews());
         return updatedReview;
     }
 
