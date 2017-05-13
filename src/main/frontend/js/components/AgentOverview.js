@@ -5,14 +5,25 @@ class AgentOverview extends React.Component {
   constructor() {
     super();
     this.state = {
-      agentList: [
-        {
-          fullname: "Adhika Setya Pramudita",
-          nickname: "Dhika",
-          email: "test@Testtse"
-        }
-      ]
+      agentList: []
     };
+
+    this.getAgentData();
+  }
+
+  getAgentData() {
+    let component = this;
+    fetch('/api/v1/users/', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Basic '+btoa('agent@example.com:secret'),
+      },
+    }).then((response) => response.json())
+      .then((json) => {
+        component.setState({
+          agentList: json.content
+        });
+      })
   }
 
   render() {
