@@ -1,6 +1,9 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
+import 'bootstrap/dist/css/bootstrap.css';
+import 'font-awesome/css/font-awesome.css';
+import 'jquery/dist/jquery.min.js';
 import '../css/app.css';
 
 class App extends React.Component {

@@ -27,5 +27,10 @@ application.properties
 .mvn
 
 node_modules
+
+# This was auto generated files from webpack
 bundle.js
 bundle.js.map
+fonts/
+style.css
+style.css.map

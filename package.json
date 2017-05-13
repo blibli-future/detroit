@@ -7,6 +7,8 @@
     "url": "git@github.com:blibli-future/detroit.git"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^2.2.3",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "rest": "^1.3.1",
@@ -22,6 +24,12 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "css-loader": "^0.28.1",
-    "style-loader": "^0.17.0"
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.11.1",
+    "font-awesome-sass-loader": "^2.0.1",
+    "node-sass": "^4.5.2",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.17.0",
+    "url-loader": "^0.5.8"
   }
 }

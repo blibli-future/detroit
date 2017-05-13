@@ -1,3 +1,4 @@
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -6,9 +7,13 @@ module.exports = {
     devtool: 'sourcemaps',
     cache: true,
     plugins: [
-       new webpack.LoaderOptionsPlugin({
+        new webpack.LoaderOptionsPlugin({
            debug: true
-       })
+        }),
+        new ExtractTextPlugin({
+            filename: './src/main/resources/static/style.css',
+            allChunks: true,
+        }),
     ],
     output: {
         path: __dirname,
@@ -25,8 +30,32 @@ module.exports = {
                     presets: ['es2015', 'react']
                 }
             }, {
-                test: /\.css$/,
-                use: [ 'style-loader', 'css-loader' ]
+                test: /\.s?css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [ 'css-loader', 'sass-loader' ]
+                })
+            }, {
+                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: "url-loader",
+                options: {
+                    limit: 10000,
+                    mimetype: "application/font-woff",
+                    outputPath: "./src/main/resources/static/fonts/",
+                    publicPath: function(url) {
+                        return "/fonts/" + url.split('/').pop();
+                    }
+                }
+            }, {
+                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: "file-loader",
+                options: {
+                    outputPath: "./src/main/resources/static/fonts/",
+                    publicPath: function(url) {
+                        console.log("/fonts/" + url.split('/').pop())
+                        return "/fonts/" + url.split('/').pop();
+                    }
+                }
             }
         ]
     }
