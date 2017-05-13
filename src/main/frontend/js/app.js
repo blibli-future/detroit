@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import 'jquery/dist/jquery.min.js';
 import '../css/app.css';
+import '../css/gantellela-theme.css';
 
 class App extends React.Component {
 
