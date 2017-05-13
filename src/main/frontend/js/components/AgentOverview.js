@@ -2,7 +2,23 @@ const React = require('react');
 
 class AgentOverview extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      agentList: [
+        {
+          fullname: "Adhika Setya Pramudita",
+          nickname: "Dhika",
+          email: "test@Testtse"
+        }
+      ]
+    };
+  }
+
   render() {
+    let agentListComponent = this.state.agentList.map((agent, index) => {
+      return (<AgentOverview_Row no={index+1} user={agent} />);
+    });
     return (
       <div className="right_col" role="main">
         <div className="">
@@ -69,116 +85,7 @@ class AgentOverview extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Budi Sudirman</td>
-                      <td>Otto</td>
-                      <td><a>budi.sudirman@gdn-commerce.com</a></td>
-                      <td>
-                        <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
-                        <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-                        <a href="#" className="btn btn-danger btn-xs">Delete</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Budi Sudirman</td>
-                      <td>Otto</td>
-                      <td><a>budi.sudirman@gdn-commerce.com</a></td>
-                      <td>
-                        <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
-                        <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-                        <a href="#" className="btn btn-danger btn-xs">Delete</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Budi Sudirman</td>
-                      <td>Otto</td>
-                      <td><a>budi.sudirman@gdn-commerce.com</a></td>
-                      <td>
-                        <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
-                        <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-                        <a href="#" className="btn btn-danger btn-xs">Delete</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">4</th>
-                      <td>Budi Sudirman</td>
-                      <td>Otto</td>
-                      <td><a>budi.sudirman@gdn-commerce.com</a></td>
-                      <td>
-                        <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
-                        <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-                        <a href="#" className="btn btn-danger btn-xs">Delete</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">5</th>
-                      <td>Budi Sudirman</td>
-                      <td>Otto</td>
-                      <td><a>budi.sudirman@gdn-commerce.com</a></td>
-                      <td>
-                        <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
-                        <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-                        <a href="#" className="btn btn-danger btn-xs">Delete</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">6</th>
-                      <td>Budi Sudirman</td>
-                      <td>Otto</td>
-                      <td><a>budi.sudirman@gdn-commerce.com</a></td>
-                      <td>
-                        <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
-                        <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-                        <a href="#" className="btn btn-danger btn-xs">Delete</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">7</th>
-                      <td>Budi Sudirman</td>
-                      <td>Otto</td>
-                      <td><a>budi.sudirman@gdn-commerce.com</a></td>
-                      <td>
-                        <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
-                        <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-                        <a href="#" className="btn btn-danger btn-xs">Delete</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">8</th>
-                      <td>Budi Sudirman</td>
-                      <td>Otto</td>
-                      <td><a>budi.sudirman@gdn-commerce.com</a></td>
-                      <td>
-                        <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
-                        <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-                        <a href="#" className="btn btn-danger btn-xs">Delete</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">9</th>
-                      <td>Budi Sudirman</td>
-                      <td>Otto</td>
-                      <td><a>budi.sudirman@gdn-commerce.com</a></td>
-                      <td>
-                        <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
-                        <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-                        <a href="#" className="btn btn-danger btn-xs">Delete</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">10</th>
-                      <td>Budi Sudirman</td>
-                      <td>Otto</td>
-                      <td><a>budi.sudirman@gdn-commerce.com</a></td>
-                      <td>
-                        <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
-                        <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-                        <a href="#" className="btn btn-danger btn-xs">Delete</a>
-                      </td>
-                    </tr>
+                      {agentListComponent}
                     </tbody>
                   </table>
                   <div className="nav navbar-left">
@@ -208,6 +115,28 @@ class AgentOverview extends React.Component {
           </div>
         </div>
       </div>
+    );
+  }
+}
+
+class AgentOverview_Row extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <tr>
+        <th scope="row">{ this.props.no }</th>
+        <td>{ this.props.user.fullname }</td>
+        <td>{ this.props.user.nickname }</td>
+        <td><a>{ this.props.user.email }</a></td>
+        <td>
+          <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
+          <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
+          <a href="#" className="btn btn-danger btn-xs">Delete</a>
+        </td>
+      </tr>
     );
   }
 }
