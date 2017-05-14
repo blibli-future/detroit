@@ -58,5 +58,21 @@ public class DataSeeder implements ApplicationRunner {
         UserRole agentRole = new UserRole(
             agent.getEmail(), agent.getUserType().toString());
         userRoleRepository.save(agentRole);
+
+        // API KEY = YWdlbnRAZXhhbXBsZS5jb206c2VjcmV0
+        User agent2 = new User();
+        agent2.setEmail("agent2@example.com");
+        agent2.setNickname("agent2");
+        agent2.setFullname("Agent Nomor 2");
+        agent2.setGender("Male");
+        agent2.setPassword("secret");
+        agent2.setUserType(UserType.AGENT);
+        agent2.setAgentChannel(agentChannel);
+        agent2.setAgentPosition(agentPosition);
+        userRepository.save(agent2);
+
+        UserRole agentRole2 = new UserRole(
+            agent2.getEmail(), agent2.getUserType().toString());
+        userRoleRepository.save(agentRole2);
     }
 }
