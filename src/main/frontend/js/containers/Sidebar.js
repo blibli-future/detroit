@@ -1,4 +1,5 @@
-const React = require('react');
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 class Sidebar extends React.Component {
 
@@ -30,17 +31,29 @@ class Sidebar extends React.Component {
             <div className="menu_section">
               <h3>General</h3>
               <ul className="nav side-menu">
-                <li><a href="domino-review-overview.html"><i className="fa fa-clone"></i>Review Overview
-                </a>
+                <li>
+                  <NavLink
+                    to="/view/review-overview"
+                    activeClassName="selected">
+                    <i className="fa fa-clone"></i>Review Overview
+                  </NavLink>
                 </li>
                 <li><a href="domino-category-overview.html"><i className="fa fa-list-ol"></i> Category
                   Setting</a>
                 </li>
-                <li><a href="domino-customer-service-overview.html"><i className="fa fa-user"></i> Agent
-                  Management</a>
+                <li>
+                  <NavLink
+                    to="/view/agent-list"
+                    activeClassName="selected">
+                    <i className="fa fa-users"></i>Agent Management
+                  </NavLink>
                 </li>
-                <li><a href="domino-reviewer-overview.html"><i className="fa fa-users"></i> User
-                  Management</a>
+                <li>
+                  <NavLink
+                    to="/view/reviewer-list"
+                    activeClassName="selected">
+                    <i className="fa fa-user"></i>Reviewer Management
+                  </NavLink>
                 </li>
                 <li><a><i className="fa fa-bar-chart-o"></i> Statistics <span
                   className="fa fa-chevron-down"></span></a>
