@@ -9,9 +9,9 @@ import '../css/gantellela-theme.css';
 
 import Sidebar from './containers/Sidebar.js';
 import TopNavigation from './containers/TopNavigation.js';
-import AgentOverview from './components/AgentOverview.js';
 import Footer from './containers/Footer.js';
 
+import AgentOverview from './components/AgentList.js';
 class App extends React.Component {
 
   render() {
