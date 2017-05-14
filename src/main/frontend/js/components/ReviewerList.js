@@ -1,20 +1,20 @@
 const React = require('react');
 
-class AgentOverview extends React.Component {
+class ReviewerList extends React.Component {
 
   constructor() {
     super();
     this.state = {
-      agentList: []
+      reviewerList: []
     };
-    this.deleteAgent = this.deleteAgent.bind(this);
+    this.deleteReviewer = this.deleteReviewer.bind(this);
 
-    this.getAgentData();
+    this.getReviewerData();
   }
 
-  getAgentData() {
+  getReviewerData() {
     let component = this;
-    fetch('/api/v1/users?type=AGENT', {
+    fetch('/api/v1/users?type=REVIEWER', {
       method: 'GET',
       headers: {
         'Authorization': 'Basic '+btoa('agent@example.com:secret'),
@@ -22,14 +22,14 @@ class AgentOverview extends React.Component {
     }).then((response) => response.json())
       .then((json) => {
         component.setState({
-          agentList: json.content
+          reviewerList: json.content
         });
       })
   }
 
-  deleteAgent(agent) {
+  deleteReviewer(reviewer) {
     let component = this;
-    fetch('/api/v1/users/' + agent.id, {
+    fetch('/api/v1/users/' + reviewer.id, {
       method: 'DELETE',
       headers: {
         'Authorization': 'Basic '+btoa('agent@example.com:secret'),
@@ -38,8 +38,8 @@ class AgentOverview extends React.Component {
   }
 
   render() {
-    let agentListComponent = this.state.agentList.map((agent, index) => {
-      return (<AgentOverview_Row key={agent.id} no={index+1} user={agent} deleteUser={this.deleteAgent} />);
+    let reviewerListComponent = this.state.reviewerList.map((reviewer, index) => {
+      return (<ReviewerList_Row key={reviewer.id} no={index+1} user={reviewer} deleteUser={this.deleteReviewer} />);
     });
     return (
       <div className="right_col" role="main">
@@ -107,7 +107,7 @@ class AgentOverview extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                      {agentListComponent}
+                    { reviewerListComponent }
                     </tbody>
                   </table>
                   <div className="nav navbar-left">
@@ -141,7 +141,7 @@ class AgentOverview extends React.Component {
   }
 }
 
-class AgentOverview_Row extends React.Component {
+class ReviewerList_Row extends React.Component {
   constructor(props) {
     super(props);
     this.handleDeleteUser = this.handleDeleteUser.bind(this);
@@ -169,4 +169,4 @@ class AgentOverview_Row extends React.Component {
   }
 }
 
-export default AgentOverview;
+export default ReviewerList;
