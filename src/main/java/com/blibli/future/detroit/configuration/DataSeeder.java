@@ -3,9 +3,12 @@ package com.blibli.future.detroit.configuration;
 import com.blibli.future.detroit.model.*;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.repository.*;
+import org.apache.tomcat.jni.Local;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ public class DataSeeder implements ApplicationRunner {
     private CategoryRepository categoryRepository;
     private ReviewRepository reviewRepository;
     private DetailReviewRepository detailReviewRepository;
+    private CutOffRepository cutOffRepository;
 
     @Autowired
     public DataSeeder(UserRepository userRepository,
@@ -31,7 +35,8 @@ public class DataSeeder implements ApplicationRunner {
                       ParameterRepository parameterRepository,
                       CategoryRepository categoryRepository,
                       ReviewRepository reviewRepository,
-                      DetailReviewRepository detailReviewRepository) {
+                      DetailReviewRepository detailReviewRepository,
+                      CutOffRepository cutOffRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.agentChannelRepository = agentChannelRepository;
@@ -40,10 +45,23 @@ public class DataSeeder implements ApplicationRunner {
         this.categoryRepository = categoryRepository;
         this.reviewRepository = reviewRepository;
         this.detailReviewRepository = detailReviewRepository;
+        this.cutOffRepository = cutOffRepository;
     }
 
 
     public void run(ApplicationArguments args) {
+        CutOffHistory cutOffHistory = new CutOffHistory();
+        LocalDate now1 = new LocalDate(2017, 4, 1);
+        LocalDate end1 = new LocalDate(2017, 4, 30);
+        cutOffHistory.setBegin(now1);
+        cutOffHistory.setEnd(end1);
+        cutOffRepository.save(cutOffHistory);
+
+        CutOffHistory cutOffHistory1 = new CutOffHistory();
+        LocalDate now = new LocalDate();
+        cutOffHistory1.setBegin(now);
+        cutOffRepository.save(cutOffHistory1);
+
         AgentChannel agentChannel = new AgentChannel();
         agentChannel.setName("Chat");
         agentChannelRepository.save(agentChannel);
@@ -97,6 +115,27 @@ public class DataSeeder implements ApplicationRunner {
         UserRole reviewerRole = new UserRole(
             reviewer.getEmail(), reviewer.getUserType().toString());
         userRoleRepository.save(reviewerRole);
+
+        UserRole reviewerParameter = new UserRole(
+            reviewer.getEmail(), "Reviewer_Live_Monitoring");
+        userRoleRepository.save(reviewerParameter);
+
+        // API KEY = c3VwZXJhZG1pbkBleGFtcGxlLmNvbTpzZWNyZXQ=
+        User superAdmin = new User();
+        superAdmin.setEmail("superadmin@example.com");
+        superAdmin.setFullname("Super Admin");
+        superAdmin.setGender("Male");
+        superAdmin.setPassword("secret");
+        superAdmin.setUserType(UserType.SUPER_ADMIN);
+        superAdmin = userRepository.saveAndFlush(superAdmin);
+
+        UserRole superAdminRole = new UserRole(
+            superAdmin.getEmail(), superAdmin.getUserType().toString());
+        userRoleRepository.save(superAdminRole);
+
+        UserRole superAdminParameter = new UserRole(
+            superAdmin.getEmail(), "SuperAdmin_Live_Monitoring");
+        userRoleRepository.save(superAdminParameter);
 
         Parameter parameter = new Parameter();
         parameter.setAgentPosition(agentPosition);
