@@ -7,6 +7,7 @@ import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.AgentOverviewResponse;
+import com.blibli.future.detroit.model.response.OneReviewResponse;
 import com.blibli.future.detroit.model.response.UserReviewResponse;
 import com.blibli.future.detroit.repository.DetailReviewRepository;
 import com.blibli.future.detroit.repository.ReviewRepository;
@@ -47,8 +48,9 @@ public class ReviewService {
         return new ArrayList<>();
     }
 
-    public Review getOneReview(Long reviewId) {
-        return reviewRepository.findOne(reviewId);
+    public OneReviewResponse getOneReview(Long reviewId) {
+        Review review = reviewRepository.findOne(reviewId);
+        return new OneReviewResponse(review);
     }
 
     public Review createReview(NewReviewRequest request) {
