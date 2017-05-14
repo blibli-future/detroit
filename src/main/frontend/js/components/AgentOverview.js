@@ -7,6 +7,7 @@ class AgentOverview extends React.Component {
     this.state = {
       agentList: []
     };
+    this.deleteAgent = this.deleteAgent.bind(this);
 
     this.getAgentData();
   }
@@ -26,9 +27,19 @@ class AgentOverview extends React.Component {
       })
   }
 
+  deleteAgent(agent) {
+    let component = this;
+    fetch('/api/v1/users/' + agent.id, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Basic '+btoa('agent@example.com:secret'),
+      },
+    }).then((response) => component.getAgentData());
+  }
+
   render() {
     let agentListComponent = this.state.agentList.map((agent, index) => {
-      return (<AgentOverview_Row no={index+1} user={agent} />);
+      return (<AgentOverview_Row key={agent.id} no={index+1} user={agent} deleteUser={this.deleteAgent} />);
     });
     return (
       <div className="right_col" role="main">
@@ -133,9 +144,15 @@ class AgentOverview extends React.Component {
 class AgentOverview_Row extends React.Component {
   constructor(props) {
     super(props);
+    this.handleDeleteUser = this.handleDeleteUser.bind(this);
+  }
+
+  handleDeleteUser(e) {
+    this.props.deleteUser(this.props.user);
   }
 
   render() {
+
     return (
       <tr>
         <th scope="row">{ this.props.no }</th>
@@ -145,7 +162,7 @@ class AgentOverview_Row extends React.Component {
         <td>
           <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
           <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-          <a href="#" className="btn btn-danger btn-xs">Delete</a>
+          <a href="#" className="btn btn-danger btn-xs" onClick={ this.handleDeleteUser } >Delete</a>
         </td>
       </tr>
     );
