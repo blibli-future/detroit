@@ -16,7 +16,7 @@ class Sidebar extends React.Component {
 
           <div className="profile">
             <div className="profile_pic">
-              <img src="images/img.jpg" alt="..." className="img-circle profile_img"/>
+              <img src="/images/img.jpg" alt="..." className="img-circle profile_img"/>
             </div>
             <div className="profile_info">
               <span>Welcome Admin,</span>
