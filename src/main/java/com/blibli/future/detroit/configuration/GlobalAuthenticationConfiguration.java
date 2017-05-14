@@ -8,12 +8,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -38,10 +41,17 @@ class GlobalAuthenticationConfiguration extends GlobalAuthenticationConfigurerAd
             public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
                 com.blibli.future.detroit.model.User user = userRepository.findByEmail(email);
                 List<UserRole> userRoleList = userRoleRepository.findByEmail(email);
+
+                ArrayList<GrantedAuthority> authorities = new ArrayList();
+                for (UserRole userRole : userRoleList
+                     ) {
+                    authorities.add(new SimpleGrantedAuthority(userRole.getRole()));
+                }
+
                 if(user != null) {
                     return new User(user.getEmail(), user.getPassword(),
                         true, true, true, true,
-                        AuthorityUtils.createAuthorityList("Agent"));
+                        authorities);
                 } else {
                     throw new UsernameNotFoundException("Could not find the user '"
                         + email + "'");
