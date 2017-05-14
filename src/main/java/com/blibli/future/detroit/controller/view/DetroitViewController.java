@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class DetroitViewController {
-    @RequestMapping("/view")
+    @RequestMapping("/view/**")
     public String homeView(Model model) {
         return "index";
     }
