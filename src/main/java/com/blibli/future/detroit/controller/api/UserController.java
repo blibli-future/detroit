@@ -2,15 +2,22 @@ package com.blibli.future.detroit.controller.api;
 
 
 import com.blibli.future.detroit.model.User;
+import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
 import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
 import com.blibli.future.detroit.service.UserService;
 import com.blibli.future.detroit.util.Constant;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -28,8 +35,9 @@ public class UserController {
 
     @GetMapping(value = GET_ALL_USER, produces = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestListResponse<User> getAllUsers() {
-        List<User> allUser = userService.getAllUser();
+    public BaseRestListResponse<User> getAllUsers(
+        @RequestParam(required = false) UserType type) {
+        List<User> allUser = userService.getAllUser(type);
         return new BaseRestListResponse<>(allUser);
     }
 

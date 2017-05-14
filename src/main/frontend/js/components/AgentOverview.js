@@ -13,7 +13,7 @@ class AgentOverview extends React.Component {
 
   getAgentData() {
     let component = this;
-    fetch('/api/v1/users/', {
+    fetch('/api/v1/users?type=AGENT', {
       method: 'GET',
       headers: {
         'Authorization': 'Basic '+btoa('agent@example.com:secret'),

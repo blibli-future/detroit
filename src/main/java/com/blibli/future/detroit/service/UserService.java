@@ -29,6 +29,9 @@ public class UserService {
     }
 
     public List<User> getAllUser(UserType userType) {
+        if (userType == null) {
+            return getAllUser();
+        }
         return userRepository.findByUserType(userType);
     }
 
