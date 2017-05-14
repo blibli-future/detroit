@@ -2,10 +2,7 @@ package com.blibli.future.detroit.controller.api;
 
 import com.blibli.future.detroit.model.Review;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
-import com.blibli.future.detroit.model.response.AgentOverviewResponse;
-import com.blibli.future.detroit.model.response.BaseRestListResponse;
-import com.blibli.future.detroit.model.response.BaseRestResponse;
-import com.blibli.future.detroit.model.response.UserReviewResponse;
+import com.blibli.future.detroit.model.response.*;
 import com.blibli.future.detroit.service.ParameterService;
 import com.blibli.future.detroit.service.ReviewService;
 import com.blibli.future.detroit.service.UserService;
@@ -38,9 +35,9 @@ public class ReviewController {
     }
 
     @GetMapping(GET_ONE_REVIEW)
-    public BaseRestResponse<Review> getOneReview(@PathVariable Long reviewId) {
-        Review review = reviewService.getOneReview(reviewId);
-        return new BaseRestResponse<>(review);
+    public BaseRestResponse<OneReviewResponse> getOneReview(@PathVariable Long reviewId) {
+        OneReviewResponse oneReviewResponse = reviewService.getOneReview(reviewId);
+        return new BaseRestResponse<>(oneReviewResponse);
     }
 
     @PostMapping(CREATE_REVIEW)
