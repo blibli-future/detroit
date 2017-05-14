@@ -2,10 +2,15 @@ package com.blibli.future.detroit.model;
 
 
 import com.blibli.future.detroit.model.enums.UserType;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "detroit_users")
