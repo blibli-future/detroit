@@ -1,4 +1,5 @@
-const React = require('react');
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 class AgentList extends React.Component {
 
@@ -151,6 +152,14 @@ class AgentOverview_Row extends React.Component {
     this.props.deleteUser(this.props.user);
   }
 
+  getUserDetailLink() {
+    return '/view/agent/' + this.props.user.id;
+  }
+
+  getUserEditLink() {
+    return '/view/agent/' + this.props.user.id + '/edit';
+  }
+
   render() {
 
     return (
@@ -160,9 +169,19 @@ class AgentOverview_Row extends React.Component {
         <td>{ this.props.user.nickname }</td>
         <td><a>{ this.props.user.email }</a></td>
         <td>
-          <a href="domino-form-detail-cs.html" className="btn btn-info btn-xs">Detail</a>
-          <a href="domino-form-detail-cs.html" className="btn btn-warning btn-xs">Edit</a>
-          <a href="#" className="btn btn-danger btn-xs" onClick={ this.handleDeleteUser } >Delete</a>
+          <Link to={ this.getUserDetailLink() }
+                params={{agentId:this.props.user.id}}
+                className="btn btn-info btn-xs">
+            Detail
+          </Link>
+          <Link to={ this.getUserEditLink() }
+                className="btn btn-warning btn-xs">
+            Edit
+          </Link>
+          <button className="btn btn-danger btn-xs"
+             onClick={ this.handleDeleteUser }>
+            Delete
+          </button>
         </td>
       </tr>
     );
