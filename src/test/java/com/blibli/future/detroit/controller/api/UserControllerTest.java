@@ -80,7 +80,7 @@ public class UserControllerTest {
 
     @Test
     public void getAllUserTest() {
-        when(userService.getAllUser()).thenReturn(Arrays.asList(user));
+        when(userService.getAllUser(null)).thenReturn(Arrays.asList(user));
 
         given()
             .contentType("application/json")
@@ -102,7 +102,34 @@ public class UserControllerTest {
             .body(containsString("AGENT"))
             .statusCode(200);
 
-        verify(userService).getAllUser();
+        verify(userService).getAllUser(null);
+    }
+
+    @Test
+    public void getAllUserTest_AgentOnly() {
+        when(userService.getAllUser(UserType.AGENT)).thenReturn(Arrays.asList(user));
+
+        given()
+            .contentType("application/json")
+            .when()
+            .port(serverPort)
+            .get(UserController.GET_ALL_USER + "?type=AGENT")
+            .then()
+            .body(containsString("1"))
+            .body(containsString("Detroit Project"))
+            .body(containsString("Detroit"))
+            .body(containsString("detroit@gdn-commerce.com"))
+            .body(containsString("01/01/1996"))
+            .body(containsString("M"))
+            .body(containsString("Jakarta"))
+            .body(containsString("123456789"))
+            .body(containsString("true"))
+            .body(containsString("Inbound"))
+            .body(containsString("Chat"))
+            .body(containsString("AGENT"))
+            .statusCode(200);
+
+        verify(userService).getAllUser(UserType.AGENT);
     }
 
     @Test
