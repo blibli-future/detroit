@@ -8,10 +8,11 @@ import 'jquery/dist/jquery.min.js';
 import '../css/app.css';
 import '../css/gantellela-theme.css';
 
+import Footer from './containers/Footer.js';
 import Sidebar from './containers/Sidebar.js';
 import TopNavigation from './containers/TopNavigation.js';
-import Footer from './containers/Footer.js';
 
+import AgentDetail from './components/AgentDetail.js';
 import AgentList from './components/AgentList.js';
 import ReviewerList from './components/ReviewerList.js';
 
@@ -28,6 +29,7 @@ class App extends React.Component {
 
               <Route path="/view/reviewer-list" component={ReviewerList} />
               <Route path="/view/agent-list" component={AgentList} />
+              <Route path="/view/agent/:agentId" component={AgentDetail} />
 
               <Footer />
             </div>
