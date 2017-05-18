@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, hashHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route, BrowserHistory } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
@@ -21,7 +21,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Router history={ hashHistory }>
+      <Router history={ BrowserHistory }>
         <div className="nav-md">
           <div className="container body">
             <div className="main_container">
