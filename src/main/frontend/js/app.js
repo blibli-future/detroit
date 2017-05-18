@@ -15,6 +15,7 @@ import TopNavigation from './containers/TopNavigation.js';
 import AgentDetail from './components/AgentDetail.js';
 import AgentList from './components/AgentList.js';
 import ReviewerList from './components/ReviewerList.js';
+import ReviewerDetail from './components/ReviewerDetail.js';
 
 class App extends React.Component {
 
@@ -27,9 +28,10 @@ class App extends React.Component {
               <Sidebar />
               <TopNavigation />
 
-              <Route path="/view/reviewer-list" component={ReviewerList} />
               <Route path="/view/agent-list" component={AgentList} />
               <Route path="/view/agent/:agentId" component={AgentDetail} />
+              <Route path="/view/reviewer-list" component={ReviewerList} />
+              <Route path="/view/agent/:reviewerId" component={ReviewerDetail} />
 
               <Footer />
             </div>

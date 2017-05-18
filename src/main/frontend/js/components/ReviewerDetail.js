@@ -1,28 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-class AgentDetail extends React.Component {
+class ReviewerDetail extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      agent: {}
+      reviewer: {}
     };
 
-    this.getAgentData();
+    this.getReviewerData();
   }
 
-  getAgentData() {
+  getReviewerData() {
     let component = this;
-    fetch('/api/v1/users/' + this.props.match.params.agentId, {
+    fetch('/api/v1/users/' + this.props.match.params.reviewerId, {
       method: 'GET',
       headers: {
-        'Authorization': 'Basic '+btoa('agent@example.com:secret'),
+        'Authorization': 'Basic '+btoa('reviewer@example.com:secret'),
       },
     }).then((response) => response.json())
       .then((json) => {
         component.setState({
-          agent: json.content
+          reviewer: json.content
         });
       })
 
@@ -34,7 +34,7 @@ class AgentDetail extends React.Component {
         <div className="">
           <div className="page-title">
             <div className="title_left">
-              <h3>Agent Detail</h3>
+              <h3>User Detail</h3>
             </div>
 
           </div>
@@ -64,7 +64,7 @@ class AgentDetail extends React.Component {
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input type="text" required="required" name="fullname"
                                className="form-control col-md-7 col-xs-12" readOnly
-                               value={ this.state.agent.fullname } />
+                               value={ this.state.reviewer.fullname } />
                       </div>
                     </div>
 
@@ -75,7 +75,7 @@ class AgentDetail extends React.Component {
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input type="text" name="nickname" required="required"
                                className="form-control col-md-7 col-xs-12" readOnly
-                               value={ this.state.agent.nickname }/>
+                               value={ this.state.reviewer.nickname }/>
                       </div>
                     </div>
 
@@ -86,7 +86,7 @@ class AgentDetail extends React.Component {
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input className="form-control col-md-7 col-xs-12" type="email"
                                name="email" readOnly
-                               value={ this.state.agent.email } />
+                               value={ this.state.reviewer.email } />
                       </div>
                     </div>
 
@@ -97,7 +97,7 @@ class AgentDetail extends React.Component {
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input id="phoneNumber" className="form-control col-md-7 col-xs-12"
                                type="text" name="phonenumber" readOnly
-                               value={ this.state.agent.phoneNumber }/>
+                               value={ this.state.reviewer.phoneNumber }/>
                       </div>
                     </div>
 
@@ -108,52 +108,21 @@ class AgentDetail extends React.Component {
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input id="location" className="form-control col-md-7 col-xs-12"
                                type="text" name="location" readOnly
-                               value={ this.state.agent.location }/>
+                               value={ this.state.reviewer.location }/>
                       </div>
                     </div>
 
-                    <div className="form-group">
-                      <label htmlFor="agentPosition" className="control-label col-md-3 col-sm-3 col-xs-12">
-                        Position
-                      </label>
-                      <div className="col-md-6 col-sm-6 col-xs-12">
-                        <input className="form-control col-md-7 col-xs-12"
-                               type="text" name="agentPosition" readOnly
-                               value={ this.state.agent.agentPosition } />
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="agentChannel" className="control-label col-md-3 col-sm-3 col-xs-12">
-                        Channel
-                      </label>
-                      <div className="col-md-6 col-sm-6 col-xs-12">
-                        <input className="form-control col-md-7 col-xs-12"
-                               type="text" name="agentChannel" readOnly
-                               value={ this.state.agent.agentChannel } />
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="teamLeader" className="control-label col-md-3 col-sm-3 col-xs-12">
-                        Team Leader
-                      </label>
-                      <div className="col-md-6 col-sm-6 col-xs-12">
-                        <input id="teamLeader" className="form-control col-md-7 col-xs-12"
-                               name="teamLeader" type="text" readOnly
-                               value={ this.state.agent.teamLeader } />
-                      </div>
-                    </div>
                     <div className="form-group">
                       <label className="control-label col-md-3 col-sm-3 col-xs-12">Gender</label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
-                        <select value={this.state.agent.gender} readOnly>
+                        <select value={this.state.reviewer.gender} readOnly>
                           <option value="MALE">Pria</option>
                           <option value="FEMALE">Wanita</option>
                           <option value="UNSPECIFIED">-</option>
                         </select>
                       </div>
                     </div>
+
                     <div className="form-group">
                       <label className="control-label col-md-3 col-sm-3 col-xs-12">
                         Date Of Birth <span className="required">*</span>
@@ -161,13 +130,14 @@ class AgentDetail extends React.Component {
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input className="date-picker form-control col-md-7 col-xs-12" required="required"
                                name="dateOfBirth" type="text" readOnly
-                               value={ this.state.agent.dateOfBirth } />
+                               value={ this.state.reviewer.dateOfBirth } />
                       </div>
                     </div>
+
                     <div className="ln_solid"></div>
                     <div className="form-group">
                       <div className="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                        <Link to="/view/agent-list" className="btn btn-default" >
+                        <Link to="/view/reviewer-list" className="btn btn-default" >
                           Back
                         </Link>
                         <button type="submit" className="btn btn-warning">Edit</button>
@@ -186,4 +156,4 @@ class AgentDetail extends React.Component {
   }
 }
 
-export default AgentDetail;
+export default ReviewerDetail;
