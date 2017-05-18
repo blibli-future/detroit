@@ -1,5 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 
 class Sidebar extends React.Component {
 
@@ -31,30 +33,24 @@ class Sidebar extends React.Component {
             <div className="menu_section">
               <h3>General</h3>
               <ul className="nav side-menu">
-                <li>
-                  <NavLink
-                    to="/view/review-overview"
-                    activeClassName="selected">
-                    <i className="fa fa-clone"></i>Review Overview
-                  </NavLink>
-                </li>
+                <Sidebar_Link_WithRouter
+                  to="/view/review-overview"
+                  currentLink="testign">
+                  <i className="fa fa-clone"></i>Review Overview
+                </Sidebar_Link_WithRouter>
                 <li><a href="domino-category-overview.html"><i className="fa fa-list-ol"></i> Category
                   Setting</a>
                 </li>
-                <li>
-                  <NavLink
-                    to="/view/agent-list"
-                    activeClassName="selected">
-                    <i className="fa fa-users"></i>Agent Management
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/view/reviewer-list"
-                    activeClassName="selected">
-                    <i className="fa fa-user"></i>Reviewer Management
-                  </NavLink>
-                </li>
+                <Sidebar_Link_WithRouter
+                  to="/view/agent-list"
+                  currentLink="testign">
+                  <i className="fa fa-users"></i>Agent Management
+                </Sidebar_Link_WithRouter>
+                <Sidebar_Link_WithRouter
+                  to="/view/reviewer-list"
+                  currentLink="testign">
+                  <i className="fa fa-user"></i>Reviewer Management
+                </Sidebar_Link_WithRouter>
                 <li><a><i className="fa fa-bar-chart-o"></i> Statistics <span
                   className="fa fa-chevron-down"></span></a>
                   <ul className="nav child_menu">
@@ -73,5 +69,38 @@ class Sidebar extends React.Component {
     )
   }
 }
+
+class Sidebar_Link extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.getActiveClass = this.getActiveClass.bind(this);
+
+    this.propTypes = {
+      match: PropTypes.object.isRequired,
+      location: PropTypes.object.isRequired,
+      history: PropTypes.object.isRequired
+    };
+  }
+
+  getActiveClass() {
+    if (this.props.to === this.props.location.pathname) {
+      return "current-page";
+    }
+  }
+
+  render() {
+    return (
+      <li className={ this.getActiveClass() }>
+        <NavLink
+          to={ this.props.to }>
+          { this.props.children }
+        </NavLink>
+      </li>
+    );
+  }
+}
+
+const Sidebar_Link_WithRouter = withRouter(Sidebar_Link);
 
 export default Sidebar;
