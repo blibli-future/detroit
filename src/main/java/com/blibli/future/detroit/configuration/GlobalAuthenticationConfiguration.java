@@ -43,9 +43,9 @@ class GlobalAuthenticationConfiguration extends GlobalAuthenticationConfigurerAd
                 List<UserRole> userRoleList = userRoleRepository.findByEmail(email);
 
                 ArrayList<GrantedAuthority> authorities = new ArrayList();
-                for (UserRole userRole : userRoleList
-                     ) {
+                for (UserRole userRole : userRoleList) {
                     authorities.add(new SimpleGrantedAuthority(userRole.getRole()));
+                    System.out.println(userRole.getRole().toString());
                 }
 
                 if(user != null) {
