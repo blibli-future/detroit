@@ -17,8 +17,9 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers(CutOffController.GET_ALL_CUTOFF_HISTORY)
-                .hasRole(UserType.SUPER_ADMIN.toString())
+//            .antMatchers(CutOffController.GET_ALL_CUTOFF_HISTORY)
+//            .antMatchers("/api/v1/cutoff**")
+//                .hasAnyRole("ROLE_" + UserType.SUPER_ADMIN.toString())
             .antMatchers("/api/**")
                 .fullyAuthenticated()
             .antMatchers("/api/v1/api-docs")
@@ -30,5 +31,4 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
                 .csrf().disable();
     }
-
 }
