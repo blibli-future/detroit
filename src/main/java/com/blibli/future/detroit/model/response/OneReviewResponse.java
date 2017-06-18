@@ -1,8 +1,10 @@
 package com.blibli.future.detroit.model.response;
 
+import com.blibli.future.detroit.model.CutOffHistory;
 import com.blibli.future.detroit.model.DetailReview;
 import com.blibli.future.detroit.model.Review;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class OneReviewResponse {
     private Long parameter;
     private Long agent;
     private Long reviewer;
+    private Long cutOff;
     private List<SingleDetailReview> detailReview;
 
     public OneReviewResponse(Review review) {
@@ -28,6 +31,7 @@ public class OneReviewResponse {
         this.parameter = review.getParameter().getId();
         this.agent = review.getAgent().getId();
         this.reviewer = review.getReviewer().getId();
+        this.cutOff = review.getCutOffHistory().getId();
         this.detailReview = new ArrayList<>();
         for (DetailReview detailReview : review.getDetailReview()) {
             this.detailReview.add(new SingleDetailReview(detailReview));
@@ -104,6 +108,14 @@ public class OneReviewResponse {
 
     public void setReviewer(Long reviewer) {
         this.reviewer = reviewer;
+    }
+
+    public Long getCutOff() {
+        return cutOff;
+    }
+
+    public void setCutOff(Long cutOff) {
+        this.cutOff = cutOff;
     }
 
     public List<SingleDetailReview> getDetailReview() {
