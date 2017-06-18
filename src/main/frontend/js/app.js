@@ -14,6 +14,7 @@ import TopNavigation from './containers/TopNavigation.js';
 
 import AgentDetail from './components/AgentDetail.js';
 import AgentList from './components/AgentList.js';
+import LoginPage from './components/LoginPage.js';
 import ReviewerList from './components/ReviewerList.js';
 import ReviewerDetail from './components/ReviewerDetail.js';
 
@@ -32,6 +33,7 @@ class App extends React.Component {
               <Route path="/view/agent/:agentId" component={AgentDetail} />
               <Route path="/view/reviewer-list" component={ReviewerList} />
               <Route path="/view/agent/:reviewerId" component={ReviewerDetail} />
+              <Route path="/view/login" component={LoginPage} />
 
               <Footer />
             </div>
