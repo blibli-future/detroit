@@ -7,7 +7,9 @@ import org.joda.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class CutOffHistory {
@@ -16,6 +18,16 @@ public class CutOffHistory {
     private Long id;
     private LocalDate begin;
     private LocalDate end;
+    @OneToMany
+    private List<Review> reviews;
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 
     public Long getId() {
         return id;

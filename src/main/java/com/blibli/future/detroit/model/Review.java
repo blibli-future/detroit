@@ -1,5 +1,7 @@
 package com.blibli.future.detroit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -21,6 +23,16 @@ public class Review {
     private User reviewer;
     @OneToMany
     private List<DetailReview> detailReview;
+    @ManyToOne
+    private CutOffHistory cutOffHistory;
+
+    public CutOffHistory getCutOffHistory() {
+        return cutOffHistory;
+    }
+
+    public void setCutOffHistory(CutOffHistory cutOffHistory) {
+        this.cutOffHistory = cutOffHistory;
+    }
 
     public Long getId() {
         return id;

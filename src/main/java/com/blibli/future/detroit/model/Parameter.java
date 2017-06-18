@@ -17,6 +17,16 @@ public class Parameter {
     private List<Category> Categories;
     @ManyToOne
     private AgentPosition agentPosition;
+    @OneToMany
+    private List<Review> reviews;
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 
     public int getTest() {
         return this.Categories.size();
@@ -101,7 +111,9 @@ public class Parameter {
             return false;
         if (weight != null ? !weight.equals(parameter.weight) : parameter.weight != null) return false;
         if (Categories != null ? !Categories.equals(parameter.Categories) : parameter.Categories != null) return false;
-        return agentPosition != null ? agentPosition.equals(parameter.agentPosition) : parameter.agentPosition == null;
+        if (agentPosition != null ? !agentPosition.equals(parameter.agentPosition) : parameter.agentPosition != null)
+            return false;
+        return reviews != null ? reviews.equals(parameter.reviews) : parameter.reviews == null;
     }
 
     @Override
@@ -114,6 +126,7 @@ public class Parameter {
         result = 31 * result + (isActive ? 1 : 0);
         result = 31 * result + (Categories != null ? Categories.hashCode() : 0);
         result = 31 * result + (agentPosition != null ? agentPosition.hashCode() : 0);
+        result = 31 * result + (reviews != null ? reviews.hashCode() : 0);
         return result;
     }
 }
