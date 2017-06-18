@@ -1,27 +1,27 @@
 package com.blibli.future.detroit.model;
 
+import io.swagger.models.auth.In;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class StatisticInfo {
-    private Long totalAgent;
-    private Long difAgent;
+    private Integer totalAgent;
     private List<ParameterScore> parameterScores;
-    private List<ReviewCount> reviewCounts;
+    private HashMap<String, List<ReviewCount>> reviewCounts;
 
-    public Long getTotalAgent() {
+    public StatisticInfo() {
+        this.parameterScores = new ArrayList<>();
+        this.reviewCounts = new HashMap<>();
+    }
+
+    public Integer getTotalAgent() {
         return totalAgent;
     }
 
-    public void setTotalAgent(Long totalAgent) {
+    public void setTotalAgent(Integer totalAgent) {
         this.totalAgent = totalAgent;
-    }
-
-    public Long getDifAgent() {
-        return difAgent;
-    }
-
-    public void setDifAgent(Long difAgent) {
-        this.difAgent = difAgent;
     }
 
     public List<ParameterScore> getParameterScores() {
@@ -32,18 +32,42 @@ public class StatisticInfo {
         this.parameterScores = parameterScores;
     }
 
-    public List<ReviewCount> getReviewCounts() {
+    public void addParameterScores(String name, Float score) {
+        ParameterScore parameterScore = new ParameterScore();
+        parameterScore.setName(name);
+        parameterScore.setScore(score);
+        this.parameterScores.add(parameterScore);
+    }
+
+    public HashMap<String, List<ReviewCount>> getReviewCounts() {
         return reviewCounts;
     }
 
-    public void setReviewCounts(List<ReviewCount> reviewCounts) {
+    public void setReviewCounts(HashMap<String, List<ReviewCount>> reviewCounts) {
         this.reviewCounts = reviewCounts;
+    }
+
+    public void addReviewCounts(String name, String reviewer, Integer value) {
+        if(this.reviewCounts.get(name) == null) {
+            ReviewCount reviewCount = new ReviewCount();
+            reviewCount.setReviewer(reviewer);
+            reviewCount.setValue(value);
+            List<ReviewCount> reviewCountList = new ArrayList<>();
+            reviewCountList.add(reviewCount);
+            this.reviewCounts.put(name, reviewCountList);
+        } else {
+            ReviewCount reviewCount = new ReviewCount();
+            reviewCount.setReviewer(reviewer);
+            reviewCount.setValue(value);
+            List<ReviewCount> reviewCountList = this.reviewCounts.get(name);
+            reviewCountList.add(reviewCount);
+            this.reviewCounts.put(name, reviewCountList);
+        }
     }
 
     class ParameterScore {
         private String name;
         private Float score;
-        private Float diff;
 
         public String getName() {
             return name;
@@ -60,42 +84,25 @@ public class StatisticInfo {
         public void setScore(Float score) {
             this.score = score;
         }
-
-        public Float getDiff() {
-            return diff;
-        }
-
-        public void setDiff(Float diff) {
-            this.diff = diff;
-        }
     }
 
     class ReviewCount {
-        private String name;
-        private List<String> reviewer;
-        private List<Integer> value;
+        private String reviewer;
+        private Integer value;
 
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public List<String> getReviewer() {
+        public String getReviewer() {
             return reviewer;
         }
 
-        public void setReviewer(List<String> reviewer) {
+        public void setReviewer(String reviewer) {
             this.reviewer = reviewer;
         }
 
-        public List<Integer> getValue() {
+        public Integer getValue() {
             return value;
         }
 
-        public void setValue(List<Integer> value) {
+        public void setValue(Integer value) {
             this.value = value;
         }
     }
