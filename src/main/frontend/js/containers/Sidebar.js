@@ -75,12 +75,6 @@ class Sidebar_Link extends React.Component {
   constructor(props) {
     super(props);
     this.getActiveClass = this.getActiveClass.bind(this);
-
-    this.propTypes = {
-      match: PropTypes.object.isRequired,
-      location: PropTypes.object.isRequired,
-      history: PropTypes.object.isRequired
-    };
   }
 
   getActiveClass() {
@@ -100,6 +94,12 @@ class Sidebar_Link extends React.Component {
     );
   }
 }
+
+Sidebar_Link.propTypes = {
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
+};
 
 const Sidebar_Link_WithRouter = withRouter(Sidebar_Link);
 
