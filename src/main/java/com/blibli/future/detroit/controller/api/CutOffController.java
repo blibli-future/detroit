@@ -3,6 +3,7 @@ package com.blibli.future.detroit.controller.api;
 import com.blibli.future.detroit.model.CutOffHistory;
 import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
+import com.blibli.future.detroit.model.response.CutOffResponse;
 import com.blibli.future.detroit.service.CutOffService;
 import com.blibli.future.detroit.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,14 @@ public class CutOffController {
     private CutOffService cutOffService;
 
     @GetMapping(GET_ALL_CUTOFF_HISTORY)
-    public BaseRestListResponse<CutOffHistory> getAllCutOffHistory() {
-        List<CutOffHistory> allCutOffHistory = cutOffService.getAllCutOff();
-        return new BaseRestListResponse<>(allCutOffHistory);
+    public BaseRestListResponse<CutOffResponse> getAllCutOffHistory() {
+        List<CutOffResponse> allCutOffResponse = cutOffService.getAllCutOff();
+        return new BaseRestListResponse<>(allCutOffResponse);
     }
 
     @GetMapping(GET_CURRENT_CUTOFF_HISTORY)
-    public BaseRestResponse<CutOffHistory> getCurrentCutOffHistory() {
-        CutOffHistory cutOffHistory = cutOffService.getCurrentCutOff();
-        return new BaseRestResponse<>(cutOffHistory);
+    public BaseRestResponse<CutOffResponse> getCurrentCutOffHistory() {
+        CutOffResponse cutOffResponse = cutOffService.getCurrentCutOff();
+        return new BaseRestResponse<>(cutOffResponse);
     }
 }
