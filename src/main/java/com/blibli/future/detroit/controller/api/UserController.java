@@ -29,9 +29,16 @@ public class UserController {
     public static final String DELETE_USER = BASE_PATH + "/{userId}";
     public static final String GET_ONE_USER = BASE_PATH + "/{userId}";
     public static final String UPDATE_USER = BASE_PATH + "/{userId}";
+    public static final String CHECK_AUTH = BASE_PATH + "/login";
 
     @Autowired
     private UserService userService;
+
+    @PostMapping(value = CHECK_AUTH)
+    @ResponseBody
+    public BaseRestResponse<Boolean> checkAuth() {
+        return new BaseRestResponse<>(true);
+    }
 
     @GetMapping(value = GET_ALL_USER, produces = Constant.API_MEDIA_TYPE)
     @ResponseBody
