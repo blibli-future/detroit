@@ -55,12 +55,12 @@ public class DataSeeder implements ApplicationRunner {
         LocalDate end1 = new LocalDate(2017, 4, 30);
         cutOffHistory.setBegin(now1);
         cutOffHistory.setEnd(end1);
-        cutOffRepository.save(cutOffHistory);
+        cutOffHistory = cutOffRepository.saveAndFlush(cutOffHistory);
 
         CutOffHistory cutOffHistory1 = new CutOffHistory();
         LocalDate now = new LocalDate();
         cutOffHistory1.setBegin(now);
-        cutOffRepository.save(cutOffHistory1);
+        cutOffHistory1 = cutOffRepository.saveAndFlush(cutOffHistory1);
 
         AgentChannel agentChannel = new AgentChannel();
         agentChannel.setName("Chat");
@@ -174,6 +174,7 @@ public class DataSeeder implements ApplicationRunner {
         review.setParameter(parameter);
         review.setAgent(agent);
         review.setReviewer(reviewer);
+        review.setCutOffHistory(cutOffHistory);
         review = reviewRepository.saveAndFlush(review);
 
         DetailReview detailReview = new DetailReview();
@@ -211,6 +212,7 @@ public class DataSeeder implements ApplicationRunner {
         review1.setParameter(parameter);
         review1.setAgent(agent);
         review1.setReviewer(reviewer);
+        review1.setCutOffHistory(cutOffHistory1);
         review1 = reviewRepository.saveAndFlush(review1);
 
         DetailReview detailReview2 = new DetailReview();
@@ -240,5 +242,14 @@ public class DataSeeder implements ApplicationRunner {
         review1.setDetailReview(detailReviews2);
         review1 = reviewRepository.saveAndFlush(review1);
 
+        List<Review> reviews = new ArrayList<>();
+        reviews.add(review);
+        cutOffHistory.setReviews(reviews);
+        cutOffRepository.save(cutOffHistory);
+
+        List<Review> reviews1 = new ArrayList<>();
+        reviews1.add(review1);
+        cutOffHistory1.setReviews(reviews1);
+        cutOffRepository.save(cutOffHistory1);
     }
 }
