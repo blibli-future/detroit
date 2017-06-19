@@ -1,6 +1,8 @@
 package com.blibli.future.detroit.service;
 
 import com.blibli.future.detroit.model.*;
+import com.blibli.future.detroit.model.response.AgentReviewNoteResponse;
+import com.blibli.future.detroit.model.response.StatisticDiagramIndividualResponse;
 import com.blibli.future.detroit.model.response.StatisticDiagramResponse;
 import com.blibli.future.detroit.repository.*;
 import org.joda.time.LocalDate;
@@ -21,9 +23,9 @@ public class StatisticService {
     @Autowired
     ReviewRepository reviewRepository;
     @Autowired
-    ParameterRepository parameterRepository;
+    DetailReviewRepository detailReviewRepository;
     @Autowired
-    CategoryRepository categoryRepository;
+    ParameterRepository parameterRepository;
     @Autowired
     CutOffRepository cutOffRepository;
 
@@ -129,5 +131,79 @@ public class StatisticService {
             }
         }
         return statisticInfo;
+    }
+
+    public StatisticInfoIndividual getIndividualStatisticInfo(Long agentId) {
+        StatisticInfoIndividual statisticInfoIndividual = new StatisticInfoIndividual();
+        Float finalScore = 0f;
+        HashMap<String, Float> parameterScore = new HashMap<>();
+        HashMap<String, Integer> parameterCount = new HashMap<>();
+
+        User user = userRepository.findOne(agentId);
+        CutOffHistory cutOffLast = cutOffRepository.findByEndIsNull();
+        CutOffHistory cutOff = cutOffRepository.findByEnd(cutOffLast.getBegin());
+
+        List<Review> reviewList = reviewRepository.findByAgentAndCutOffHistory(user, cutOff);
+
+        for (Review review : reviewList) {
+            String parameterName = review.getParameter().getName();
+
+            finalScore = finalScore + (review.getScore()*(review.getParameter().getWeight()/100) );
+
+            Integer currentCount = parameterCount.getOrDefault(parameterName, 0);
+            parameterCount.put(parameterName, currentCount+1);
+
+            Float currentAvg = parameterScore.getOrDefault(parameterName, 0f);
+            Float nextAvg = ((currentAvg*currentCount)+review.getScore()) / (currentCount+1);
+            parameterScore.put(parameterName,nextAvg);
+        }
+        statisticInfoIndividual.setTotalScore(finalScore);
+        statisticInfoIndividual.setParameterScore(parameterScore);
+
+        return statisticInfoIndividual;
+    }
+
+    public List<StatisticDiagramIndividualResponse> getIndividualStatisticDiagram(Long agentId) {
+        List<StatisticDiagramIndividualResponse> statisticDiagramIndividualResponses = new ArrayList<>();
+        User agent = userRepository.findOne(agentId);
+        Float finalScore = 0f;
+
+        for(CutOffHistory cutOffHistory : cutOffRepository.findAll()) {
+            if(cutOffHistory.getEndInISOFormat() == null) {
+                continue;
+            } else {
+                for(Review review : cutOffHistory.getReviews()) {
+                    if(review.getAgent() != agent) {
+                        continue;
+                    }
+                    finalScore = finalScore + (review.getScore()*(review.getParameter().getWeight()/100) );
+                }
+                statisticDiagramIndividualResponses.add(new StatisticDiagramIndividualResponse(cutOffHistory.getEnd(), finalScore));
+            }
+        }
+        return statisticDiagramIndividualResponses;
+    }
+
+    public List<AgentReviewNoteResponse> getIndividualReviewNote(Long agentId) {
+        List<AgentReviewNoteResponse> agentReviewNoteResponses = new ArrayList<>();
+
+        User agent = userRepository.findOne(agentId);
+        CutOffHistory cutOffLast = cutOffRepository.findByEndIsNull();
+        CutOffHistory cutOff = cutOffRepository.findByEnd(cutOffLast.getBegin());
+
+        List<Review> reviewList = reviewRepository.findByAgentAndCutOffHistory(agent, cutOff);
+
+        for (Review review : reviewList) {
+            for (DetailReview detailReview : detailReviewRepository.findByReview(review)) {
+                if(detailReview.getNote() == null) {
+                    continue;
+                }
+                String categoryName = detailReview.getCategory().getName();
+                Float detailReviewScore = detailReview.getScore();
+                String note = detailReview.getNote();
+                agentReviewNoteResponses.add(new AgentReviewNoteResponse(categoryName, detailReviewScore, note));
+            }
+        }
+        return agentReviewNoteResponses;
     }
 }
