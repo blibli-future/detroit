@@ -1,4 +1,5 @@
 const _singleton = Symbol();
+const TOKEN_KEY = 'token';
 
 class AuthenticationService {
   constructor(singletonToken) {
@@ -18,14 +19,14 @@ class AuthenticationService {
     token = btoa(email + ':' + password);
     _checkValidCredential(token).then((valid) => {
       if (valid) {
-        localStorage.setItem('token', token);
+        localStorage.setItem(TOKEN_KEY, token);
       }
       return valid;
     });
   }
 
   isAuthenticated() {
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem(TOKEN_KEY);
     if (token === undefined) {
       return false
     }
