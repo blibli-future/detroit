@@ -16,7 +16,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByReviewerId(Long reviewerId);
     List<Review> findByAgentId(Long agentId);
     List<Review> findByAgentAndParameter(User agentId, Parameter parameterId);
-    
+
     @Query("select count(*) from Review r where (r.reviewer=:reviewerId) and (r.cutOffHistory=:cutOffId) and (r.parameter=:parameterId)")
     Integer countByReviewer(@Param("reviewerId") User reviewerId, @Param("cutOffId") CutOffHistory cutOffId, @Param("parameterId") Parameter parameterId);
+
+    List<Review> findByAgentAndCutOffHistory(User agent, CutOffHistory cutOffHistory);
 }

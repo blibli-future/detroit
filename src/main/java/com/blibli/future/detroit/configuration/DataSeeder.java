@@ -52,7 +52,7 @@ public class DataSeeder implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         CutOffHistory cutOffHistory = new CutOffHistory();
         LocalDate now1 = new LocalDate(2017, 4, 1);
-        LocalDate end1 = new LocalDate(2017, 4, 30);
+        LocalDate end1 = new LocalDate();
         cutOffHistory.setBegin(now1);
         cutOffHistory.setEnd(end1);
         cutOffHistory = cutOffRepository.saveAndFlush(cutOffHistory);
@@ -141,7 +141,7 @@ public class DataSeeder implements ApplicationRunner {
         parameter.setAgentPosition(agentPosition);
         parameter.setName("Live Monitoring");
         parameter.setDescription("Live Monitoring Parameter");
-        parameter.setWeight(50f);
+        parameter.setWeight(100f);
         parameter = parameterRepository.saveAndFlush(parameter);
 
         Category category = new Category();
@@ -186,7 +186,7 @@ public class DataSeeder implements ApplicationRunner {
 
         DetailReview detailReview1 = new DetailReview();
         detailReview1.setCategory(category1);
-        detailReview1.setScore(50f);
+        detailReview1.setScore(65f);
         detailReview1.setNote("I think you can give better solution, please think better solution next time");
         detailReview1.setReview(review);
         detailReviewRepository.save(detailReview1);
