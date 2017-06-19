@@ -18,11 +18,8 @@ class ReviewerList extends BaseDetroitComponent {
 
   getReviewerData() {
     let component = this;
-    fetch('/api/v1/users?type=REVIEWER', {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Basic '+btoa('agent@example.com:secret'),
-      },
+    this.auth.apiCall('/api/v1/users?type=REVIEWER', {
+      method: 'GET'
     }).then((response) => response.json())
       .then((json) => {
         component.setState({
@@ -33,11 +30,8 @@ class ReviewerList extends BaseDetroitComponent {
 
   deleteReviewer(reviewer) {
     let component = this;
-    fetch('/api/v1/users/' + reviewer.id, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': 'Basic '+btoa('agent@example.com:secret'),
-      },
+    this.auth.apiCall('/api/v1/users/' + reviewer.id, {
+      method: 'DELETE'
     }).then((response) => component.getAgentData());
   }
 
