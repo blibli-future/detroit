@@ -19,26 +19,20 @@ class AgentList extends BaseDetroitComponent {
 
   getAgentData() {
     let component = this;
-    fetch('/api/v1/users?type=AGENT', {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Basic '+btoa('agent@example.com:secret'),
-      },
+    this.auth.apiCall('/api/v1/users?type=AGENT', {
+      method: 'GET'
     }).then((response) => response.json())
       .then((json) => {
         component.setState({
           agentList: json.content
         });
-      })
+      });
   }
 
   deleteAgent(agent) {
     let component = this;
-    fetch('/api/v1/users/' + agent.id, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': 'Basic '+btoa('agent@example.com:secret'),
-      },
+    this.auth.apiCall('/api/v1/users/' + agent.id, {
+      method: 'DELETE'
     }).then((response) => component.getAgentData());
   }
 

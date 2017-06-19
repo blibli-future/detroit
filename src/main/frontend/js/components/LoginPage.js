@@ -30,9 +30,9 @@ class LoginPage extends React.Component {
     event.preventDefault();
     this.auth.authenticate(this.state.email, this.state.password).then((success) => {
       if(success) {
-        window.location.assign("agent-list")
+        window.location.assign("agent-list"); // TODO maybe we dont want to redirect here?
       } else {
-        alert("Maaf, email atau password Anda salah.")
+        alert("Maaf, email atau password Anda salah."); // TODO Much nicer error message via html
       }
     });
   }

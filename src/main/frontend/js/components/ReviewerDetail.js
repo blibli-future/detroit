@@ -18,11 +18,8 @@ class ReviewerDetail extends BaseDetroitComponent {
 
   getReviewerData() {
     let component = this;
-    fetch('/api/v1/users/' + this.props.match.params.reviewerId, {
+    this.auth.apiCall('/api/v1/users/' + this.props.match.params.reviewerId, {
       method: 'GET',
-      headers: {
-        'Authorization': 'Basic '+btoa('reviewer@example.com:secret'),
-      },
     }).then((response) => response.json())
       .then((json) => {
         component.setState({
