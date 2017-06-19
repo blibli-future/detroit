@@ -1,15 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-class AgentList extends React.Component {
+import BaseDetroitComponent from './BaseDetroitComponent';
 
-  constructor() {
-    super();
+class AgentList extends BaseDetroitComponent {
+
+  constructor(props) {
+    super(props);
     this.state = {
       agentList: []
     };
     this.deleteAgent = this.deleteAgent.bind(this);
+  }
 
+  componentDidMount() {
     this.getAgentData();
   }
 

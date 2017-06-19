@@ -1,7 +1,9 @@
 import React from 'react';
+
+import BaseDetroitComponent from './BaseDetroitComponent';
 import { Link } from 'react-router-dom';
 
-class AgentDetail extends React.Component {
+class AgentDetail extends BaseDetroitComponent {
 
   constructor(props) {
     super(props);
