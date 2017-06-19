@@ -99,6 +99,9 @@ public class StatisticService {
             if(cutOffHistory.getEndInISOFormat() != null) {
                 continue;
             } else {
+                if(cutOffHistory.getEnd().getYear() != now.getYear()) {
+                    continue;
+                }
                 for(Review review : cutOffHistory.getReviews()) {
                     String parameter = review.getParameter().getName();
                     Integer currentCountParameter = parameterCountMap.getOrDefault(parameter, 0);
@@ -167,11 +170,15 @@ public class StatisticService {
         List<StatisticDiagramIndividualResponse> statisticDiagramIndividualResponses = new ArrayList<>();
         User agent = userRepository.findOne(agentId);
         Float finalScore = 0f;
+        LocalDate now = new LocalDate();
 
         for(CutOffHistory cutOffHistory : cutOffRepository.findAll()) {
             if(cutOffHistory.getEndInISOFormat() == null) {
                 continue;
             } else {
+                if(cutOffHistory.getEnd().getYear() != now.getYear()) {
+                    continue;
+                }
                 for(Review review : cutOffHistory.getReviews()) {
                     if(review.getAgent() != agent) {
                         continue;
