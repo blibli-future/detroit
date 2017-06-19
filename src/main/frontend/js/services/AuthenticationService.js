@@ -25,12 +25,16 @@ class AuthenticationService {
     });
   }
 
-  isAuthenticated() {
+  redirectIfNotAuthenticated() {
     let token = localStorage.getItem(TOKEN_KEY);
     if (token === undefined) {
-      return false
+      window.location.assign("/view/login?error=NO_AUTH");
     }
-    return token; // TODO maybe we need to always check against server
+    this._checkValidCredential(token).then((valid) => {
+      if (!valid) {
+        window.location.assign("/view/login?error=WRONG_AUTH");
+      }
+    });
   }
 
   _checkValidCredential(token) {
