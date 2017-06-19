@@ -37,6 +37,14 @@ class AuthenticationService {
     });
   }
 
+  apiCall(url, object) {
+    this.redirectIfNotAuthenticated();
+    object.headers = {
+      'Authorization': 'Basic '+ localStorage.getItem(TOKEN_KEY),
+    };
+    return fetch(url, object);
+  }
+
   _checkValidCredential(token) {
     return fetch('/api/v1/users/login', {
       method: 'POST',
