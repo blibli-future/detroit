@@ -1,14 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-class ReviewerDetail extends React.Component {
+import BaseDetroitComponent from './BaseDetroitComponent';
+
+class ReviewerDetail extends BaseDetroitComponent {
 
   constructor(props) {
     super(props);
     this.state = {
       reviewer: {}
     };
+  }
 
+  componentDidMount() {
     this.getReviewerData();
   }
 
@@ -25,7 +29,6 @@ class ReviewerDetail extends React.Component {
           reviewer: json.content
         });
       })
-
   }
 
   render() {

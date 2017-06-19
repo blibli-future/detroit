@@ -1,14 +1,18 @@
-const React = require('react');
+import React from 'react';
 
-class ReviewerList extends React.Component {
+import BaseDetroitComponent from './BaseDetroitComponent';
 
-  constructor() {
-    super();
+class ReviewerList extends BaseDetroitComponent {
+
+  constructor(props) {
+    super(props);
     this.state = {
       reviewerList: []
     };
     this.deleteReviewer = this.deleteReviewer.bind(this);
+  }
 
+  componentDidMount() {
     this.getReviewerData();
   }
 
@@ -160,7 +164,6 @@ class ReviewerList_Row extends React.Component {
   }
 
   render() {
-
     return (
       <tr>
         <th scope="row">{ this.props.no }</th>
