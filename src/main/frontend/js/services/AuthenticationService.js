@@ -16,8 +16,8 @@ class AuthenticationService {
   }
 
   authenticate(email, password) {
-    token = btoa(email + ':' + password);
-    _checkValidCredential(token).then((valid) => {
+    let token = btoa(email + ':' + password);
+    return this._checkValidCredential(token).then((valid) => {
       if (valid) {
         localStorage.setItem(TOKEN_KEY, token);
       }
