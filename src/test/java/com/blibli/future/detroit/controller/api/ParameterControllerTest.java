@@ -5,6 +5,7 @@ import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
 import com.blibli.future.detroit.model.request.NewParameterRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.service.ParameterService;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.jayway.restassured.RestAssured.given;
+import static com.sun.xml.internal.ws.dump.LoggingDumpTube.Position.Before;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
@@ -51,25 +53,25 @@ public class ParameterControllerTest {
     public void setUp() {
         parameter.setId(1L);
         parameter.setDescription("Lorem ipsum");
-        parameter.setName("Kategori");
+        parameter.setName("Parameter");
         parameter.setActive(true);
         parameter.setWeight(100F);
 
         parameter2.setId(2L);
         parameter2.setDescription("Lorem ipsum");
-        parameter2.setName("Kategori");
+        parameter2.setName("Parameter");
         parameter2.setActive(true);
         parameter2.setWeight(100F);
 
         request.setId(1L);
         request.setDescription("Lorem ipsum");
-        request.setName("Kategori");
+        request.setName("Parameter");
         request.setActive(true);
         request.setWeight(100f);
 
         request2.setId(2L);
         request2.setDescription("Lorem ipsum");
-        request2.setName("Kategori");
+        request2.setName("Parameter");
         request2.setActive(true);
         request2.setWeight(100f);
 
@@ -90,7 +92,7 @@ public class ParameterControllerTest {
             .get(ParameterController.GET_ALL_PARAMETER)
             .then()
             .body(containsString("Lorem ipsum"))
-            .body(containsString("Kategori"))
+            .body(containsString("Parameter"))
             .body(containsString("true"))
             .body(containsString("100"))
             .statusCode(200);
@@ -149,7 +151,7 @@ public class ParameterControllerTest {
             .get(ParameterController.BASE_PATH + "/1")
             .then()
             .body(containsString("Lorem ipsum"))
-            .body(containsString("Kategori"))
+            .body(containsString("Parameter"))
             .body(containsString("true"))
             .body(containsString("100"))
             .statusCode(200);
