@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.jayway.restassured.RestAssured.given;
-import static com.sun.xml.internal.ws.dump.LoggingDumpTube.Position.Before;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
