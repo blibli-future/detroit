@@ -2,11 +2,12 @@ package com.blibli.future.detroit.model;
 
 import io.swagger.models.auth.In;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class StatisticInfo {
+public class StatisticInfo implements Serializable {
     private Integer totalAgent;
     private List<ParameterScore> parameterScores;
     private HashMap<String, List<ReviewCount>> reviewCounts;

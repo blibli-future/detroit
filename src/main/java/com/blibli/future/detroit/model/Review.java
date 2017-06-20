@@ -3,10 +3,11 @@ package com.blibli.future.detroit.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Review {
+public class Review implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

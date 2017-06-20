@@ -1,8 +1,9 @@
 package com.blibli.future.detroit.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class StatisticInfoIndividual {
+public class StatisticInfoIndividual implements Serializable {
     private Float totalScore;
     private HashMap<String, Float> parameterScore;
 
