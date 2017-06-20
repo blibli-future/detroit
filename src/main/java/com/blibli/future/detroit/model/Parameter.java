@@ -1,10 +1,13 @@
 package com.blibli.future.detroit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Parameter {
+public class Parameter implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -19,18 +22,6 @@ public class Parameter {
     private AgentPosition agentPosition;
     @OneToMany
     private List<Review> reviews;
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    public int getTest() {
-        return this.Categories.size();
-    }
 
     public Long getId() {
         return id;
@@ -96,6 +87,14 @@ public class Parameter {
         this.agentPosition = agentPosition;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -105,11 +104,10 @@ public class Parameter {
 
         if (bulkStatus != parameter.bulkStatus) return false;
         if (isActive != parameter.isActive) return false;
-        if (id != null ? !id.equals(parameter.id) : parameter.id != null) return false;
-        if (name != null ? !name.equals(parameter.name) : parameter.name != null) return false;
-        if (description != null ? !description.equals(parameter.description) : parameter.description != null)
-            return false;
-        if (weight != null ? !weight.equals(parameter.weight) : parameter.weight != null) return false;
+        if (!id.equals(parameter.id)) return false;
+        if (!name.equals(parameter.name)) return false;
+        if (!description.equals(parameter.description)) return false;
+        if (!weight.equals(parameter.weight)) return false;
         if (Categories != null ? !Categories.equals(parameter.Categories) : parameter.Categories != null) return false;
         if (agentPosition != null ? !agentPosition.equals(parameter.agentPosition) : parameter.agentPosition != null)
             return false;
@@ -118,10 +116,10 @@ public class Parameter {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (weight != null ? weight.hashCode() : 0);
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + weight.hashCode();
         result = 31 * result + (bulkStatus ? 1 : 0);
         result = 31 * result + (isActive ? 1 : 0);
         result = 31 * result + (Categories != null ? Categories.hashCode() : 0);

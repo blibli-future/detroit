@@ -8,11 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-public class CutOffHistory {
+public class CutOffHistory implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

@@ -1,8 +1,9 @@
 package com.blibli.future.detroit.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class StatisticDiagram {
+public class StatisticDiagram implements Serializable {
     private String name;
     private List<Float> score;
     private List<CutOffHistory> cutOffHistories;
