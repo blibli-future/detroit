@@ -53,31 +53,31 @@ public class CategoryControllerTest {
     public void setUp() {
         parameter.setId(PARAMETER_ID);
         parameter.setDescription("Lorem ipsum");
-        parameter.setName("Kategori");
+        parameter.setName("Parameter");
         parameter.setActive(true);
         parameter.setWeight(100f);
 
         Category.setId(1L);
         Category.setDescription("Lorem Ipsum");
-        Category.setName("Parameter1");
+        Category.setName("Kategori1");
         Category.setWeight(100f);
         Category.setParameter(parameter);
 
         category2.setId(2L);
         category2.setDescription("Lorem Ipsum");
-        category2.setName("Parameter2");
+        category2.setName("Kategori2");
         category2.setWeight(100f);
         category2.setParameter(parameter);
 
         request.setId(1L);
         request.setDescription("Lorem Ipsum");
-        request.setName("Parameter1");
+        request.setName("Kategori1");
         request.setWeight(100F);
         request.setParameter(parameter);
 
         request2.setId(2L);
         request2.setDescription("Lorem Ipsum");
-        request2.setName("Parameter2");
+        request2.setName("Kategori2");
         request2.setWeight(100f);
         request2.setParameter(parameter);
 
@@ -138,6 +138,7 @@ public class CategoryControllerTest {
         String jsonRequest = "";
         try {
             jsonRequest = mapper.writeValueAsString(listRequest);
+            System.out.println(jsonRequest);
         } catch (Exception e) {
             assert false;
         }
