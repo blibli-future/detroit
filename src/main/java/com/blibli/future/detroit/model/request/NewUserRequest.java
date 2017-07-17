@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.blibli.future.detroit.model.AgentChannel;
 import com.blibli.future.detroit.model.AgentPosition;
+import com.blibli.future.detroit.model.enums.Gender;
 import com.blibli.future.detroit.model.enums.UserType;
 
 public class NewUserRequest implements Serializable {
@@ -14,7 +15,7 @@ public class NewUserRequest implements Serializable {
     private String channel;
     private String teamLeader;
     private String dateOfBirth;
-    private String gender;
+    private Gender gender;
     private String location;
     private String phoneNumber;
     private AgentChannel agentChannel;
@@ -77,11 +78,11 @@ public class NewUserRequest implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

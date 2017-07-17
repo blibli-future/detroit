@@ -2,6 +2,7 @@ package com.blibli.future.detroit.configuration;
 
 import com.blibli.future.detroit.model.*;
 import com.blibli.future.detroit.model.enums.ScoreType;
+import com.blibli.future.detroit.model.enums.Gender;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.repository.*;
 import org.joda.time.LocalDate;
@@ -95,7 +96,7 @@ public class DataSeeder implements ApplicationRunner {
         agent.setEmail("agent@example.com");
         agent.setNickname("agent");
         agent.setFullname("Agent Nomor 1");
-        agent.setGender("Male");
+        agent.setGender(Gender.PRIA);
         agent.setPassword("secret");
         agent.setUserType(UserType.AGENT);
         agent.setAgentChannel(agentChannel);
@@ -111,7 +112,7 @@ public class DataSeeder implements ApplicationRunner {
         agent2.setEmail("agent2@example.com");
         agent2.setNickname("agent2");
         agent2.setFullname("Agent Nomor 2");
-        agent2.setGender("Male");
+        agent2.setGender(Gender.PRIA);
         agent2.setPassword("secret");
         agent2.setUserType(UserType.AGENT);
         agent2.setAgentChannel(agentChannel);
@@ -127,7 +128,7 @@ public class DataSeeder implements ApplicationRunner {
         reviewer.setEmail("reviewer@example.com");
         reviewer.setNickname("reviewer");
         reviewer.setFullname("Reviewer Nomor 1");
-        reviewer.setGender("Male");
+        reviewer.setGender(Gender.PRIA);
         reviewer.setPassword("secret");
         reviewer.setUserType(UserType.REVIEWER);
         reviewer = userRepository.saveAndFlush(reviewer);
@@ -144,7 +145,7 @@ public class DataSeeder implements ApplicationRunner {
         User superAdmin = new User();
         superAdmin.setEmail("superadmin@example.com");
         superAdmin.setFullname("Super Admin");
-        superAdmin.setGender("Male");
+        superAdmin.setGender(Gender.PRIA);
         superAdmin.setPassword("secret");
         superAdmin.setUserType(UserType.SUPER_ADMIN);
         superAdmin = userRepository.saveAndFlush(superAdmin);

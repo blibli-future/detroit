@@ -3,6 +3,7 @@ package com.blibli.future.detroit.controller.api;
 import com.blibli.future.detroit.model.AgentChannel;
 import com.blibli.future.detroit.model.AgentPosition;
 import com.blibli.future.detroit.model.User;
+import com.blibli.future.detroit.model.enums.Gender;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
 import com.blibli.future.detroit.service.UserService;
@@ -51,12 +52,12 @@ public class UserControllerTest {
         agentPosition.setName("Inbound");
 
         user.setId(1L);
-        user.setFullname("Detroit Project");
-        user.setNickname("Detroit");
+        user.setFullname("Agent Nomor 1");
+        user.setNickname("A1");
         user.setEmail("detroit@gdn-commerce.com");
         user.setTeamLeader("1");
         user.setDateOfBirth("01/01/1996");
-        user.setGender("M");
+        user.setGender(Gender.PRIA);
         user.setLocation("Jakarta");
         user.setPhoneNumber("123456789");
         user.setAgentChannel(agentChannel);
@@ -64,13 +65,13 @@ public class UserControllerTest {
         user.setUserType(UserType.AGENT);
 
         request.setId(1L);
-        request.setFullname("Detroit Project");
-        request.setNickname("Detroit");
+        request.setFullname("Agent Nomor 1");
+        request.setNickname("A1");
         request.setEmail("detroit@gdn-commerce.com");
         request.setChannel("cs");
         request.setTeamLeader("1");
         request.setDateOfBirth("01/01/1996");
-        request.setGender("M");
+        request.setGender(Gender.PRIA);
         request.setLocation("Jakarta");
         request.setPhoneNumber("123456789");
         request.setAgentChannel(agentChannel);
@@ -89,11 +90,11 @@ public class UserControllerTest {
             .get(UserController.GET_ALL_USER)
             .then()
             .body(containsString("1"))
-            .body(containsString("Detroit Project"))
-            .body(containsString("Detroit"))
+            .body(containsString("Agent Nomor 1"))
+            .body(containsString("A1"))
             .body(containsString("detroit@gdn-commerce.com"))
             .body(containsString("01/01/1996"))
-            .body(containsString("M"))
+            .body(containsString("PRIA"))
             .body(containsString("Jakarta"))
             .body(containsString("123456789"))
             .body(containsString("true"))
@@ -116,11 +117,11 @@ public class UserControllerTest {
             .get(UserController.GET_ALL_USER + "?type=AGENT")
             .then()
             .body(containsString("1"))
-            .body(containsString("Detroit Project"))
-            .body(containsString("Detroit"))
+            .body(containsString("Agent Nomor 1"))
+            .body(containsString("A"))
             .body(containsString("detroit@gdn-commerce.com"))
             .body(containsString("01/01/1996"))
-            .body(containsString("M"))
+            .body(containsString("PRIA"))
             .body(containsString("Jakarta"))
             .body(containsString("123456789"))
             .body(containsString("true"))
@@ -182,11 +183,11 @@ public class UserControllerTest {
             .get(UserController.BASE_PATH + "/1")
             .then()
             .body(containsString("1"))
-            .body(containsString("Detroit Project"))
-            .body(containsString("Detroit"))
+            .body(containsString("Agent Nomor 1"))
+            .body(containsString("A1"))
             .body(containsString("detroit@gdn-commerce.com"))
             .body(containsString("01/01/1996"))
-            .body(containsString("M"))
+            .body(containsString("PRIA"))
             .body(containsString("Jakarta"))
             .body(containsString("123456789"))
             .body(containsString("true"))
