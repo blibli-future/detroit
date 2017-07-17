@@ -1,6 +1,7 @@
 package com.blibli.future.detroit.model;
 
 
+import com.blibli.future.detroit.model.enums.Gender;
 import com.blibli.future.detroit.model.enums.UserType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +25,7 @@ public class User implements Serializable {
     private String password;
     private String teamLeader;
     private String dateOfBirth;
-    private String gender;
+    private Gender gender;
     private String location;
     private String phoneNumber;
     private UserType userType;
@@ -105,11 +106,11 @@ public class User implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
