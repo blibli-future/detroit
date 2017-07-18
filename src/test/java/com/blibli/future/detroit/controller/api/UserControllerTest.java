@@ -98,8 +98,6 @@ public class UserControllerTest {
             .body(containsString("Jakarta"))
             .body(containsString("123456789"))
             .body(containsString("true"))
-            .body(containsString("Inbound"))
-            .body(containsString("Chat"))
             .body(containsString("AGENT"))
             .statusCode(200);
 
