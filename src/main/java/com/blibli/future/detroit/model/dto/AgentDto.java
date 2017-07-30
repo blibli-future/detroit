@@ -8,6 +8,8 @@ public class AgentDto extends UserDto {
     String agentChannel;
     String agentPosition;
 
+    public AgentDto() {}
+
     public AgentDto(User user) {
         super(user);
         this.teamLeader = user.getTeamLeader();
@@ -31,7 +33,7 @@ public class AgentDto extends UserDto {
     }
 
     public void setAgentChannel(String agentChannel) {
-        agentChannel = agentChannel;
+        this.agentChannel = agentChannel;
     }
 
     public String getAgentPosition() {

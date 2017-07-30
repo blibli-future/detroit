@@ -1,9 +1,13 @@
 package com.blibli.future.detroit.service;
 
+import com.blibli.future.detroit.model.AgentChannel;
 import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.UserRole;
+import com.blibli.future.detroit.model.dto.AgentDto;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
+import com.blibli.future.detroit.repository.AgentChannelRepository;
+import com.blibli.future.detroit.repository.AgentPositionRepository;
 import com.blibli.future.detroit.repository.UserRepository;
 import com.blibli.future.detroit.repository.UserRoleRepository;
 import com.blibli.future.detroit.util.configuration.Converter;
@@ -20,6 +24,12 @@ public class UserService {
 
     @Autowired
     private UserRoleRepository userRoleRepository;
+
+    @Autowired
+    private AgentChannelRepository agentChannelRepository;
+
+    @Autowired
+    private AgentPositionRepository agentPositionRepository;
 
     @Autowired
     Converter modelMapper;
@@ -64,5 +74,18 @@ public class UserService {
         userRepository.save(user);
 
         return true;
+    }
+
+    public User updateAgent(Long agentId, AgentDto request) {
+        User agent = modelMapper.modelMapper()
+            .map(request, User.class);
+        System.out.println(request.getAgentChannel());
+        agent.setAgentChannel(
+            agentChannelRepository.findByName(request.getAgentChannel()));
+        agent.setAgentPosition(
+            agentPositionRepository.findByName(request.getAgentPosition()));
+        userRepository.saveAndFlush(agent);
+
+        return agent;
     }
 }
