@@ -25,6 +25,7 @@ public class UserController {
     public static final String GET_ONE_USER = BASE_PATH + "/{userId}";
     public static final String UPDATE_USER = BASE_PATH + "/{userId}";
     public static final String CHECK_AUTH = BASE_PATH + "/login";
+    public static final String UPDATE_AGENT = BASE_PATH + "/agent/{agentId}";
 
     @Autowired
     private UserService userService;
@@ -77,6 +78,12 @@ public class UserController {
     @PatchMapping(UPDATE_USER)
     public BaseRestResponse updateUser(@PathVariable Long userId, @RequestBody NewUserRequest request) {
         userService.updateUser(userId, request);
+        return new BaseRestResponse();
+    }
+
+    @PatchMapping(UPDATE_AGENT)
+    public BaseRestResponse updateAgent(@PathVariable Long agentId, @RequestBody AgentDto request) {
+        userService.updateAgent(agentId, request);
         return new BaseRestResponse();
     }
 }

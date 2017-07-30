@@ -1,6 +1,7 @@
 package com.blibli.future.detroit.model.dto;
 
 import com.blibli.future.detroit.model.User;
+import com.blibli.future.detroit.model.enums.Gender;
 import com.blibli.future.detroit.model.enums.UserType;
 
 public class UserDto {
@@ -10,10 +11,12 @@ public class UserDto {
     String nickname;
     String email;
     String dateOfBirth;
-    String gender;
+    Gender gender;
     String location;
     String phoneNumber;
     UserType userRole;
+
+    public UserDto() {}
 
     public UserDto(User user) {
         this.id = user.getId();
@@ -21,7 +24,7 @@ public class UserDto {
         this.nickname = user.getNickname();
         this.email = user.getEmail();
         this.dateOfBirth = user.getDateOfBirth();
-        this.gender = user.getGender().name();
+        this.gender = user.getGender();
         this.location = user.getLocation();
         this.phoneNumber = user.getPhoneNumber();
         this.userRole = user.getUserType();
@@ -70,11 +73,11 @@ public class UserDto {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
