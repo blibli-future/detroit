@@ -1,6 +1,7 @@
 package com.blibli.future.detroit.configuration;
 
 import com.blibli.future.detroit.model.*;
+import com.blibli.future.detroit.model.enums.ScoreType;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.repository.*;
 import org.apache.tomcat.jni.Local;
@@ -26,6 +27,7 @@ public class DataSeeder implements ApplicationRunner {
     private ReviewRepository reviewRepository;
     private DetailReviewRepository detailReviewRepository;
     private CutOffRepository cutOffRepository;
+    private ScoreSummaryRepository scoreSummaryRepository;
 
     @Autowired
     public DataSeeder(UserRepository userRepository,
@@ -36,7 +38,8 @@ public class DataSeeder implements ApplicationRunner {
                       CategoryRepository categoryRepository,
                       ReviewRepository reviewRepository,
                       DetailReviewRepository detailReviewRepository,
-                      CutOffRepository cutOffRepository) {
+                      CutOffRepository cutOffRepository,
+                      ScoreSummaryRepository scoreSummaryRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.agentChannelRepository = agentChannelRepository;
@@ -46,10 +49,27 @@ public class DataSeeder implements ApplicationRunner {
         this.reviewRepository = reviewRepository;
         this.detailReviewRepository = detailReviewRepository;
         this.cutOffRepository = cutOffRepository;
+        this.scoreSummaryRepository = scoreSummaryRepository;
     }
 
 
     public void run(ApplicationArguments args) {
+
+        CutOffHistory cutOffHistoryLama = new CutOffHistory();
+        cutOffHistoryLama.setBegin(new LocalDate(2017,1,1));
+        cutOffHistoryLama.setBegin(new LocalDate(2017,2,1));
+        cutOffHistoryLama = cutOffRepository.saveAndFlush(cutOffHistoryLama);
+
+        CutOffHistory cutOffHistoryLama1 = new CutOffHistory();
+        cutOffHistoryLama1.setBegin(new LocalDate(2017,2,1));
+        cutOffHistoryLama1.setBegin(new LocalDate(2017,3,1));
+        cutOffHistoryLama1 = cutOffRepository.saveAndFlush(cutOffHistoryLama1);
+
+        CutOffHistory cutOffHistoryLama2 = new CutOffHistory();
+        cutOffHistoryLama2.setBegin(new LocalDate(2017,3,1));
+        cutOffHistoryLama2.setBegin(new LocalDate(2017,4,1));
+        cutOffHistoryLama2 = cutOffRepository.saveAndFlush(cutOffHistoryLama2);
+
         CutOffHistory cutOffHistory = new CutOffHistory();
         LocalDate now1 = new LocalDate(2017, 4, 1);
         LocalDate end1 = new LocalDate();
@@ -60,8 +80,8 @@ public class DataSeeder implements ApplicationRunner {
         CutOffHistory cutOffHistory1 = new CutOffHistory();
         LocalDate now = new LocalDate();
         cutOffHistory1.setBegin(now);
-        LocalDate end = new LocalDate(2017, 8, 1);
-        cutOffHistory1.setEnd(end);
+//        LocalDate end = new LocalDate(2017, 8, 1);
+//        cutOffHistory1.setEnd(end);
         cutOffHistory1 = cutOffRepository.saveAndFlush(cutOffHistory1);
 
         AgentChannel agentChannel = new AgentChannel();
@@ -253,5 +273,212 @@ public class DataSeeder implements ApplicationRunner {
         reviews1.add(review1);
         cutOffHistory1.setReviews(reviews1);
         cutOffRepository.save(cutOffHistory1);
+
+        ScoreSummary scoreSummary = new ScoreSummary();
+        scoreSummary.setName("Live Monitoring");
+        scoreSummary.setScore(88.5f);
+        scoreSummary.setScoreType(ScoreType.ALL_PARAMETER);
+        scoreSummary.setFkId(1l);
+        scoreSummary.setCutOffHistory(cutOffHistoryLama);
+        scoreSummaryRepository.save(scoreSummary);
+
+        ScoreSummary scoreSummary1 = new ScoreSummary();
+        scoreSummary1.setName("Opening");
+        scoreSummary1.setScore(80f);
+        scoreSummary1.setScoreType(ScoreType.ALL_CATEGORY);
+        scoreSummary1.setFkId(1l);
+        scoreSummary1.setCutOffHistory(cutOffHistoryLama);
+        scoreSummaryRepository.save(scoreSummary1);
+
+        ScoreSummary scoreSummary2 = new ScoreSummary();
+        scoreSummary2.setName("Solution");
+        scoreSummary2.setScore(90f);
+        scoreSummary2.setScoreType(ScoreType.ALL_CATEGORY);
+        scoreSummary2.setFkId(2l);
+        scoreSummary2.setCutOffHistory(cutOffHistoryLama);
+        scoreSummaryRepository.save(scoreSummary2);
+
+        ScoreSummary scoreSummary3 = new ScoreSummary();
+        scoreSummary3.setName("Live Monitoring");
+        scoreSummary3.setScore(82.5f);
+        scoreSummary3.setScoreType(ScoreType.USER_PARAMETER);
+        scoreSummary3.setFkId(1l);
+        scoreSummary3.setCutOffHistory(cutOffHistoryLama);
+        scoreSummary3.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary3);
+
+        ScoreSummary scoreSummary4 = new ScoreSummary();
+        scoreSummary4.setName("Opening");
+        scoreSummary4.setScore(83f);
+        scoreSummary4.setScoreType(ScoreType.USER_CATEGORY);
+        scoreSummary4.setFkId(1l);
+        scoreSummary4.setCutOffHistory(cutOffHistoryLama);
+        scoreSummary4.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary4);
+
+        ScoreSummary scoreSummary5 = new ScoreSummary();
+        scoreSummary5.setName("Solution");
+        scoreSummary5.setScore(84.7f);
+        scoreSummary5.setScoreType(ScoreType.USER_CATEGORY);
+        scoreSummary5.setFkId(2l);
+        scoreSummary5.setCutOffHistory(cutOffHistoryLama);
+        scoreSummary5.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary5);
+
+
+        ScoreSummary scoreSummary6 = new ScoreSummary();
+        scoreSummary6.setName("Live Monitoring");
+        scoreSummary6.setScore(75f);
+        scoreSummary6.setScoreType(ScoreType.ALL_PARAMETER);
+        scoreSummary6.setFkId(1l);
+        scoreSummary6.setCutOffHistory(cutOffHistoryLama1);
+        scoreSummaryRepository.save(scoreSummary6);
+
+        ScoreSummary scoreSummary7 = new ScoreSummary();
+        scoreSummary7.setName("Opening");
+        scoreSummary7.setScore(75.6f);
+        scoreSummary7.setScoreType(ScoreType.ALL_CATEGORY);
+        scoreSummary7.setFkId(1l);
+        scoreSummary7.setCutOffHistory(cutOffHistoryLama1);
+        scoreSummaryRepository.save(scoreSummary7);
+
+        ScoreSummary scoreSummary8 = new ScoreSummary();
+        scoreSummary8.setName("Solution");
+        scoreSummary8.setScore(80.2f);
+        scoreSummary8.setScoreType(ScoreType.ALL_CATEGORY);
+        scoreSummary8.setFkId(2l);
+        scoreSummary8.setCutOffHistory(cutOffHistoryLama1);
+        scoreSummaryRepository.save(scoreSummary8);
+
+        ScoreSummary scoreSummary9 = new ScoreSummary();
+        scoreSummary9.setName("Live Monitoring");
+        scoreSummary9.setScore(76.2f);
+        scoreSummary9.setScoreType(ScoreType.USER_PARAMETER);
+        scoreSummary9.setFkId(1l);
+        scoreSummary9.setCutOffHistory(cutOffHistoryLama1);
+        scoreSummary9.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary9);
+
+        ScoreSummary scoreSummary10 = new ScoreSummary();
+        scoreSummary10.setName("Opening");
+        scoreSummary10.setScore(73f);
+        scoreSummary10.setScoreType(ScoreType.USER_CATEGORY);
+        scoreSummary10.setFkId(1l);
+        scoreSummary10.setCutOffHistory(cutOffHistoryLama1);
+        scoreSummary10.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary10);
+
+        ScoreSummary scoreSummary11 = new ScoreSummary();
+        scoreSummary11.setName("Solution");
+        scoreSummary11.setScore(77.3f);
+        scoreSummary11.setScoreType(ScoreType.USER_CATEGORY);
+        scoreSummary11.setFkId(2l);
+        scoreSummary11.setCutOffHistory(cutOffHistoryLama1);
+        scoreSummary11.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary11);
+
+
+        ScoreSummary scoreSummary12 = new ScoreSummary();
+        scoreSummary12.setName("Live Monitoring");
+        scoreSummary12.setScore(92.4f);
+        scoreSummary12.setScoreType(ScoreType.ALL_PARAMETER);
+        scoreSummary12.setFkId(1l);
+        scoreSummary12.setCutOffHistory(cutOffHistoryLama2);
+        scoreSummaryRepository.save(scoreSummary12);
+
+        ScoreSummary scoreSummary13 = new ScoreSummary();
+        scoreSummary13.setName("Opening");
+        scoreSummary13.setScore(95.6f);
+        scoreSummary13.setScoreType(ScoreType.ALL_CATEGORY);
+        scoreSummary13.setFkId(1l);
+        scoreSummary13.setCutOffHistory(cutOffHistoryLama2);
+        scoreSummaryRepository.save(scoreSummary13);
+
+        ScoreSummary scoreSummary14 = new ScoreSummary();
+        scoreSummary14.setName("Solution");
+        scoreSummary14.setScore(90.2f);
+        scoreSummary14.setScoreType(ScoreType.ALL_CATEGORY);
+        scoreSummary14.setFkId(2l);
+        scoreSummary14.setCutOffHistory(cutOffHistoryLama2);
+        scoreSummaryRepository.save(scoreSummary14);
+
+        ScoreSummary scoreSummary15 = new ScoreSummary();
+        scoreSummary15.setName("Live Monitoring");
+        scoreSummary15.setScore(96.2f);
+        scoreSummary15.setScoreType(ScoreType.USER_PARAMETER);
+        scoreSummary15.setFkId(1l);
+        scoreSummary15.setCutOffHistory(cutOffHistoryLama2);
+        scoreSummary15.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary15);
+
+        ScoreSummary scoreSummary16 = new ScoreSummary();
+        scoreSummary16.setName("Opening");
+        scoreSummary16.setScore(93f);
+        scoreSummary16.setScoreType(ScoreType.USER_CATEGORY);
+        scoreSummary16.setFkId(1l);
+        scoreSummary16.setCutOffHistory(cutOffHistoryLama2);
+        scoreSummary16.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary16);
+
+        ScoreSummary scoreSummary17 = new ScoreSummary();
+        scoreSummary17.setName("Solution");
+        scoreSummary17.setScore(97.3f);
+        scoreSummary17.setScoreType(ScoreType.USER_CATEGORY);
+        scoreSummary17.setFkId(2l);
+        scoreSummary17.setCutOffHistory(cutOffHistoryLama2);
+        scoreSummary17.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary17);
+
+
+        ScoreSummary scoreSummary18 = new ScoreSummary();
+        scoreSummary18.setName("Live Monitoring");
+        scoreSummary18.setScore(62.4f);
+        scoreSummary18.setScoreType(ScoreType.ALL_PARAMETER);
+        scoreSummary18.setFkId(1l);
+        scoreSummary18.setCutOffHistory(cutOffHistory);
+        scoreSummaryRepository.save(scoreSummary18);
+
+        ScoreSummary scoreSummary19 = new ScoreSummary();
+        scoreSummary19.setName("Opening");
+        scoreSummary19.setScore(65.6f);
+        scoreSummary19.setScoreType(ScoreType.ALL_CATEGORY);
+        scoreSummary19.setFkId(1l);
+        scoreSummary19.setCutOffHistory(cutOffHistory);
+        scoreSummaryRepository.save(scoreSummary19);
+
+        ScoreSummary scoreSummary20 = new ScoreSummary();
+        scoreSummary20.setName("Solution");
+        scoreSummary20.setScore(70.2f);
+        scoreSummary20.setScoreType(ScoreType.ALL_CATEGORY);
+        scoreSummary20.setFkId(2l);
+        scoreSummary20.setCutOffHistory(cutOffHistory);
+        scoreSummaryRepository.save(scoreSummary20);
+
+        ScoreSummary scoreSummary21 = new ScoreSummary();
+        scoreSummary21.setName("Live Monitoring");
+        scoreSummary21.setScore(66.2f);
+        scoreSummary21.setScoreType(ScoreType.USER_PARAMETER);
+        scoreSummary21.setFkId(1l);
+        scoreSummary21.setCutOffHistory(cutOffHistory);
+        scoreSummary21.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary21);
+
+        ScoreSummary scoreSummary22 = new ScoreSummary();
+        scoreSummary22.setName("Opening");
+        scoreSummary22.setScore(63f);
+        scoreSummary22.setScoreType(ScoreType.USER_CATEGORY);
+        scoreSummary22.setFkId(1l);
+        scoreSummary22.setCutOffHistory(cutOffHistory);
+        scoreSummary22.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary22);
+
+        ScoreSummary scoreSummary23 = new ScoreSummary();
+        scoreSummary23.setName("Solution");
+        scoreSummary23.setScore(67.3f);
+        scoreSummary23.setScoreType(ScoreType.USER_CATEGORY);
+        scoreSummary23.setFkId(2l);
+        scoreSummary23.setCutOffHistory(cutOffHistory);
+        scoreSummary23.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary23);
     }
 }

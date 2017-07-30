@@ -16,6 +16,7 @@ public class ScoreSummary implements Serializable{
     private String name;
     private Float score;
     private ScoreType scoreType;
+    private Long fkId;
     @ManyToOne
     private CutOffHistory cutOffHistory;
     @ManyToOne
@@ -51,6 +52,14 @@ public class ScoreSummary implements Serializable{
 
     public void setScoreType(ScoreType scoreType) {
         this.scoreType = scoreType;
+    }
+
+    public Long getFkId() {
+        return fkId;
+    }
+
+    public void setFkId(Long fkId) {
+        this.fkId = fkId;
     }
 
     public CutOffHistory getCutOffHistory() {
