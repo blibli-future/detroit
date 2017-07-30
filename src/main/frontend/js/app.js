@@ -7,6 +7,7 @@ import 'font-awesome/css/font-awesome.css';
 import 'jquery/dist/jquery.min.js';
 import '../css/app.css';
 import '../css/gantellela-theme.css';
+import '../css/gantellela-js.js';
 
 import Footer from './containers/Footer.js';
 import Sidebar from './containers/Sidebar.js';
@@ -17,6 +18,7 @@ import AgentList from './components/AgentList.js';
 import LoginPage from './components/LoginPage.js';
 import ReviewerList from './components/ReviewerList.js';
 import ReviewerDetail from './components/ReviewerDetail.js';
+import StatisticAll from './components/StatisticAll.js';
 
 class App extends React.Component {
 
@@ -34,6 +36,8 @@ class App extends React.Component {
               <Route path="/view/reviewer-list" component={ReviewerList} />
               <Route path="/view/agent/:reviewerId" component={ReviewerDetail} />
               <Route path="/view/login" component={LoginPage} />
+              <Route path="/view/statistic-all" component={StatisticAll} />
+
 
               <Footer />
             </div>

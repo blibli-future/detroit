@@ -4,6 +4,7 @@ import com.blibli.future.detroit.model.*;
 import com.blibli.future.detroit.model.response.AgentReviewNoteResponse;
 import com.blibli.future.detroit.model.response.StatisticDiagramIndividualResponse;
 import com.blibli.future.detroit.model.response.StatisticDiagramResponse;
+import com.blibli.future.detroit.model.response.StatisticDiagramResponseNew;
 import com.blibli.future.detroit.repository.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,60 @@ public class StatisticService {
     ParameterRepository parameterRepository;
     @Autowired
     CutOffRepository cutOffRepository;
+
+    public List<StatisticDiagramResponseNew> getCurrentAllStatisticDiagramNew() {
+        List<StatisticDiagramResponseNew> statisticDiagramResponseNews = new ArrayList<>();
+        StatisticDiagramResponseNew statisticDiagramResponseNew = new StatisticDiagramResponseNew();
+
+        LocalDate now = new LocalDate();
+        List<LocalDate> dates = new ArrayList<>();
+        Float parameterAvg = 0f;
+        Float parameterSum = 0f;
+        Integer parameterCount = 0;
+        Float categoryAvg = 0f;
+        Float categorySum = 0f;
+        Integer categoryCount = 0;
+
+        for(CutOffHistory cutOffHistory : cutOffRepository.findAll()) {
+            if(cutOffHistory.getEndInISOFormat() == null) {
+                continue;
+            } else {
+                if(cutOffHistory.getEnd().getYear() != now.getYear()) {
+                    continue;
+                } else {
+                    dates.add(cutOffHistory.getEnd());
+                }
+            }
+        }
+
+        for(Parameter parameter : parameterRepository.findAll()) {
+            for(Category category : parameter.getCategories()) {
+                for(CutOffHistory cutOffHistory : cutOffRepository.findAll()) {
+                    if(cutOffHistory.getEndInISOFormat() == null) {
+                        continue;
+                    } else {
+                        if(cutOffHistory.getEnd().getYear() != now.getYear()) {
+                            continue;
+                        } else {
+                            for(Review review : cutOffHistory.getReviews()) {
+                                if(review.getParameter() == parameter) {
+                                    parameterSum = parameterSum + review.getScore();
+                                    parameterCount++;
+
+                                    for(DetailReview detailReview : review.getDetailReview()) {
+                                        categorySum = categorySum + detailReview.getScore();
+                                        categoryCount++;
+                                    }
+                                }
+                            }
+                            parameterAvg = parameterSum / parameterCount;
+                            categoryAvg = categorySum / categoryCount;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public List<StatisticDiagramResponse> getCurrentAllStatisticDiagram() {
         List<StatisticDiagramResponse> statisticDiagramResponses = new ArrayList<>();

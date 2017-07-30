@@ -60,6 +60,8 @@ public class DataSeeder implements ApplicationRunner {
         CutOffHistory cutOffHistory1 = new CutOffHistory();
         LocalDate now = new LocalDate();
         cutOffHistory1.setBegin(now);
+        LocalDate end = new LocalDate(2017, 8, 1);
+        cutOffHistory1.setEnd(end);
         cutOffHistory1 = cutOffRepository.saveAndFlush(cutOffHistory1);
 
         AgentChannel agentChannel = new AgentChannel();
