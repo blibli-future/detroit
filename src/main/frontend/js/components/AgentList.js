@@ -87,7 +87,7 @@ class AgentList extends BaseDetroitComponent {
                     <p>Showing 10 of 300 Data</p>
                   </div>
                   <div className="nav navbar-right panel_toolbox">
-                    <a href="domino-form-insert-cs.html" className="btn btn-success">
+                    <a href="/view/create-agent" className="btn btn-success">
                       <i className="fa fa-plus-circle"></i>
                       Add Customer Service
                     </a>
