@@ -1,46 +1,30 @@
 import React from 'react';
-
-import BaseDetroitComponent from './BaseDetroitComponent';
 import { Link } from 'react-router-dom';
 
-class AgentDetail extends BaseDetroitComponent {
+import BaseDetroitComponent from '../BaseDetroitComponent';
+
+class UserDetail extends BaseDetroitComponent {
 
   constructor(props) {
     super(props);
-    this.state = {
-      agent: {}
-    };
-
-    this.getAgentData();
-  }
-
-  getAgentData() {
-    let component = this;
-    fetch('/api/v1/users/' + this.props.match.params.agentId, {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Basic '+btoa('agent@example.com:secret'),
-      },
-    }).then((response) => response.json())
-      .then((json) => {
-        component.setState({
-          agent: json.content
-        });
-      })
-
   }
 
   render() {
+    var opts = {};
+    if(!this.props.editMode) {
+      opts['readOnly'] = 'readOnly';
+    }
+
     return (
       <div className="right_col" role="main">
         <div className="">
           <div className="page-title">
             <div className="title_left">
-              <h3>Agent Detail</h3>
+              <h3>{ this.props.title }</h3>
             </div>
-
           </div>
-          <div className="clearfix"></div>
+
+          <div className="clearfix" />
           <div className="row">
             <div className="col-md-12 col-sm-12 col-xs-12">
               <div className="x_panel">
@@ -65,8 +49,9 @@ class AgentDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input type="text" required="required" name="fullname"
-                               className="form-control col-md-7 col-xs-12" readOnly
-                               value={ this.state.agent.fullname } />
+                               className="form-control col-md-7 col-xs-12" { ...opts }
+                               onChange={ this.props.onChange }
+                               value={ this.props.user.fullname } />
                       </div>
                     </div>
 
@@ -76,8 +61,9 @@ class AgentDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input type="text" name="nickname" required="required"
-                               className="form-control col-md-7 col-xs-12" readOnly
-                               value={ this.state.agent.nickname }/>
+                               className="form-control col-md-7 col-xs-12" { ...opts }
+                               onChange={ this.props.onChange }
+                               value={ this.props.user.nickname }/>
                       </div>
                     </div>
 
@@ -87,8 +73,9 @@ class AgentDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input className="form-control col-md-7 col-xs-12" type="email"
-                               name="email" readOnly
-                               value={ this.state.agent.email } />
+                               name="email" { ...opts }
+                               onChange={ this.props.onChange }
+                               value={ this.props.user.email } />
                       </div>
                     </div>
 
@@ -98,8 +85,9 @@ class AgentDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input id="phoneNumber" className="form-control col-md-7 col-xs-12"
-                               type="text" name="phonenumber" readOnly
-                               value={ this.state.agent.phoneNumber }/>
+                               type="text" name="phonenumber" { ...opts }
+                               onChange={ this.props.onChange }
+                               value={ this.props.user.phoneNumber }/>
                       </div>
                     </div>
 
@@ -109,70 +97,48 @@ class AgentDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input id="location" className="form-control col-md-7 col-xs-12"
-                               type="text" name="location" readOnly
-                               value={ this.state.agent.location }/>
+                               type="text" name="location" { ...opts }
+                               onChange={ this.props.onChange }
+                               value={ this.props.user.location }/>
                       </div>
                     </div>
 
-                    <div className="form-group">
-                      <label htmlFor="agentPosition" className="control-label col-md-3 col-sm-3 col-xs-12">
-                        Position
-                      </label>
-                      <div className="col-md-6 col-sm-6 col-xs-12">
-                        <input className="form-control col-md-7 col-xs-12"
-                               type="text" name="agentPosition" readOnly
-                               value={ this.state.agent.agentPosition } />
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="agentChannel" className="control-label col-md-3 col-sm-3 col-xs-12">
-                        Channel
-                      </label>
-                      <div className="col-md-6 col-sm-6 col-xs-12">
-                        <input className="form-control col-md-7 col-xs-12"
-                               type="text" name="agentChannel" readOnly
-                               value={ this.state.agent.agentChannel } />
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="teamLeader" className="control-label col-md-3 col-sm-3 col-xs-12">
-                        Team Leader
-                      </label>
-                      <div className="col-md-6 col-sm-6 col-xs-12">
-                        <input id="teamLeader" className="form-control col-md-7 col-xs-12"
-                               name="teamLeader" type="text" readOnly
-                               value={ this.state.agent.teamLeader } />
-                      </div>
-                    </div>
                     <div className="form-group">
                       <label className="control-label col-md-3 col-sm-3 col-xs-12">Gender</label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
-                        <select value={this.state.agent.gender} readOnly>
-                          <option value="MALE">Pria</option>
-                          <option value="FEMALE">Wanita</option>
+                        <select name="gender"
+                                value={ this.props.user.gender }
+                                onChange={ this.props.onChange }
+                                { ...opts }>
+                          <option value="PRIA">Pria</option>
+                          <option value="WANITA">Wanita</option>
                           <option value="UNSPECIFIED">-</option>
                         </select>
                       </div>
                     </div>
+
                     <div className="form-group">
                       <label className="control-label col-md-3 col-sm-3 col-xs-12">
                         Date Of Birth <span className="required">*</span>
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input className="date-picker form-control col-md-7 col-xs-12" required="required"
-                               name="dateOfBirth" type="text" readOnly
-                               value={ this.state.agent.dateOfBirth } />
+                               name="dateOfBirth" type="text" { ...opts }
+                               onChange={ this.props.onChange }
+                               value={ this.props.user.dateOfBirth } />
                       </div>
                     </div>
-                    <div className="ln_solid"></div>
+
+                    { this.props.children }
+
+                    <div className="ln_solid" />
                     <div className="form-group">
                       <div className="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                        <Link to="/view/agent-list" className="btn btn-default" >
+                        <Link to={ this.props.backLink } className="btn btn-default" >
                           Back
                         </Link>
-                        <button type="submit" className="btn btn-warning">Edit</button>
+                        <button className="btn btn-warning"
+                                onClick={ this.props.switchEditMode }>Edit</button>
                         <button type="submit" className="btn btn-danger">Delete</button>
                       </div>
                     </div>
@@ -188,4 +154,4 @@ class AgentDetail extends BaseDetroitComponent {
   }
 }
 
-export default AgentDetail;
+export default UserDetail;

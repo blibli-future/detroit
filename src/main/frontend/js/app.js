@@ -13,11 +13,11 @@ import Footer from './containers/Footer.js';
 import Sidebar from './containers/Sidebar.js';
 import TopNavigation from './containers/TopNavigation.js';
 
-import AgentDetail from './components/AgentDetail.js';
+import AgentDetail from './components/user/AgentDetail.js';
 import AgentList from './components/AgentList.js';
 import LoginPage from './components/LoginPage.js';
 import ReviewerList from './components/ReviewerList.js';
-import ReviewerDetail from './components/ReviewerDetail.js';
+import ReviewerDetail from './components/user/ReviewerDetail.js';
 import StatisticAll from './components/StatisticAll.js';
 
 class App extends React.Component {
@@ -31,12 +31,13 @@ class App extends React.Component {
               <Sidebar />
               <TopNavigation />
 
-              <Route path="/view/agent-list" component={AgentList} />
-              <Route path="/view/agent/:agentId" component={AgentDetail} />
-              <Route path="/view/reviewer-list" component={ReviewerList} />
-              <Route path="/view/agent/:reviewerId" component={ReviewerDetail} />
-              <Route path="/view/login" component={LoginPage} />
               <Route path="/view/statistic-all" component={StatisticAll} />
+              <Route exact path="/view/agent-list" component={AgentList} />
+              <Route exact path="/view/create-agent" component={AgentDetail} />
+              <Route exact path="/view/agent/:userId" component={AgentDetail} />
+              <Route exact path="/view/reviewer-list" component={ReviewerList} />
+              <Route exact path="/view/reviewer/:reviewerId" component={ReviewerDetail} />
+              <Route exact path="/view/login" component={LoginPage} />
 
 
               <Footer />
