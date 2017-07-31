@@ -31,6 +31,10 @@ public class StatisticService {
     ScoreSummaryRepository scoreSummaryRepository;
     @Autowired
     CutOffRepository cutOffRepository;
+    @Autowired
+    AgentChannelRepository agentChannelRepository;
+    @Autowired
+    AgentPositionRepository agentPositionRepository;
 
     public StatisticDiagramResponseNew getCurrentAllStatisticDiagram() {
         List<ParameterStatistic> parameterStatistics = new ArrayList<>();
@@ -122,6 +126,12 @@ public class StatisticService {
         }
 
         return new StatisticInfoResponse(totalAgent, totalScore, totalScoreDiff, parameterStatisticInfos);
+    }
+
+    public List<User> getTopAgent() {
+        AgentChannel agentChannel = agentChannelRepository.findOne(1l);
+        AgentPosition agentPosition = agentPositionRepository.findOne(1l);
+        return scoreSummaryRepository.topAgent(agentChannel.getId(), agentPosition.getId());
     }
 
     public StatisticInfoIndividual getIndividualStatisticInfo(Long agentId) {

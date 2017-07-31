@@ -2,6 +2,7 @@ package com.blibli.future.detroit.controller.api;
 
 import com.blibli.future.detroit.model.StatisticInfo;
 import com.blibli.future.detroit.model.StatisticInfoIndividual;
+import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.response.*;
 import com.blibli.future.detroit.service.StatisticService;
 import com.blibli.future.detroit.util.Constant;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @RestController
@@ -17,6 +19,7 @@ public class StatisticController {
     public static final String BASE_PATH = Constant.API_PATH_V1 + "/statistic";
     public static final String GET_ALL_STATISTIC_DATA = BASE_PATH;
     public static final String GET_ALL_STATISTIC_INFO = BASE_PATH + "/info";
+    public static final String GET_TOP_AGENT = BASE_PATH + "/agent";
     public static final String GET_INDIVIDUAL_STATISTIC_INFO = BASE_PATH + "/info" + "/{agentId}";
     public static final String GET_INDIVIDUAL_STATISTIC_DIAGRAM = BASE_PATH + "/{agentId}";
     public static final String GET_INDIVIDUAL_REVIEW_NOTE = BASE_PATH + "/review/note" + "/{agentId}";
@@ -32,6 +35,11 @@ public class StatisticController {
     @GetMapping(GET_ALL_STATISTIC_INFO)
     public BaseRestResponse<StatisticInfoResponse> getAllStatisticInfo() {
         return new BaseRestResponse<>(statisticService.getCurrentStatisticInfo());
+    }
+
+    @GetMapping(GET_TOP_AGENT)
+    public BaseRestListResponse<User> getTopAgent() {
+        return new BaseRestListResponse<>(statisticService.getTopAgent());
     }
 
     @GetMapping(GET_INDIVIDUAL_STATISTIC_INFO)

@@ -87,6 +87,10 @@ public class DataSeeder implements ApplicationRunner {
         agentChannel.setName("Chat");
         agentChannelRepository.save(agentChannel);
 
+        AgentChannel agentChannel2 = new AgentChannel();
+        agentChannel2.setName("Call");
+        agentChannelRepository.save(agentChannel2);
+
         AgentPosition agentPosition = new AgentPosition();
         agentPosition.setName("Inbound");
         agentPositionRepository.save(agentPosition);
@@ -115,7 +119,7 @@ public class DataSeeder implements ApplicationRunner {
         agent2.setGender(Gender.PRIA);
         agent2.setPassword("secret");
         agent2.setUserType(UserType.AGENT);
-        agent2.setAgentChannel(agentChannel);
+        agent2.setAgentChannel(agentChannel2);
         agent2.setAgentPosition(agentPosition);
         userRepository.save(agent2);
 

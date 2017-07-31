@@ -162,6 +162,71 @@ class StatisticAll extends BaseDetroitComponent {
           { this.parameterProps }
 
           { this.categoryProps }
+
+
+          <div className="row">
+            <div className="col-md-12">
+              <div className="x_panel">
+                <div className="x_title">
+                  <h2>Top 5 Customer Service of The Month <br/>
+                    <br/> Position : <br/>
+                    <select className="form-control">
+                      <option>Customer Resolution</option>
+                      <option>etc</option>
+                      <option>etc</option>
+                      <option>etc</option>
+                    </select>
+                    <br/> Channel :</h2>
+                  <select className="form-control">
+                    <option>Customer Resolution</option>
+                    <option>etc</option>
+                    <option>etc</option>
+                    <option>etc</option>
+                  </select>
+                  <br/>
+                <div className="clearfix"></div>
+                </div>
+                <div className="x_content">
+                  <article className="media event">
+                    <a className="pull-left date">
+                      <img src="https://qph.ec.quoracdn.net/main-qimg-220ae86dafbf81b8227586161b2aee61-c?convert_to_webp=true" width="43"/>
+                    </a>
+                    <div className="media-body">
+                      <a className="title">CS A1</a>
+                      <p>
+                        Technical : 50
+                      <br/>
+                        Services : 50
+                      <br/>
+                        Other : 50
+                      <br/>
+                        Total : 50
+                      </p>
+                    </div>
+                  </article>
+                  <article className="media event">
+                    <a className="pull-left date">
+                      <img src="https://qph.ec.quoracdn.net/main-qimg-220ae86dafbf81b8227586161b2aee61-c?convert_to_webp=true" width="43"/>
+                    </a>
+                    <div className="media-body">
+                      <a className="title">CS A1</a>
+                      <p>
+                        Technical : 50
+                      <br/>
+                        Services : 50
+                      <br/>
+                        Other : 50
+                      <br/>
+                        Total : 50
+                      </p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </div>
     );
