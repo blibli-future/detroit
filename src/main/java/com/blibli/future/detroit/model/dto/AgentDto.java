@@ -2,7 +2,9 @@ package com.blibli.future.detroit.model.dto;
 
 import com.blibli.future.detroit.model.User;
 
-public class AgentDto extends UserDto {
+import java.io.Serializable;
+
+public class AgentDto extends UserDto implements Serializable {
 
     String teamLeader;
     String agentChannel;
