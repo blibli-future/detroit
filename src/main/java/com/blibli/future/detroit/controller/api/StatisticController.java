@@ -25,8 +25,8 @@ public class StatisticController {
     StatisticService statisticService;
 
     @GetMapping(GET_ALL_STATISTIC_DATA)
-    public BaseRestListResponse<StatisticDiagramResponse> getAllStatisticData() {
-        return new BaseRestListResponse<>(statisticService.getCurrentAllStatisticDiagram());
+    public BaseRestResponse<StatisticDiagramResponseNew> getAllStatisticData() {
+        return new BaseRestResponse<>(statisticService.getCurrentAllStatisticDiagram());
     }
 
     @GetMapping(GET_ALL_STATISTIC_INFO)

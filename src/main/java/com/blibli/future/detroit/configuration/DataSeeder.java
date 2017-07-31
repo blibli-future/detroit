@@ -4,12 +4,10 @@ import com.blibli.future.detroit.model.*;
 import com.blibli.future.detroit.model.enums.ScoreType;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.repository.*;
-import org.apache.tomcat.jni.Local;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -56,32 +54,32 @@ public class DataSeeder implements ApplicationRunner {
     public void run(ApplicationArguments args) {
 
         CutOffHistory cutOffHistoryLama = new CutOffHistory();
-        cutOffHistoryLama.setBegin(new LocalDate(2017,1,1));
-        cutOffHistoryLama.setBegin(new LocalDate(2017,2,1));
+        cutOffHistoryLama.setBeginCutOff(new LocalDate(2017,1,1));
+        cutOffHistoryLama.setEndCutOff(new LocalDate(2017,2,1));
         cutOffHistoryLama = cutOffRepository.saveAndFlush(cutOffHistoryLama);
 
         CutOffHistory cutOffHistoryLama1 = new CutOffHistory();
-        cutOffHistoryLama1.setBegin(new LocalDate(2017,2,1));
-        cutOffHistoryLama1.setBegin(new LocalDate(2017,3,1));
+        cutOffHistoryLama1.setBeginCutOff(new LocalDate(2017,2,1));
+        cutOffHistoryLama1.setEndCutOff(new LocalDate(2017,3,1));
         cutOffHistoryLama1 = cutOffRepository.saveAndFlush(cutOffHistoryLama1);
 
         CutOffHistory cutOffHistoryLama2 = new CutOffHistory();
-        cutOffHistoryLama2.setBegin(new LocalDate(2017,3,1));
-        cutOffHistoryLama2.setBegin(new LocalDate(2017,4,1));
+        cutOffHistoryLama2.setBeginCutOff(new LocalDate(2017,3,1));
+        cutOffHistoryLama2.setEndCutOff(new LocalDate(2017,4,1));
         cutOffHistoryLama2 = cutOffRepository.saveAndFlush(cutOffHistoryLama2);
 
         CutOffHistory cutOffHistory = new CutOffHistory();
         LocalDate now1 = new LocalDate(2017, 4, 1);
         LocalDate end1 = new LocalDate();
-        cutOffHistory.setBegin(now1);
-        cutOffHistory.setEnd(end1);
+        cutOffHistory.setBeginCutOff(now1);
+        cutOffHistory.setEndCutOff(end1);
         cutOffHistory = cutOffRepository.saveAndFlush(cutOffHistory);
 
         CutOffHistory cutOffHistory1 = new CutOffHistory();
         LocalDate now = new LocalDate();
-        cutOffHistory1.setBegin(now);
+        cutOffHistory1.setBeginCutOff(now);
 //        LocalDate end = new LocalDate(2017, 8, 1);
-//        cutOffHistory1.setEnd(end);
+//        cutOffHistory1.setEndCutOff(end);
         cutOffHistory1 = cutOffRepository.saveAndFlush(cutOffHistory1);
 
         AgentChannel agentChannel = new AgentChannel();

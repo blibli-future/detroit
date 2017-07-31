@@ -1,7 +1,6 @@
 package com.blibli.future.detroit.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.tomcat.jni.Local;
 import org.joda.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -9,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,8 +15,8 @@ public class CutOffHistory implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
-    private LocalDate begin;
-    private LocalDate end;
+    private LocalDate beginCutOff;
+    private LocalDate endCutOff;
     @OneToMany
     private List<Review> reviews;
 
@@ -39,31 +37,31 @@ public class CutOffHistory implements Serializable {
     }
 
     @JsonIgnore
-    public LocalDate getBegin() {
-        return begin;
+    public LocalDate getBeginCutOff() {
+        return beginCutOff;
     }
 
-    public void setBegin(LocalDate begin) {
-        this.begin = begin;
+    public void setBeginCutOff(LocalDate beginCutOff) {
+        this.beginCutOff = beginCutOff;
     }
 
     @JsonIgnore
-    public LocalDate getEnd() {
-        return end;
+    public LocalDate getEndCutOff() {
+        return endCutOff;
     }
 
-    public void setEnd(LocalDate end) {
-        this.end = end;
+    public void setEndCutOff(LocalDate endCutOff) {
+        this.endCutOff = endCutOff;
     }
 
     public String getBeginInISOFormat() {
-        return this.begin.toString();
+        return this.beginCutOff.toString();
     }
 
     public String getEndInISOFormat() {
-        if(this.end == null) {
+        if(this.endCutOff == null) {
             return null;
         }
-        return this.end.toString();
+        return this.endCutOff.toString();
     }
 }

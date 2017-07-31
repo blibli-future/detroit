@@ -3,8 +3,6 @@ package com.blibli.future.detroit.service;
 import com.blibli.future.detroit.model.CutOffHistory;
 import com.blibli.future.detroit.model.response.CutOffResponse;
 import com.blibli.future.detroit.repository.CutOffRepository;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +24,7 @@ public class CutOffService {
     }
 
     public CutOffResponse getCurrentCutOff() {
-        CutOffHistory cutOffHistory = cutOffRepository.findByEndIsNull();
+        CutOffHistory cutOffHistory = cutOffRepository.findByEndCutOffIsNull();
         return new CutOffResponse(cutOffHistory);
     }
 }

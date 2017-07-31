@@ -1,6 +1,7 @@
 package com.blibli.future.detroit.model.response;
 
 import com.blibli.future.detroit.model.Parameter;
+import com.blibli.future.detroit.model.ParameterStatistic;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.joda.time.LocalDate;
 
@@ -11,9 +12,9 @@ public class StatisticDiagramResponseNew {
     private List<LocalDate> dates;
     private List<ParameterStatistic> parameter;
 
-    public StatisticDiagramResponseNew() {
-        this.dates = new ArrayList<>();
-        this.parameter = new ArrayList<>();
+    public StatisticDiagramResponseNew(List<LocalDate> dates, List<ParameterStatistic> parameter) {
+        this.dates = dates;
+        this.parameter = parameter;
     }
 
     @JsonIgnore
@@ -41,60 +42,4 @@ public class StatisticDiagramResponseNew {
         this.parameter = parameter;
     }
 
-    public void addParameter(String parameterName, Float score) {
-        ParameterStatistic parameterStatistic = new ParameterStatistic();
-        parameterStatistic.setName(parameterName);
-
-    }
-
-    class ParameterStatistic {
-        protected String name;
-        protected List<Float> scores;
-        protected List<CategoryStatistic> category;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public List<Float> getScores() {
-            return scores;
-        }
-
-        public void setScores(List<Float> scores) {
-            this.scores = scores;
-        }
-
-        public List<CategoryStatistic> getCategory() {
-            return category;
-        }
-
-        public void setCategory(List<CategoryStatistic> category) {
-            this.category = category;
-        }
-    }
-
-    class CategoryStatistic {
-        protected String name;
-        protected List<Float> scores;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public List<Float> getScores() {
-            return scores;
-        }
-
-        public void setScores(List<Float> scores) {
-            this.scores = scores;
-        }
-    }
 }
