@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import BaseDetroitComponent from './BaseDetroitComponent';
 
@@ -150,11 +151,11 @@ class ReviewerList_Row extends React.Component {
   }
 
   getUserDetailLink() {
-    return '/view/agent/' + this.props.user.id;
+    return '/view/reviewer/' + this.props.user.id;
   }
 
   getUserEditLink() {
-    return '/view/agent/' + this.props.user.id + '/edit';
+    return '/view/reviewer/' + this.props.user.id + '/edit';
   }
 
   render() {
@@ -166,18 +167,17 @@ class ReviewerList_Row extends React.Component {
         <td><a>{ this.props.user.email }</a></td>
         <td>
           <Link to={ this.getUserDetailLink() }
-                params={{agentId:this.props.user.id}}
                 className="btn btn-info btn-xs">
             Detail
           </Link>
-          <Link to={ this.getUserEditLink() }
-                className="btn btn-warning btn-xs">
-            Edit
-          </Link>
-          <button className="btn btn-danger btn-xs"
-                  onClick={ this.handleDeleteUser }>
-            Delete
-          </button>
+          {/*<Link to={ this.getUserEditLink() }*/}
+                {/*className="btn btn-warning btn-xs">*/}
+            {/*Edit*/}
+          {/*</Link>*/}
+          {/*<button className="btn btn-danger btn-xs"*/}
+                  {/*onClick={ this.handleDeleteUser }>*/}
+            {/*Delete*/}
+          {/*</button>*/}
         </td>
       </tr>
     );
