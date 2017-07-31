@@ -360,7 +360,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary.setName("Live Monitoring");
         scoreSummary.setScore(88.5f);
         scoreSummary.setScoreType(ScoreType.ALL_PARAMETER);
-        scoreSummary.setFkId(1l);
+        scoreSummary.setFkId(parameter.getId());
         scoreSummary.setCutOffHistory(cutOffHistoryLama);
         scoreSummaryRepository.save(scoreSummary);
 
@@ -368,7 +368,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary1.setName("Opening");
         scoreSummary1.setScore(80f);
         scoreSummary1.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary1.setFkId(1l);
+        scoreSummary1.setFkId(category.getId());
         scoreSummary1.setCutOffHistory(cutOffHistoryLama);
         scoreSummaryRepository.save(scoreSummary1);
 
@@ -376,7 +376,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary2.setName("Solution");
         scoreSummary2.setScore(90f);
         scoreSummary2.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary2.setFkId(2l);
+        scoreSummary2.setFkId(category1.getId());
         scoreSummary2.setCutOffHistory(cutOffHistoryLama);
         scoreSummaryRepository.save(scoreSummary2);
 
@@ -384,7 +384,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary24.setName("Best Conversation");
         scoreSummary24.setScore(71.2f);
         scoreSummary24.setScoreType(ScoreType.ALL_PARAMETER);
-        scoreSummary24.setFkId(2l);
+        scoreSummary24.setFkId(parameter1.getId());
         scoreSummary24.setCutOffHistory(cutOffHistoryLama);
         scoreSummaryRepository.save(scoreSummary24);
 
@@ -392,7 +392,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary25.setName("Opening");
         scoreSummary25.setScore(68f);
         scoreSummary25.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary25.setFkId(3l);
+        scoreSummary25.setFkId(category2.getId());
         scoreSummary25.setCutOffHistory(cutOffHistoryLama);
         scoreSummaryRepository.save(scoreSummary25);
 
@@ -400,7 +400,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary26.setName("Solution");
         scoreSummary26.setScore(70f);
         scoreSummary26.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary26.setFkId(4l);
+        scoreSummary26.setFkId(category3.getId());
         scoreSummary26.setCutOffHistory(cutOffHistoryLama);
         scoreSummaryRepository.save(scoreSummary26);
 
@@ -408,7 +408,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary3.setName("Live Monitoring");
         scoreSummary3.setScore(82.5f);
         scoreSummary3.setScoreType(ScoreType.USER_PARAMETER);
-        scoreSummary3.setFkId(1l);
+        scoreSummary3.setFkId(parameter.getId());
         scoreSummary3.setCutOffHistory(cutOffHistoryLama);
         scoreSummary3.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary3);
@@ -417,7 +417,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary4.setName("Opening");
         scoreSummary4.setScore(83f);
         scoreSummary4.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary4.setFkId(1l);
+        scoreSummary4.setFkId(category.getId());
         scoreSummary4.setCutOffHistory(cutOffHistoryLama);
         scoreSummary4.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary4);
@@ -426,7 +426,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary5.setName("Solution");
         scoreSummary5.setScore(84.7f);
         scoreSummary5.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary5.setFkId(2l);
+        scoreSummary5.setFkId(category1.getId());
         scoreSummary5.setCutOffHistory(cutOffHistoryLama);
         scoreSummary5.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary5);
@@ -435,7 +435,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary27.setName("Best Conversation");
         scoreSummary27.setScore(72.5f);
         scoreSummary27.setScoreType(ScoreType.USER_PARAMETER);
-        scoreSummary27.setFkId(2l);
+        scoreSummary27.setFkId(parameter1.getId());
         scoreSummary27.setCutOffHistory(cutOffHistoryLama);
         scoreSummary27.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary27);
@@ -444,7 +444,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary28.setName("Opening");
         scoreSummary28.setScore(62.3f);
         scoreSummary28.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary28.setFkId(3l);
+        scoreSummary28.setFkId(category2.getId());
         scoreSummary28.setCutOffHistory(cutOffHistoryLama);
         scoreSummary28.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary28);
@@ -453,7 +453,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary29.setName("Solution");
         scoreSummary29.setScore(67.4f);
         scoreSummary29.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary29.setFkId(4l);
+        scoreSummary29.setFkId(category3.getId());
         scoreSummary29.setCutOffHistory(cutOffHistoryLama);
         scoreSummary29.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary29);
@@ -470,7 +470,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary6.setName("Live Monitoring");
         scoreSummary6.setScore(75f);
         scoreSummary6.setScoreType(ScoreType.ALL_PARAMETER);
-        scoreSummary6.setFkId(1l);
+        scoreSummary6.setFkId(parameter.getId());
         scoreSummary6.setCutOffHistory(cutOffHistoryLama1);
         scoreSummaryRepository.save(scoreSummary6);
 
@@ -478,7 +478,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary7.setName("Opening");
         scoreSummary7.setScore(75.6f);
         scoreSummary7.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary7.setFkId(1l);
+        scoreSummary7.setFkId(category.getId());
         scoreSummary7.setCutOffHistory(cutOffHistoryLama1);
         scoreSummaryRepository.save(scoreSummary7);
 
@@ -486,7 +486,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary8.setName("Solution");
         scoreSummary8.setScore(80.2f);
         scoreSummary8.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary8.setFkId(2l);
+        scoreSummary8.setFkId(category1.getId());
         scoreSummary8.setCutOffHistory(cutOffHistoryLama1);
         scoreSummaryRepository.save(scoreSummary8);
 
@@ -494,7 +494,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary30.setName("Best Conversation");
         scoreSummary30.setScore(85.2f);
         scoreSummary30.setScoreType(ScoreType.ALL_PARAMETER);
-        scoreSummary30.setFkId(2l);
+        scoreSummary30.setFkId(parameter1.getId());
         scoreSummary30.setCutOffHistory(cutOffHistoryLama1);
         scoreSummaryRepository.save(scoreSummary30);
 
@@ -502,7 +502,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary31.setName("Opening");
         scoreSummary31.setScore(95.6f);
         scoreSummary31.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary31.setFkId(3l);
+        scoreSummary31.setFkId(category2.getId());
         scoreSummary31.setCutOffHistory(cutOffHistoryLama1);
         scoreSummaryRepository.save(scoreSummary31);
 
@@ -510,7 +510,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary32.setName("Solution");
         scoreSummary32.setScore(62.1f);
         scoreSummary32.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary32.setFkId(4l);
+        scoreSummary32.setFkId(category3.getId());
         scoreSummary32.setCutOffHistory(cutOffHistoryLama1);
         scoreSummaryRepository.save(scoreSummary32);
 
@@ -518,7 +518,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary9.setName("Live Monitoring");
         scoreSummary9.setScore(76.2f);
         scoreSummary9.setScoreType(ScoreType.USER_PARAMETER);
-        scoreSummary9.setFkId(1l);
+        scoreSummary9.setFkId(parameter.getId());
         scoreSummary9.setCutOffHistory(cutOffHistoryLama1);
         scoreSummary9.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary9);
@@ -527,7 +527,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary10.setName("Opening");
         scoreSummary10.setScore(73f);
         scoreSummary10.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary10.setFkId(1l);
+        scoreSummary10.setFkId(category.getId());
         scoreSummary10.setCutOffHistory(cutOffHistoryLama1);
         scoreSummary10.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary10);
@@ -536,7 +536,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary11.setName("Solution");
         scoreSummary11.setScore(77.3f);
         scoreSummary11.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary11.setFkId(2l);
+        scoreSummary11.setFkId(category1.getId());
         scoreSummary11.setCutOffHistory(cutOffHistoryLama1);
         scoreSummary11.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary11);
@@ -545,7 +545,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary33.setName("Best Conversation");
         scoreSummary33.setScore(62.6f);
         scoreSummary33.setScoreType(ScoreType.USER_PARAMETER);
-        scoreSummary33.setFkId(2l);
+        scoreSummary33.setFkId(parameter1.getId());
         scoreSummary33.setCutOffHistory(cutOffHistoryLama1);
         scoreSummary33.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary33);
@@ -554,7 +554,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary34.setName("Opening");
         scoreSummary34.setScore(53.2f);
         scoreSummary34.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary34.setFkId(3l);
+        scoreSummary34.setFkId(category2.getId());
         scoreSummary34.setCutOffHistory(cutOffHistoryLama1);
         scoreSummary34.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary34);
@@ -563,7 +563,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary35.setName("Solution");
         scoreSummary35.setScore(56.7f);
         scoreSummary35.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary35.setFkId(4l);
+        scoreSummary35.setFkId(category3.getId());
         scoreSummary35.setCutOffHistory(cutOffHistoryLama1);
         scoreSummary35.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary35);
@@ -580,7 +580,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary12.setName("Live Monitoring");
         scoreSummary12.setScore(92.4f);
         scoreSummary12.setScoreType(ScoreType.ALL_PARAMETER);
-        scoreSummary12.setFkId(1l);
+        scoreSummary12.setFkId(parameter.getId());
         scoreSummary12.setCutOffHistory(cutOffHistoryLama2);
         scoreSummaryRepository.save(scoreSummary12);
 
@@ -588,7 +588,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary13.setName("Opening");
         scoreSummary13.setScore(95.6f);
         scoreSummary13.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary13.setFkId(1l);
+        scoreSummary13.setFkId(category.getId());
         scoreSummary13.setCutOffHistory(cutOffHistoryLama2);
         scoreSummaryRepository.save(scoreSummary13);
 
@@ -596,7 +596,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary14.setName("Solution");
         scoreSummary14.setScore(90.2f);
         scoreSummary14.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary14.setFkId(2l);
+        scoreSummary14.setFkId(category1.getId());
         scoreSummary14.setCutOffHistory(cutOffHistoryLama2);
         scoreSummaryRepository.save(scoreSummary14);
 
@@ -604,7 +604,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary36.setName("Best Conversation");
         scoreSummary36.setScore(84.8f);
         scoreSummary36.setScoreType(ScoreType.ALL_PARAMETER);
-        scoreSummary36.setFkId(2l);
+        scoreSummary36.setFkId(parameter1.getId());
         scoreSummary36.setCutOffHistory(cutOffHistoryLama2);
         scoreSummaryRepository.save(scoreSummary36);
 
@@ -612,7 +612,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary37.setName("Opening");
         scoreSummary37.setScore(82.3f);
         scoreSummary37.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary37.setFkId(3l);
+        scoreSummary37.setFkId(category2.getId());
         scoreSummary37.setCutOffHistory(cutOffHistoryLama2);
         scoreSummaryRepository.save(scoreSummary37);
 
@@ -620,7 +620,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary38.setName("Solution");
         scoreSummary38.setScore(72.9f);
         scoreSummary38.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary38.setFkId(4l);
+        scoreSummary38.setFkId(category3.getId());
         scoreSummary38.setCutOffHistory(cutOffHistoryLama2);
         scoreSummaryRepository.save(scoreSummary38);
 
@@ -628,7 +628,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary15.setName("Live Monitoring");
         scoreSummary15.setScore(96.2f);
         scoreSummary15.setScoreType(ScoreType.USER_PARAMETER);
-        scoreSummary15.setFkId(1l);
+        scoreSummary15.setFkId(parameter.getId());
         scoreSummary15.setCutOffHistory(cutOffHistoryLama2);
         scoreSummary15.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary15);
@@ -637,7 +637,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary16.setName("Opening");
         scoreSummary16.setScore(93f);
         scoreSummary16.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary16.setFkId(1l);
+        scoreSummary16.setFkId(category.getId());
         scoreSummary16.setCutOffHistory(cutOffHistoryLama2);
         scoreSummary16.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary16);
@@ -646,7 +646,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary17.setName("Solution");
         scoreSummary17.setScore(97.3f);
         scoreSummary17.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary17.setFkId(2l);
+        scoreSummary17.setFkId(category1.getId());
         scoreSummary17.setCutOffHistory(cutOffHistoryLama2);
         scoreSummary17.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary17);
@@ -655,7 +655,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary39.setName("Best Conversation");
         scoreSummary39.setScore(86.2f);
         scoreSummary39.setScoreType(ScoreType.USER_PARAMETER);
-        scoreSummary39.setFkId(2l);
+        scoreSummary39.setFkId(parameter1.getId());
         scoreSummary39.setCutOffHistory(cutOffHistoryLama2);
         scoreSummary39.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary39);
@@ -664,7 +664,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary40.setName("Opening");
         scoreSummary40.setScore(83f);
         scoreSummary40.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary40.setFkId(3l);
+        scoreSummary40.setFkId(category2.getId());
         scoreSummary40.setCutOffHistory(cutOffHistoryLama2);
         scoreSummary40.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary40);
@@ -673,7 +673,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary41.setName("Solution");
         scoreSummary41.setScore(77.3f);
         scoreSummary41.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary41.setFkId(4l);
+        scoreSummary41.setFkId(category3.getId());
         scoreSummary41.setCutOffHistory(cutOffHistoryLama2);
         scoreSummary41.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary41);
@@ -690,7 +690,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary18.setName("Live Monitoring");
         scoreSummary18.setScore(62.4f);
         scoreSummary18.setScoreType(ScoreType.ALL_PARAMETER);
-        scoreSummary18.setFkId(1l);
+        scoreSummary18.setFkId(parameter.getId());
         scoreSummary18.setCutOffHistory(cutOffHistory);
         scoreSummaryRepository.save(scoreSummary18);
 
@@ -698,7 +698,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary19.setName("Opening");
         scoreSummary19.setScore(65.6f);
         scoreSummary19.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary19.setFkId(1l);
+        scoreSummary19.setFkId(category.getId());
         scoreSummary19.setCutOffHistory(cutOffHistory);
         scoreSummaryRepository.save(scoreSummary19);
 
@@ -706,7 +706,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary20.setName("Solution");
         scoreSummary20.setScore(70.2f);
         scoreSummary20.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary20.setFkId(2l);
+        scoreSummary20.setFkId(category1.getId());
         scoreSummary20.setCutOffHistory(cutOffHistory);
         scoreSummaryRepository.save(scoreSummary20);
 
@@ -714,7 +714,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary42.setName("Best Conversation");
         scoreSummary42.setScore(74.2f);
         scoreSummary42.setScoreType(ScoreType.ALL_PARAMETER);
-        scoreSummary42.setFkId(2l);
+        scoreSummary42.setFkId(parameter1.getId());
         scoreSummary42.setCutOffHistory(cutOffHistory);
         scoreSummaryRepository.save(scoreSummary42);
 
@@ -722,7 +722,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary43.setName("Opening");
         scoreSummary43.setScore(75.6f);
         scoreSummary43.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary43.setFkId(3l);
+        scoreSummary43.setFkId(category2.getId());
         scoreSummary43.setCutOffHistory(cutOffHistory);
         scoreSummaryRepository.save(scoreSummary43);
 
@@ -730,7 +730,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary44.setName("Solution");
         scoreSummary44.setScore(80.2f);
         scoreSummary44.setScoreType(ScoreType.ALL_CATEGORY);
-        scoreSummary44.setFkId(4l);
+        scoreSummary44.setFkId(category3.getId());
         scoreSummary44.setCutOffHistory(cutOffHistory);
         scoreSummaryRepository.save(scoreSummary44);
 
@@ -738,7 +738,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary21.setName("Live Monitoring");
         scoreSummary21.setScore(66.2f);
         scoreSummary21.setScoreType(ScoreType.USER_PARAMETER);
-        scoreSummary21.setFkId(1l);
+        scoreSummary21.setFkId(parameter.getId());
         scoreSummary21.setCutOffHistory(cutOffHistory);
         scoreSummary21.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary21);
@@ -747,7 +747,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary22.setName("Opening");
         scoreSummary22.setScore(63f);
         scoreSummary22.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary22.setFkId(1l);
+        scoreSummary22.setFkId(category.getId());
         scoreSummary22.setCutOffHistory(cutOffHistory);
         scoreSummary22.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary22);
@@ -756,7 +756,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary23.setName("Solution");
         scoreSummary23.setScore(67.3f);
         scoreSummary23.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary23.setFkId(2l);
+        scoreSummary23.setFkId(category1.getId());
         scoreSummary23.setCutOffHistory(cutOffHistory);
         scoreSummary23.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary23);
@@ -765,7 +765,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary45.setName("Best Conversation");
         scoreSummary45.setScore(86.2f);
         scoreSummary45.setScoreType(ScoreType.USER_PARAMETER);
-        scoreSummary45.setFkId(2l);
+        scoreSummary45.setFkId(parameter1.getId());
         scoreSummary45.setCutOffHistory(cutOffHistory);
         scoreSummary45.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary45);
@@ -774,7 +774,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary46.setName("Opening");
         scoreSummary46.setScore(83.5f);
         scoreSummary46.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary46.setFkId(3l);
+        scoreSummary46.setFkId(category2.getId());
         scoreSummary46.setCutOffHistory(cutOffHistory);
         scoreSummary46.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary46);
@@ -783,7 +783,7 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary47.setName("Solution");
         scoreSummary47.setScore(87.3f);
         scoreSummary47.setScoreType(ScoreType.USER_CATEGORY);
-        scoreSummary47.setFkId(4l);
+        scoreSummary47.setFkId(category3.getId());
         scoreSummary47.setCutOffHistory(cutOffHistory);
         scoreSummary47.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary47);
