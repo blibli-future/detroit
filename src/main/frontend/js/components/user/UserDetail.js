@@ -27,8 +27,13 @@ class UserDetail extends BaseDetroitComponent {
           Back
         </Link>
         <button className="btn btn-warning"
-                onClick={this.props.switchEditMode}>Edit</button>
-        <button type="submit" className="btn btn-danger">Delete User</button>
+                onClick={this.props.switchEditMode}>
+          Edit
+        </button>
+        <button type="submit" className="btn btn-danger"
+                onClick={ this.props.deleteUser }>
+          Delete User
+        </button>
       </div>
     );
 

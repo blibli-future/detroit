@@ -1,9 +1,9 @@
 package com.blibli.future.detroit.service;
 
-import com.blibli.future.detroit.model.AgentChannel;
 import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.UserRole;
 import com.blibli.future.detroit.model.dto.AgentDto;
+import com.blibli.future.detroit.model.dto.ReviewerDto;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
 import com.blibli.future.detroit.repository.AgentChannelRepository;
@@ -77,9 +77,8 @@ public class UserService {
     }
 
     public User updateAgent(Long agentId, AgentDto request) {
-        User agent = modelMapper.modelMapper()
-            .map(request, User.class);
-        System.out.println(request.getAgentChannel());
+        User agent = userRepository.getOne(request.getId());
+        modelMapper.modelMapper().map(request, agent);
         agent.setAgentChannel(
             agentChannelRepository.findByName(request.getAgentChannel()));
         agent.setAgentPosition(
@@ -87,5 +86,13 @@ public class UserService {
         userRepository.saveAndFlush(agent);
 
         return agent;
+    }
+
+    public User updateReviewer(ReviewerDto request) {
+        User reviewer = userRepository.getOne(request.getId());
+        modelMapper.modelMapper().map(request, reviewer);
+        userRepository.saveAndFlush(reviewer);
+
+        return reviewer;
     }
 }

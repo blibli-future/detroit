@@ -15,6 +15,7 @@ class AgentDetail extends BaseDetroitComponent {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.switchEditMode = this.switchEditMode.bind(this);
     this.saveEditData = this.saveEditData.bind(this);
+    this.deleteUser = this.deleteUser.bind(this);
   }
 
   componentDidMount(){
@@ -36,13 +37,24 @@ class AgentDetail extends BaseDetroitComponent {
 
   saveEditData(event) {
     event.preventDefault();
-    return this.auth.apiCall('/api/v1/users/agent/' + this.state.user.id, {
+    return this.auth.apiCall('/api/v1/users/reviewer/' + this.state.user.id, {
       method: 'PATCH',
       body: JSON.stringify(this.state.user)
     }).then((response) => response.json())
       .then((json) => {
         return json.content;
       }).bind(this)
+  }
+
+  deleteUser(event) {
+    event.preventDefault();
+    this.auth.apiCall('/api/v1/users/' + this.state.user.id, {
+      method: 'DELETE'
+    }).then((response) => {
+      if (response.status) {
+        window.location.assign("/view/agent-list");
+      }
+    });
   }
 
   handleInputChange(event) {
@@ -71,13 +83,14 @@ class AgentDetail extends BaseDetroitComponent {
     }
 
     return (
-      <UserDetail title="Agent Detail"
-                  backLink="/view/agent-list"
+      <UserDetail title="Reviewer Detail"
+                  backLink="/view/reviewer-list"
                   user={ this.state.user }
                   editMode={ this.state.editMode }
                   switchEditMode={ this.switchEditMode }
                   onChange={ this.handleInputChange }
                   saveEditData={ this.saveEditData }
+                  deleteUser={ this.deleteUser }
                   { ...this.props }>
         <div className="form-group">
           <label htmlFor="agentPosition" className="control-label col-md-3 col-sm-3 col-xs-12">

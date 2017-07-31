@@ -4,6 +4,8 @@ import com.blibli.future.detroit.model.User;
 
 public class ReviewerDto extends UserDto {
 
+    public ReviewerDto() {}
+
     public ReviewerDto(User user) {
         super(user);
     }
