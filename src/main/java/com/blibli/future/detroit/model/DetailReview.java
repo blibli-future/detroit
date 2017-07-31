@@ -1,6 +1,8 @@
 package com.blibli.future.detroit.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,12 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Entity
-public class DetailReview implements Serializable {
+@SQLDelete(sql =
+    "UPDATE detail_review " +
+    "SET deleted = true " +
+     "WHERE id = ?")
+@Where(clause = "deleted=false")
+public class DetailReview extends BaseModel implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

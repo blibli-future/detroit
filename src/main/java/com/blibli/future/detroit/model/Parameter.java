@@ -1,13 +1,20 @@
 package com.blibli.future.detroit.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Parameter implements Serializable {
+@SQLDelete(sql =
+    "UPDATE parameter " +
+    "SET deleted = true " +
+    "WHERE id = ?")
+@Where(clause = "deleted=false")
+public class Parameter extends BaseModel implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

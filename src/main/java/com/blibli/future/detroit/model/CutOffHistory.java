@@ -1,6 +1,8 @@
 package com.blibli.future.detroit.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.joda.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -11,7 +13,12 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class CutOffHistory implements Serializable {
+@SQLDelete(sql =
+    "UPDATE cut_off_history " +
+    "SET deleted = true " +
+    "WHERE id = ?")
+@Where(clause = "deleted=false")
+public class CutOffHistory extends BaseModel implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

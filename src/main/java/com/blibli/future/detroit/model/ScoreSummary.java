@@ -1,6 +1,8 @@
 package com.blibli.future.detroit.model;
 
 import com.blibli.future.detroit.model.enums.ScoreType;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,12 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Entity
-public class ScoreSummary implements Serializable{
+@SQLDelete(sql =
+    "UPDATE score_summary " +
+    "SET deleted = true " +
+    "WHERE id = ?")
+@Where(clause = "deleted=false")
+public class ScoreSummary extends BaseModel implements Serializable{
     @Id
     @GeneratedValue
     private Long id;

@@ -1,5 +1,8 @@
 package com.blibli.future.detroit.model;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -8,7 +11,12 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class AgentPosition implements Serializable {
+@SQLDelete(sql =
+    "UPDATE agent_position " +
+    "SET deleted = true " +
+    "WHERE id = ?")
+@Where(clause = "deleted=false")
+public class AgentPosition extends BaseModel implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

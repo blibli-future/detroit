@@ -3,6 +3,8 @@ package com.blibli.future.detroit.model;
 
 import com.blibli.future.detroit.model.enums.Gender;
 import com.blibli.future.detroit.model.enums.UserType;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -15,7 +17,12 @@ import java.util.Set;
 
 @Entity
 @Table(name = "detroit_users")
-public class User implements Serializable {
+@SQLDelete(sql =
+    "UPDATE detroit_users " +
+    "SET deleted = true " +
+    "WHERE id = ?")
+@Where(clause = "deleted=false")
+public class User extends BaseModel implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
