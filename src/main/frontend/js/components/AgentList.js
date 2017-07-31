@@ -172,14 +172,14 @@ class AgentOverview_Row extends React.Component {
                 className="btn btn-info btn-xs">
             Detail
           </Link>
-          <Link to={ this.getUserEditLink() }
-                className="btn btn-warning btn-xs">
-            Edit
-          </Link>
-          <button className="btn btn-danger btn-xs"
-             onClick={ this.handleDeleteUser }>
-            Delete
-          </button>
+          {/*<Link to={ this.getUserEditLink() }*/}
+                {/*className="btn btn-warning btn-xs">*/}
+            {/*Edit*/}
+          {/*</Link>*/}
+          {/*<button className="btn btn-danger btn-xs"*/}
+             {/*onClick={ this.handleDeleteUser }>*/}
+            {/*Delete*/}
+          {/*</button>*/}
         </td>
       </tr>
     );
