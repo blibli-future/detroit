@@ -1,3 +1,10 @@
 h1 {
     background-color: blueviolet;
 }
+
+.filter.pull-right {
+    background: #fff;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ccc
+}
