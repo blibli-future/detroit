@@ -40,8 +40,6 @@ public class StatisticService {
 
         LocalDate now = new LocalDate();
 
-        System.out.println(now.getYear());
-
         for(CutOffHistory cutOffHistory : cutOffRepository.findAll()) {
             if(cutOffHistory.getEndInISOFormat() != null) {
                 if(cutOffHistory.getEndCutOff().getYear() == now.getYear()) {
@@ -51,9 +49,15 @@ public class StatisticService {
             }
         }
         for(Parameter parameter : parameterRepository.findAll()) {
+            parameterScore = new ArrayList<>();
+            categoryStatistics = new ArrayList<>();
             for(Category category : parameter.getCategories()) {
+                parameterScore = new ArrayList<>();
                 for(CutOffHistory cutOffHistory : cutOffHistories) {
                     for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(cutOffHistory)) {
+                        if (parameter.getName() == scoreSummary.getName() && parameter.getId() == scoreSummary.getFkId() && scoreSummary.getAgent() == null) {
+                            parameterScore.add(scoreSummary.getScore());
+                        }
                         if (category.getName() == scoreSummary.getName() && category.getId() == scoreSummary.getFkId() && scoreSummary.getAgent() == null) {
                             categoryScore.add(scoreSummary.getScore());
                         }
@@ -62,19 +66,20 @@ public class StatisticService {
                 categoryStatistics.add(new CategoryStatistic(category.getName(), categoryScore));
                 categoryScore = new ArrayList<>();
             }
+            parameterStatistics.add(new ParameterStatistic(parameter.getName(), parameterScore, categoryStatistics));
         }
 
-        for(Parameter parameter : parameterRepository.findAll()) {
-                for(CutOffHistory cutOffHistory : cutOffHistories) {
-                    for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(cutOffHistory)) {
-                        if (parameter.getName() == scoreSummary.getName() && parameter.getId() == scoreSummary.getFkId() && scoreSummary.getAgent() == null) {
-                            parameterScore.add(scoreSummary.getScore());
-                        }
-                    }
-                }
-            parameterStatistics.add(new ParameterStatistic(parameter.getName(), parameterScore, categoryStatistics));
-            parameterScore = new ArrayList<>();
-        }
+//        for(Parameter parameter : parameterRepository.findAll()) {
+//                for(CutOffHistory cutOffHistory : cutOffHistories) {
+//                    for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(cutOffHistory)) {
+//                        if (parameter.getName() == scoreSummary.getName() && parameter.getId() == scoreSummary.getFkId() && scoreSummary.getAgent() == null) {
+//                            parameterScore.add(scoreSummary.getScore());
+//                        }
+//                    }
+//                }
+//
+//            parameterScore = new ArrayList<>();
+//        }
 
         return new StatisticDiagramResponseNew(dates, parameterStatistics);
     }

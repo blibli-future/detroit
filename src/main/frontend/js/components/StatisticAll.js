@@ -11,7 +11,8 @@ class StatisticAll extends BaseDetroitComponent {
     this.state = {
       allStatistic: []
     };
-    this.chartProps = [];
+    this.parameterProps = [];
+    this.categoryProps = [];
     this.getStatisticData()
   }
 
@@ -27,30 +28,76 @@ class StatisticAll extends BaseDetroitComponent {
       });
   }
 
-  componentDidMount() {
+  hashCode(str) { // java String#hashCode
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash;
   }
 
-  render() {
-    let component = this;
-    component.state.allStatistic.forEach((item,index)=> {
-      let xAxis = [];
-      let score = [];
-      item['value'].forEach((item, index) => {
-        xAxis.push(item['dateInISOFormat']);
-        score.push(item['score']);
-      });
-      let datasets = [{
-        label: item["parameter"],
-        data: score,
-        backgroundColor: [
-          'rgba(255,99,132, 0.6)'
-        ]
-      }];
+  intToRGB(i){
+    var c = (i & 0x00FFFFFF)
+      .toString(16)
+      .toUpperCase();
 
-      component.chartProps.push(
-        <TotalStatistic title={item["parameter"]} labels={xAxis} datasets={datasets} />
+    return "00000".substring(0, 6 - c.length) + c;
+  }
+
+  hexToRgbA(hex){
+    var c;
+    if(/^([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+      c= hex.substring(1).split('');
+      if(c.length== 3){
+        c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+      }
+      c= '0x'+c.join('');
+      return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.6)';
+    }
+    throw new Error('Bad Hex');
+  }
+
+  generateRandomColor(str) {
+    return this.hexToRgbA(this.intToRGB(this.hashCode(str)))
+  }
+
+
+  render() {
+    let component = this
+    if(this.state.allStatistic.length != 0) {
+      let xAxis = component.state.allStatistic['dateInISOFormat'];
+      let parameterDatasets = [];
+      component.state.allStatistic['parameter'].forEach((item,index)=> {
+        let categoryDatasets = [];
+        parameterDatasets.push({
+          label: item["name"],
+          data: item['scores'],
+          backgroundColor: [
+            component.generateRandomColor(item['name'])
+          ]
+        })
+
+        item['category'].forEach((item, index)=> {
+          categoryDatasets.push({
+            label: item['name'],
+            data: item['scores'],
+            backgroundColor: [
+              component.generateRandomColor(item['name'])
+              ]
+          })
+        })
+
+        component.categoryProps.push(
+          <TotalStatistic key={item['name']} title={item['name']} labels={xAxis} datasets={categoryDatasets} />
+        )
+
+      })
+
+      component.parameterProps.push(
+        <TotalStatistic key={"All"} title={"All"} labels={xAxis} datasets={parameterDatasets} />
       )
-    })
+    }
+
     return (
       <div className="right_col" role="main">
         <div className="">
@@ -95,7 +142,9 @@ class StatisticAll extends BaseDetroitComponent {
             </div>
           </div>
 
-          { this.chartProps }
+          { this.parameterProps }
+
+          { this.categoryProps }
         </div>
       </div>
     );
