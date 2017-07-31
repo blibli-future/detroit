@@ -30,7 +30,7 @@ public class StatisticController {
     }
 
     @GetMapping(GET_ALL_STATISTIC_INFO)
-    public BaseRestResponse<StatisticInfo> getAllStatisticInfo() {
+    public BaseRestResponse<StatisticInfoResponse> getAllStatisticInfo() {
         return new BaseRestResponse<>(statisticService.getCurrentStatisticInfo());
     }
 

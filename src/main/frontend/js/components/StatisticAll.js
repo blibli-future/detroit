@@ -9,11 +9,20 @@ class StatisticAll extends BaseDetroitComponent {
   constructor(props) {
     super(props);
     this.state = {
-      allStatistic: []
+      allStatistic: [],
+      allInfo: {
+        totalAgent: 0,
+        finalScore: 0,
+        diffFinalScore: 0,
+        parameters: []
+      }
     };
+    this.getStatisticInfo();
+
+    this.totalProps = [];
     this.parameterProps = [];
     this.categoryProps = [];
-    this.getStatisticData()
+    this.getStatisticData();
   }
 
   getStatisticData() {
@@ -24,6 +33,18 @@ class StatisticAll extends BaseDetroitComponent {
       .then((json) => {
         component.setState({
           allStatistic: json.content
+        });
+      });
+  }
+
+  getStatisticInfo() {
+    let component = this;
+    return this.auth.apiCall('/api/v1/statistic/info', {
+      method: 'GET'
+    }).then((response) => response.json())
+      .then((json) => {
+        component.setState({
+          allInfo: json.content
         });
       });
   }
@@ -65,6 +86,13 @@ class StatisticAll extends BaseDetroitComponent {
   render() {
     let component = this
     if(this.state.allStatistic.length != 0) {
+      let totalDatasets = [{
+        label: "Total Review Score",
+        data: component.state.allStatistic['scores'],
+        backgroundColor: [
+          component.generateRandomColor("Total Review Score")
+        ]
+      }]
       let xAxis = component.state.allStatistic['dateInISOFormat'];
       let parameterDatasets = [];
       component.state.allStatistic['parameter'].forEach((item,index)=> {
@@ -93,54 +121,43 @@ class StatisticAll extends BaseDetroitComponent {
 
       })
 
+      component.totalProps.push(
+        <TotalStatistic key={"Total"} title={"Total"} labels={xAxis} datasets={totalDatasets} />
+      )
+
       component.parameterProps.push(
         <TotalStatistic key={"All"} title={"All"} labels={xAxis} datasets={parameterDatasets} />
       )
     }
+
+    let parameterInfo = [];
+    if(this.state.allInfo.length != 0) {
+      this.state.allInfo['parameters'].forEach((item, index)=> {
+        parameterInfo.push(
+          <StatisticInfo title={ item['name'] } score={ item['score'] } diff={ item['diffScore'] }  />
+        )
+      })
+    }
+
 
     return (
       <div className="right_col" role="main">
         <div className="">
           <div className="page-title">
             <div className="title_left">
-              <h3>Test Statistic All</h3>
+              <h3>All Statistic</h3>
             </div>
           </div>
 
           <div className="clearfix"></div>
 
           <div className="row tile_count">
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span className="count_top"><i className="fa fa-user"></i> Total Customer Service</span>
-              <div className="count green">2502</div>
-              <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i> +5 </i>From last Month</span>
-            </div>
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span className="count_top"><i className="fa fa-clock-o"></i> Total Value Avg</span>
-              <div className="count green">92</div>
-              <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>5% </i> From last Month</span>
-            </div>
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span className="count_top"><i className="fa fa-user"></i> Technical Review Avg</span>
-              <div className="count red">68</div>
-              <span className="count_bottom"><i className="red"><i className="fa fa-sort-desc"></i>8% </i> From last Month</span>
-            </div>
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span className="count_top"><i className="fa fa-user"></i> Services Review Avg</span>
-              <div className="count">85</div>
-              <span className="count_bottom">Same with last Month</span>
-            </div>
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span className="count_top"><i className="fa fa-user"></i> Other Review Avg</span>
-              <div className="count green">78</div>
-              <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>2% </i> From last Month</span>
-            </div>
-            <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span className="count_top"><i className="fa fa-user"></i> ... Review Avg</span>
-              <div className="count">-</div>
-              <span className="count_bottom">-</span>
-            </div>
+            <StatisticInfo title="Total Agent" score={ this.state.allInfo['totalAgent'] } />
+            <StatisticInfo title="Total Review Score" score={ this.state.allInfo['finalScore'] } diff={ this.state.allInfo['diffFinalScore'] }  />
+            { parameterInfo }
           </div>
+
+          { this.totalProps }
 
           { this.parameterProps }
 
@@ -151,11 +168,11 @@ class StatisticAll extends BaseDetroitComponent {
   }
 }
 
-class TotalStatistic extends React.Component{
+class TotalStatistic extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      chartData:{
+      chartData: {
         labels: this.props.labels,
         datasets: this.props.datasets
       }
@@ -168,13 +185,15 @@ class TotalStatistic extends React.Component{
         <div className="col-md-12">
           <div className="x_panel">
             <div className="x_title">
-              <h2>{ this.props.title } Review Parameter Summary <small>Annual progress</small></h2>
-              <div className="filter">
-                <div id="reportrange" className="pull-right">
-                  <i className="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                  <span>December 30, 2014 - January 28, 2015</span> <b className="caret"></b>
-                </div>
-              </div>
+              <h2>{this.props.title} Review Summary
+                <small>Annual progress</small>
+              </h2>
+              {/*<div className="filter">*/}
+              {/*<div id="reportrange" className="pull-right">*/}
+              {/*<i className="glyphicon glyphicon-calendar fa fa-calendar"></i>*/}
+              {/*<span>December 30, 2014 - January 28, 2015</span> <b className="caret"></b>*/}
+              {/*</div>*/}
+              {/*</div>*/}
               <div className="clearfix"></div>
             </div>
             <br/>
@@ -182,8 +201,8 @@ class TotalStatistic extends React.Component{
               <Line
                 data={this.state.chartData}
                 options={{
-                maintainAspectRatio: false
-              }}
+                  maintainAspectRatio: false
+                }}
               />
             </div>
           </div>
@@ -192,5 +211,40 @@ class TotalStatistic extends React.Component{
     );
   }
 }
+
+
+class StatisticInfo extends React.Component {
+    constructor(props) {
+      super(props);
+    }
+
+    render() {
+      var status;
+    if(this.props.diff) {
+      if(this.props.diff > 0) {
+        status = (
+          <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i> +{ this.props.diff } </i>From last Month</span>
+        );
+      } else if(this.props.diff < 0) {
+        status = (
+          <span className="count_bottom"><i className="red"><i className="fa fa-sort-desc"></i> { this.props.diff } </i>From last Month</span>
+        );
+      } else {
+        status = (
+          <span className="count_bottom">Same with last Month</span>
+        );
+      }
+    }
+      return (
+        <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+          <span className="count_top"><i className="fa fa-user"></i> { this.props.title } </span>
+          <div className="count">{ this.props.score }</div>
+          { status }
+        </div>
+      );
+    }
+}
+
+
 
 export default StatisticAll;

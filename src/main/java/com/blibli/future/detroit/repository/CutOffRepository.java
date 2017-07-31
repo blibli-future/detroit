@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface CutOffRepository extends JpaRepository<CutOffHistory, Long> {
     CutOffHistory findByEndCutOffIsNull();
     CutOffHistory findByEndCutOff(LocalDate endDate);
+    CutOffHistory findByBeginCutOff(LocalDate endDate);
 }

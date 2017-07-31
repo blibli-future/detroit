@@ -344,6 +344,13 @@ public class DataSeeder implements ApplicationRunner {
         cutOffHistory1.setReviews(reviews2);
         cutOffRepository.save(cutOffHistory1);
 
+        ScoreSummary scoreSummary48 = new ScoreSummary();
+        scoreSummary48.setName("Final Score");
+        scoreSummary48.setScore(82.5f);
+        scoreSummary48.setScoreType(ScoreType.TOTAL_REVIEW);
+        scoreSummary48.setCutOffHistory(cutOffHistoryLama);
+        scoreSummaryRepository.save(scoreSummary48);
+
         ScoreSummary scoreSummary = new ScoreSummary();
         scoreSummary.setName("Live Monitoring");
         scoreSummary.setScore(88.5f);
@@ -446,6 +453,13 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary29.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary29);
 
+
+        ScoreSummary scoreSummary49 = new ScoreSummary();
+        scoreSummary49.setName("Final Score");
+        scoreSummary49.setScore(72.5f);
+        scoreSummary49.setScoreType(ScoreType.TOTAL_REVIEW);
+        scoreSummary49.setCutOffHistory(cutOffHistoryLama1);
+        scoreSummaryRepository.save(scoreSummary49);
 
         ScoreSummary scoreSummary6 = new ScoreSummary();
         scoreSummary6.setName("Live Monitoring");
@@ -550,6 +564,13 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummaryRepository.save(scoreSummary35);
 
 
+        ScoreSummary scoreSummary50 = new ScoreSummary();
+        scoreSummary50.setName("Final Score");
+        scoreSummary50.setScore(77.9f);
+        scoreSummary50.setScoreType(ScoreType.TOTAL_REVIEW);
+        scoreSummary50.setCutOffHistory(cutOffHistoryLama2);
+        scoreSummaryRepository.save(scoreSummary50);
+
         ScoreSummary scoreSummary12 = new ScoreSummary();
         scoreSummary12.setName("Live Monitoring");
         scoreSummary12.setScore(92.4f);
@@ -652,6 +673,13 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary41.setAgent(agent);
         scoreSummaryRepository.save(scoreSummary41);
 
+
+        ScoreSummary scoreSummary51 = new ScoreSummary();
+        scoreSummary51.setName("Final Score");
+        scoreSummary51.setScore(85.7f);
+        scoreSummary51.setScoreType(ScoreType.TOTAL_REVIEW);
+        scoreSummary51.setCutOffHistory(cutOffHistory);
+        scoreSummaryRepository.save(scoreSummary51);
 
         ScoreSummary scoreSummary18 = new ScoreSummary();
         scoreSummary18.setName("Live Monitoring");

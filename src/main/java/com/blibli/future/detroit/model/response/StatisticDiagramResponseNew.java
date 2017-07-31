@@ -10,10 +10,12 @@ import java.util.List;
 
 public class StatisticDiagramResponseNew {
     private List<LocalDate> dates;
+    private List<Float> scores;
     private List<ParameterStatistic> parameter;
 
-    public StatisticDiagramResponseNew(List<LocalDate> dates, List<ParameterStatistic> parameter) {
+    public StatisticDiagramResponseNew(List<LocalDate> dates, List<Float> scores, List<ParameterStatistic> parameter) {
         this.dates = dates;
+        this.scores = scores;
         this.parameter = parameter;
     }
 
@@ -32,6 +34,14 @@ public class StatisticDiagramResponseNew {
 
     public void setDates(List<LocalDate> dates) {
         this.dates = dates;
+    }
+
+    public List<Float> getScores() {
+        return scores;
+    }
+
+    public void setScores(List<Float> scores) {
+        this.scores = scores;
     }
 
     public List<ParameterStatistic> getParameter() {

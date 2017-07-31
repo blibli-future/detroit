@@ -1,9 +1,12 @@
 package com.blibli.future.detroit.service;
 
 import com.blibli.future.detroit.model.*;
+import com.blibli.future.detroit.model.enums.ScoreType;
+import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.response.AgentReviewNoteResponse;
 import com.blibli.future.detroit.model.response.StatisticDiagramIndividualResponse;
 import com.blibli.future.detroit.model.response.StatisticDiagramResponseNew;
+import com.blibli.future.detroit.model.response.StatisticInfoResponse;
 import com.blibli.future.detroit.repository.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,7 @@ public class StatisticService {
         List<LocalDate> dates = new ArrayList<>();
         List<Float> parameterScore = new ArrayList<>();
         List<Float> categoryScore = new ArrayList<>();
+        List<Float> totalScore = new ArrayList<>();
 
         LocalDate now = new LocalDate();
 
@@ -48,6 +52,15 @@ public class StatisticService {
                 }
             }
         }
+
+        for(CutOffHistory cutOffHistory : cutOffHistories) {
+            for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(cutOffHistory)) {
+                if (scoreSummary.getScoreType() == ScoreType.TOTAL_REVIEW) {
+                    totalScore.add(scoreSummary.getScore());
+                }
+            }
+        }
+
         for(Parameter parameter : parameterRepository.findAll()) {
             parameterScore = new ArrayList<>();
             categoryStatistics = new ArrayList<>();
@@ -69,68 +82,46 @@ public class StatisticService {
             parameterStatistics.add(new ParameterStatistic(parameter.getName(), parameterScore, categoryStatistics));
         }
 
-//        for(Parameter parameter : parameterRepository.findAll()) {
-//                for(CutOffHistory cutOffHistory : cutOffHistories) {
-//                    for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(cutOffHistory)) {
-//                        if (parameter.getName() == scoreSummary.getName() && parameter.getId() == scoreSummary.getFkId() && scoreSummary.getAgent() == null) {
-//                            parameterScore.add(scoreSummary.getScore());
-//                        }
-//                    }
-//                }
-//
-//            parameterScore = new ArrayList<>();
-//        }
-
-        return new StatisticDiagramResponseNew(dates, parameterStatistics);
+        return new StatisticDiagramResponseNew(dates, totalScore, parameterStatistics);
     }
 
-    public StatisticInfo getCurrentStatisticInfo() {
-        StatisticInfo statisticInfo = new StatisticInfo();
-        statisticInfo.setTotalAgent(userRepository.countAgent());
+    public StatisticInfoResponse getCurrentStatisticInfo() {
 
-        HashMap<String, Float> parameterAvgMap = new HashMap<>();
-        HashMap<String, Integer> parameterCountMap = new HashMap<>();;
-        LocalDate now = new LocalDate();
+        Integer totalAgent = userRepository.countAgent();
+        CutOffHistory lastCutOff = cutOffRepository.findByEndCutOff(
+            cutOffRepository.findByEndCutOffIsNull().getBeginCutOff()
+        );
+        CutOffHistory beforeLastCutOff = cutOffRepository.findByEndCutOff(lastCutOff.getBeginCutOff());
 
-        for(CutOffHistory cutOffHistory : cutOffRepository.findAll()) {
-            if(cutOffHistory.getEndInISOFormat() != null) {
-                continue;
-            } else {
-                if(cutOffHistory.getEndCutOff().getYear() != now.getYear()) {
-                    continue;
-                }
-                for(Review review : cutOffHistory.getReviews()) {
-                    String parameter = review.getParameter().getName();
-                    Integer currentCountParameter = parameterCountMap.getOrDefault(parameter, 0);
-                    parameterCountMap.put(parameter, currentCountParameter+1);
+        Float totalScore = 0f;
+        Float totalScoreDiff = 0f;
+        Float parameterDiff = 0f;
+        List<ParameterStatisticInfo> parameterStatisticInfos = new ArrayList<>();
 
-                    Float currentParameter = review.getScore();
+        for(ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(lastCutOff)) {
+            if(scoreSummary.getScoreType() == ScoreType.TOTAL_REVIEW) {
+                totalScore = scoreSummary.getScore();
+            }
+            if(scoreSummary.getScoreType() == ScoreType.ALL_PARAMETER) {
+                parameterStatisticInfos.add(new ParameterStatisticInfo(scoreSummary.getName(), scoreSummary.getScore()));
+            }
+        }
 
-                    Float currentAvgParameter = parameterAvgMap.getOrDefault(parameter, 0f);
-                    Float nextAvgParameter = ((currentAvgParameter*currentCountParameter)+currentParameter) / (currentCountParameter+1);
-                    parameterAvgMap.put(parameter, nextAvgParameter);
-                }
-                for (Map.Entry<String, Float> entry : parameterAvgMap.entrySet()) {
-                    String key = entry.getKey();
-                    Float value = entry.getValue();
-
-                    statisticInfo.addParameterScores(key, value);
+        for(ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(beforeLastCutOff)) {
+            if(scoreSummary.getScoreType() == ScoreType.TOTAL_REVIEW) {
+                totalScoreDiff = totalScore - scoreSummary.getScore();
+            }
+            if(scoreSummary.getScoreType() == ScoreType.ALL_PARAMETER) {
+                for(ParameterStatisticInfo parameterStatisticInfo : parameterStatisticInfos) {
+                    if(parameterStatisticInfo.getName().equalsIgnoreCase(scoreSummary.getName())) {
+                        parameterDiff = parameterStatisticInfo.getScore() - scoreSummary.getScore();
+                        parameterStatisticInfo.setDiffScore(parameterDiff);
+                    }
                 }
             }
         }
 
-        CutOffHistory cutOffHistory = cutOffRepository.findByEndCutOffIsNull();
-        Long cutOffId = cutOffHistory.getId();
-
-        for(Parameter parameter : parameterRepository.findAll()) {
-            for (User user : userRepository.findAll()) {
-                Long reviewerId = user.getId();
-                Long parameterId = parameter.getId();
-                Integer countValue = reviewRepository.countByReviewer(user, cutOffHistory, parameter);
-                statisticInfo.addReviewCounts(parameter.getName(), user.getFullname(), countValue);
-            }
-        }
-        return statisticInfo;
+        return new StatisticInfoResponse(totalAgent, totalScore, totalScoreDiff, parameterStatisticInfos);
     }
 
     public StatisticInfoIndividual getIndividualStatisticInfo(Long agentId) {
