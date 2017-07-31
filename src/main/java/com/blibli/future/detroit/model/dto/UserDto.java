@@ -4,7 +4,9 @@ import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.enums.Gender;
 import com.blibli.future.detroit.model.enums.UserType;
 
-public class UserDto {
+import java.io.Serializable;
+
+public class UserDto implements Serializable {
 
     Long id;
     String fullname;
