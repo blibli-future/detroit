@@ -7,12 +7,41 @@ class UserDetail extends BaseDetroitComponent {
 
   constructor(props) {
     super(props);
+
+    this.buttonsInEditMode = (
+      <div className="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+        <Link to={ this.props.backLink } className="btn btn-default" >
+          Back
+        </Link>
+        <button className="btn btn-warning"
+                onClick={this.props.switchEditMode}>Cancel Edit</button>
+        <button type="submit" className="btn btn-success"
+                onClick={ this.props.saveEditData }>
+          Save Change</button>
+      </div>
+    );
+
+    this.buttonsInViewMode = (
+      <div className="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+        <Link to={ this.props.backLink } className="btn btn-default">
+          Back
+        </Link>
+        <button className="btn btn-warning"
+                onClick={this.props.switchEditMode}>Edit</button>
+        <button type="submit" className="btn btn-danger">Delete User</button>
+      </div>
+    );
+
+    this.buttons = this.buttonsInViewMode
   }
 
   render() {
     var opts = {};
-    if(!this.props.editMode) {
+    if (this.props.editMode) {
+      this.buttons = this.buttonsInEditMode
+    } else {
       opts['readOnly'] = 'readOnly';
+      this.buttons = this.buttonsInViewMode
     }
 
     return (
@@ -85,7 +114,7 @@ class UserDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input id="phoneNumber" className="form-control col-md-7 col-xs-12"
-                               type="text" name="phonenumber" { ...opts }
+                               type="text" name="phoneNumber" { ...opts }
                                onChange={ this.props.onChange }
                                value={ this.props.user.phoneNumber }/>
                       </div>
@@ -119,10 +148,10 @@ class UserDetail extends BaseDetroitComponent {
 
                     <div className="form-group">
                       <label className="control-label col-md-3 col-sm-3 col-xs-12">
-                        Date Of Birth <span className="required">*</span>
+                        Date Of Birth
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
-                        <input className="date-picker form-control col-md-7 col-xs-12" required="required"
+                        <input className="date-picker form-control col-md-7 col-xs-12"
                                name="dateOfBirth" type="text" { ...opts }
                                onChange={ this.props.onChange }
                                value={ this.props.user.dateOfBirth } />
@@ -133,14 +162,7 @@ class UserDetail extends BaseDetroitComponent {
 
                     <div className="ln_solid" />
                     <div className="form-group">
-                      <div className="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                        <Link to={ this.props.backLink } className="btn btn-default" >
-                          Back
-                        </Link>
-                        <button className="btn btn-warning"
-                                onClick={ this.props.switchEditMode }>Edit</button>
-                        <button type="submit" className="btn btn-danger">Delete</button>
-                      </div>
+                      { this.buttons }
                     </div>
 
                   </form>

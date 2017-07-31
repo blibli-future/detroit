@@ -13,7 +13,8 @@ class AgentDetail extends BaseDetroitComponent {
       editMode: false
     };
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.switchEditMode = this.switchEditMode.bind(this)
+    this.switchEditMode = this.switchEditMode.bind(this);
+    this.saveEditData = this.saveEditData.bind(this);
   }
 
   componentDidMount(){
@@ -31,6 +32,17 @@ class AgentDetail extends BaseDetroitComponent {
       .then((json) => {
         return json.content;
       })
+  }
+
+  saveEditData(event) {
+    event.preventDefault();
+    return this.auth.apiCall('/api/v1/users/agent/' + this.state.user.id, {
+      method: 'PATCH',
+      body: JSON.stringify(this.state.user)
+    }).then((response) => response.json())
+      .then((json) => {
+        return json.content;
+      }).bind(this)
   }
 
   handleInputChange(event) {
@@ -65,6 +77,7 @@ class AgentDetail extends BaseDetroitComponent {
                   editMode={ this.state.editMode }
                   switchEditMode={ this.switchEditMode }
                   onChange={ this.handleInputChange }
+                  saveEditData={ this.saveEditData }
                   { ...this.props }>
         <div className="form-group">
           <label htmlFor="agentPosition" className="control-label col-md-3 col-sm-3 col-xs-12">
