@@ -41,6 +41,7 @@ class AuthenticationService {
     this.redirectIfNotAuthenticated();
     object.headers = {
       'Authorization': 'Basic '+ localStorage.getItem(TOKEN_KEY),
+      "Content-Type": "application/json",
     };
     return fetch(url, object);
   }
