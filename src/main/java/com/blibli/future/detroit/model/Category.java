@@ -26,8 +26,6 @@ public class Category extends BaseModel implements Serializable {
     private Float weight;
     @ManyToOne
     private Parameter parameter;
-    @ManyToOne
-    private AgentChannel agentChannel;
 
     public Long getId() {
         return id;
@@ -70,14 +68,6 @@ public class Category extends BaseModel implements Serializable {
         this.parameter = parameter;
     }
 
-    public AgentChannel getAgentChannel() {
-        return agentChannel;
-    }
-
-    public void setAgentChannel(AgentChannel agentChannel) {
-        this.agentChannel = agentChannel;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,8 +80,7 @@ public class Category extends BaseModel implements Serializable {
         if (description != null ? !description.equals(category.description) : category.description != null)
             return false;
         if (weight != null ? !weight.equals(category.weight) : category.weight != null) return false;
-        if (parameter != null ? !parameter.equals(category.parameter) : category.parameter != null) return false;
-        return agentChannel != null ? agentChannel.equals(category.agentChannel) : category.agentChannel == null;
+        return parameter != null ? parameter.equals(category.parameter) : category.parameter == null;
     }
 
     @Override
@@ -101,7 +90,6 @@ public class Category extends BaseModel implements Serializable {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (weight != null ? weight.hashCode() : 0);
         result = 31 * result + (parameter != null ? parameter.hashCode() : 0);
-        result = 31 * result + (agentChannel != null ? agentChannel.hashCode() : 0);
         return result;
     }
 }
