@@ -3,10 +3,7 @@ package com.blibli.future.detroit.model;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -23,6 +20,8 @@ public class AgentChannel extends BaseModel implements Serializable {
     private String name;
     @OneToMany
     private List<User> users;
+    @ManyToOne
+    private AgentPosition agentPosition;
 
     public Long getId() {
         return id;
@@ -48,16 +47,25 @@ public class AgentChannel extends BaseModel implements Serializable {
         this.users = users;
     }
 
+    public AgentPosition getAgentPosition() {
+        return agentPosition;
+    }
+
+    public void setAgentPosition(AgentPosition agentPosition) {
+        this.agentPosition = agentPosition;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AgentChannel agentChannel = (AgentChannel) o;
+        AgentChannel that = (AgentChannel) o;
 
-        if (id != null ? !id.equals(agentChannel.id) : agentChannel.id != null) return false;
-        if (name != null ? !name.equals(agentChannel.name) : agentChannel.name != null) return false;
-        return users != null ? users.equals(agentChannel.users) : agentChannel.users == null;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (users != null ? !users.equals(that.users) : that.users != null) return false;
+        return agentPosition != null ? agentPosition.equals(that.agentPosition) : that.agentPosition == null;
     }
 
     @Override
@@ -65,6 +73,7 @@ public class AgentChannel extends BaseModel implements Serializable {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (users != null ? users.hashCode() : 0);
+        result = 31 * result + (agentPosition != null ? agentPosition.hashCode() : 0);
         return result;
     }
 }

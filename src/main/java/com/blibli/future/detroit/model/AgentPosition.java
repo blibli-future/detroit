@@ -23,6 +23,8 @@ public class AgentPosition extends BaseModel implements Serializable {
     private String name;
     @OneToMany
     private List<User> users;
+    @OneToMany
+    private List<AgentChannel> agentChannels;
 
     public Long getId() {
 
@@ -49,6 +51,14 @@ public class AgentPosition extends BaseModel implements Serializable {
         this.users = users;
     }
 
+    public List<AgentChannel> getAgentChannels() {
+        return agentChannels;
+    }
+
+    public void setAgentChannels(List<AgentChannel> agentChannels) {
+        this.agentChannels = agentChannels;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,7 +68,8 @@ public class AgentPosition extends BaseModel implements Serializable {
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return users != null ? users.equals(that.users) : that.users == null;
+        if (users != null ? !users.equals(that.users) : that.users != null) return false;
+        return agentChannels != null ? agentChannels.equals(that.agentChannels) : that.agentChannels == null;
     }
 
     @Override
@@ -66,6 +77,7 @@ public class AgentPosition extends BaseModel implements Serializable {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (users != null ? users.hashCode() : 0);
+        result = 31 * result + (agentChannels != null ? agentChannels.hashCode() : 0);
         return result;
     }
 }

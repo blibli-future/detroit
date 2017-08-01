@@ -26,7 +26,7 @@ public class Parameter extends BaseModel implements Serializable {
     @OneToMany(fetch=FetchType.EAGER)
     private List<Category> Categories;
     @ManyToOne
-    private AgentPosition agentPosition;
+    private AgentChannel agentChannel;
     @OneToMany
     private List<Review> reviews;
 
@@ -86,12 +86,12 @@ public class Parameter extends BaseModel implements Serializable {
         Categories = categories;
     }
 
-    public AgentPosition getAgentPosition() {
-        return agentPosition;
+    public AgentChannel getAgentChannel() {
+        return agentChannel;
     }
 
-    public void setAgentPosition(AgentPosition agentPosition) {
-        this.agentPosition = agentPosition;
+    public void setAgentChannel(AgentChannel agentChannel) {
+        this.agentChannel = agentChannel;
     }
 
     public List<Review> getReviews() {
@@ -111,26 +111,27 @@ public class Parameter extends BaseModel implements Serializable {
 
         if (bulkStatus != parameter.bulkStatus) return false;
         if (isActive != parameter.isActive) return false;
-        if (!id.equals(parameter.id)) return false;
-        if (!name.equals(parameter.name)) return false;
-        if (!description.equals(parameter.description)) return false;
-        if (!weight.equals(parameter.weight)) return false;
+        if (id != null ? !id.equals(parameter.id) : parameter.id != null) return false;
+        if (name != null ? !name.equals(parameter.name) : parameter.name != null) return false;
+        if (description != null ? !description.equals(parameter.description) : parameter.description != null)
+            return false;
+        if (weight != null ? !weight.equals(parameter.weight) : parameter.weight != null) return false;
         if (Categories != null ? !Categories.equals(parameter.Categories) : parameter.Categories != null) return false;
-        if (agentPosition != null ? !agentPosition.equals(parameter.agentPosition) : parameter.agentPosition != null)
+        if (agentChannel != null ? !agentChannel.equals(parameter.agentChannel) : parameter.agentChannel != null)
             return false;
         return reviews != null ? reviews.equals(parameter.reviews) : parameter.reviews == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + weight.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (weight != null ? weight.hashCode() : 0);
         result = 31 * result + (bulkStatus ? 1 : 0);
         result = 31 * result + (isActive ? 1 : 0);
         result = 31 * result + (Categories != null ? Categories.hashCode() : 0);
-        result = 31 * result + (agentPosition != null ? agentPosition.hashCode() : 0);
+        result = 31 * result + (agentChannel != null ? agentChannel.hashCode() : 0);
         result = 31 * result + (reviews != null ? reviews.hashCode() : 0);
         return result;
     }
