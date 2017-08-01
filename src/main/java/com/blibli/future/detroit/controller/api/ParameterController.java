@@ -2,6 +2,7 @@ package com.blibli.future.detroit.controller.api;
 
 import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
+import com.blibli.future.detroit.model.dto.BatchUpdateParameterDto;
 import com.blibli.future.detroit.model.request.NewParameterRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.model.response.BaseRestListResponse;
@@ -56,15 +57,13 @@ public class ParameterController {
 
     @PatchMapping(value = BATCH_UPDATE_PARAMETER, consumes = Constant.API_MEDIA_TYPE)
     @ResponseBody
-    public BaseRestResponse batchUpdateParameter(@RequestBody SimpleListRequest<NewParameterRequest> request) {
+    public BaseRestResponse batchUpdateParameter(
+            @RequestBody BatchUpdateParameterDto request) {
         try {
-            assert parameterService.batchUpdateParameter(request);
+            assert parameterService.batchUpdateParameter(request.getChannelId(), request.getParameterList());
             return new BaseRestResponse();
         }
         catch (WeightPercentageNotValid e) {
-            return new BaseRestResponse(false, e.getMessage(), e.getClass().getSimpleName());
-        }
-        catch (AssertionError e) {
             return new BaseRestResponse(false, e.getMessage(), e.getClass().getSimpleName());
         }
     }
