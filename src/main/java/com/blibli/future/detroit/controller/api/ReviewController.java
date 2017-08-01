@@ -28,6 +28,9 @@ public class ReviewController {
     UserService userService;
 
     @Autowired
+    AuthenticationService authenticationService;
+
+    @Autowired
     ParameterService parameterService;
 
     @Autowired
@@ -50,7 +53,7 @@ public class ReviewController {
     @PostMapping(CREATE_REVIEW)
     public BaseRestResponse createReview(@RequestBody NewReviewRequest request) {
         try {
-            reviewService.createReview(request);
+            reviewService.createReview(authenticationService.getCurrentUser(), request);
         } catch (NotAuthorizedException e) {
             return new BaseRestResponse(false, e.getCode(), e.getMessage());
         }
@@ -60,7 +63,7 @@ public class ReviewController {
     @PatchMapping(UPDATE_REVIEW)
     public BaseRestResponse updateReview(@RequestBody NewReviewRequest request) {
         try {
-            reviewService.updateReview(request);
+            reviewService.updateReview(authenticationService.getCurrentUser(), request);
         } catch (NotAuthorizedException e) {
             return new BaseRestResponse(false, e.getCode(), e.getMessage());
         }

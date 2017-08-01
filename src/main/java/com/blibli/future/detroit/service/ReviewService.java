@@ -29,8 +29,6 @@ public class ReviewService {
     @Autowired
     ParameterService parameterService;
     @Autowired
-    AuthenticationService authenticationService;
-    @Autowired
     Converter modelMapper;
 
     public List<UserReviewResponse> getAllReview(Long userId) {
@@ -53,9 +51,8 @@ public class ReviewService {
         return new OneReviewResponse(review);
     }
 
-    public Review createReview(NewReviewRequest request) throws NotAuthorizedException {
-        checkReviewerIsAuthorized(authenticationService.getCurrentUser(),
-                                  request.getParameter());
+    public Review createReview(User user, NewReviewRequest request) throws NotAuthorizedException {
+        checkReviewerIsAuthorized(user, request.getParameter());
 
         Float score = 0f;
 
@@ -72,9 +69,8 @@ public class ReviewService {
         return newReview;
     }
 
-    public Review updateReview(NewReviewRequest request) throws NotAuthorizedException {
-        checkReviewerIsAuthorized(authenticationService.getCurrentUser(),
-                                  request.getParameter());
+    public Review updateReview(User user, NewReviewRequest request) throws NotAuthorizedException {
+        checkReviewerIsAuthorized(user, request.getParameter());
 
         Review updatedReview = modelMapper.modelMapper()
             .map(request, Review.class);
