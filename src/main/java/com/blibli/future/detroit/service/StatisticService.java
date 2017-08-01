@@ -3,7 +3,6 @@ package com.blibli.future.detroit.service;
 import com.blibli.future.detroit.model.*;
 import com.blibli.future.detroit.model.dto.AgentPositionDto;
 import com.blibli.future.detroit.model.enums.ScoreType;
-import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.response.AgentReviewNoteResponse;
 import com.blibli.future.detroit.model.response.StatisticDiagramIndividualResponse;
 import com.blibli.future.detroit.model.response.StatisticDiagramResponseNew;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class StatisticService {
@@ -103,15 +101,18 @@ public class StatisticService {
 
         Float totalScore = 0f;
         Float totalScoreDiff = 0f;
-        Float parameterDiff = 0f;
-        List<ParameterStatisticInfo> parameterStatisticInfos = new ArrayList<>();
+        Float channelDiff = 0f;
+        List<ChannelStatisticInfo> channelStatisticInfos = new ArrayList<>();
 
         for(ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(lastCutOff)) {
             if(scoreSummary.getScoreType().equals(ScoreType.TOTAL_REVIEW)) {
                 totalScore = scoreSummary.getScore();
             }
-            if(scoreSummary.getScoreType().equals(ScoreType.ALL_PARAMETER)) {
-                parameterStatisticInfos.add(new ParameterStatisticInfo(scoreSummary.getName(), scoreSummary.getScore()));
+            if(scoreSummary.getScoreType().equals(ScoreType.TOTAL_CHANNEL)) {
+                AgentChannel agentChannel = agentChannelRepository.findOne(scoreSummary.getFkId());
+                channelStatisticInfos.add(
+                    new ChannelStatisticInfo(agentChannel.getAgentPosition().getName()+"-"+agentChannel.getName()
+                        , scoreSummary.getScore()));
             }
         }
 
@@ -119,17 +120,19 @@ public class StatisticService {
             if(scoreSummary.getScoreType().equals(ScoreType.TOTAL_REVIEW)) {
                 totalScoreDiff = totalScore - scoreSummary.getScore();
             }
-            if(scoreSummary.getScoreType().equals(ScoreType.ALL_PARAMETER)) {
-                for(ParameterStatisticInfo parameterStatisticInfo : parameterStatisticInfos) {
-                    if(parameterStatisticInfo.getName().equalsIgnoreCase(scoreSummary.getName())) {
-                        parameterDiff = parameterStatisticInfo.getScore() - scoreSummary.getScore();
-                        parameterStatisticInfo.setDiffScore(parameterDiff);
+            if(scoreSummary.getScoreType().equals(ScoreType.TOTAL_CHANNEL)) {
+                for(ChannelStatisticInfo channelStatisticInfo : channelStatisticInfos) {
+                    AgentChannel agentChannel = agentChannelRepository.findOne(scoreSummary.getFkId());
+                    String channelName = agentChannel.getAgentPosition().getName()+"-"+agentChannel.getName();
+                    if(channelStatisticInfo.getName().equalsIgnoreCase(channelName)) {
+                        channelDiff = channelStatisticInfo.getScore() - scoreSummary.getScore();
+                        channelStatisticInfo.setDiffScore(channelDiff);
                     }
                 }
             }
         }
 
-        return new StatisticInfoResponse(totalAgent, totalScore, totalScoreDiff, parameterStatisticInfos);
+        return new StatisticInfoResponse(totalAgent, totalScore, totalScoreDiff, channelStatisticInfos);
     }
 
     public StatisticInfoIndividual getIndividualStatisticInfo(Long agentId) {

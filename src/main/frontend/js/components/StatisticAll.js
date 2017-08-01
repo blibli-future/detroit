@@ -205,7 +205,7 @@ class StatisticInfo extends React.Component {
 
     render() {
       var status;
-    if(this.props.diff) {
+    if(this.props.diff !== null) {
       if(this.props.diff > 0) {
         status = (
           <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i> +{ this.props.diff } </i>From last Month</span>

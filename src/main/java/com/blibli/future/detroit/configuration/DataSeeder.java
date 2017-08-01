@@ -362,8 +362,24 @@ public class DataSeeder implements ApplicationRunner {
         cutOffHistory1.setReviews(reviews2);
         cutOffRepository.save(cutOffHistory1);
 
+        ScoreSummary scoreSummary52 = new ScoreSummary();
+        scoreSummary52.setName(agentChannel.getName());
+        scoreSummary52.setScore(74.9f);
+        scoreSummary52.setScoreType(ScoreType.TOTAL_CHANNEL);
+        scoreSummary52.setFkId(agentChannel.getId());
+        scoreSummary52.setCutOffHistory(cutOffHistoryLama);
+        scoreSummaryRepository.save(scoreSummary52);
+
+        ScoreSummary scoreSummary56 = new ScoreSummary();
+        scoreSummary56.setName(agentChannel1.getName());
+        scoreSummary56.setScore(73.1f);
+        scoreSummary56.setScoreType(ScoreType.TOTAL_CHANNEL);
+        scoreSummary56.setFkId(agentChannel1.getId());
+        scoreSummary56.setCutOffHistory(cutOffHistoryLama);
+        scoreSummaryRepository.save(scoreSummary56);
+
         ScoreSummary scoreSummary48 = new ScoreSummary();
-        scoreSummary48.setName("Final Score");
+        scoreSummary48.setName("Total Review");
         scoreSummary48.setScore(82.5f);
         scoreSummary48.setScoreType(ScoreType.TOTAL_REVIEW);
         scoreSummary48.setCutOffHistory(cutOffHistoryLama);
@@ -472,8 +488,24 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummaryRepository.save(scoreSummary29);
 
 
+        ScoreSummary scoreSummary53 = new ScoreSummary();
+        scoreSummary53.setName(agentChannel.getName());
+        scoreSummary53.setScore(87.3f);
+        scoreSummary53.setScoreType(ScoreType.TOTAL_CHANNEL);
+        scoreSummary53.setFkId(agentChannel.getId());
+        scoreSummary53.setCutOffHistory(cutOffHistoryLama1);
+        scoreSummaryRepository.save(scoreSummary53);
+
+        ScoreSummary scoreSummary57 = new ScoreSummary();
+        scoreSummary57.setName(agentChannel1.getName());
+        scoreSummary57.setScore(86.7f);
+        scoreSummary57.setScoreType(ScoreType.TOTAL_CHANNEL);
+        scoreSummary57.setFkId(agentChannel1.getId());
+        scoreSummary57.setCutOffHistory(cutOffHistoryLama1);
+        scoreSummaryRepository.save(scoreSummary57);
+
         ScoreSummary scoreSummary49 = new ScoreSummary();
-        scoreSummary49.setName("Final Score");
+        scoreSummary49.setName("Total Review");
         scoreSummary49.setScore(72.5f);
         scoreSummary49.setScoreType(ScoreType.TOTAL_REVIEW);
         scoreSummary49.setCutOffHistory(cutOffHistoryLama1);
@@ -582,8 +614,24 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummaryRepository.save(scoreSummary35);
 
 
+        ScoreSummary scoreSummary54 = new ScoreSummary();
+        scoreSummary54.setName(agentChannel.getName());
+        scoreSummary54.setScore(79.1f);
+        scoreSummary54.setScoreType(ScoreType.TOTAL_CHANNEL);
+        scoreSummary54.setFkId(agentChannel.getId());
+        scoreSummary54.setCutOffHistory(cutOffHistoryLama2);
+        scoreSummaryRepository.save(scoreSummary54);
+
+        ScoreSummary scoreSummary58 = new ScoreSummary();
+        scoreSummary58.setName(agentChannel1.getName());
+        scoreSummary58.setScore(88.1f);
+        scoreSummary58.setScoreType(ScoreType.TOTAL_CHANNEL);
+        scoreSummary58.setFkId(agentChannel1.getId());
+        scoreSummary58.setCutOffHistory(cutOffHistoryLama2);
+        scoreSummaryRepository.save(scoreSummary58);
+
         ScoreSummary scoreSummary50 = new ScoreSummary();
-        scoreSummary50.setName("Final Score");
+        scoreSummary50.setName("Total Review");
         scoreSummary50.setScore(77.9f);
         scoreSummary50.setScoreType(ScoreType.TOTAL_REVIEW);
         scoreSummary50.setCutOffHistory(cutOffHistoryLama2);
@@ -692,8 +740,24 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummaryRepository.save(scoreSummary41);
 
 
+        ScoreSummary scoreSummary55 = new ScoreSummary();
+        scoreSummary55.setName(agentChannel.getName());
+        scoreSummary55.setScore(79.1f);
+        scoreSummary55.setScoreType(ScoreType.TOTAL_CHANNEL);
+        scoreSummary55.setFkId(agentChannel.getId());
+        scoreSummary55.setCutOffHistory(cutOffHistory);
+        scoreSummaryRepository.save(scoreSummary55);
+
+        ScoreSummary scoreSummary59 = new ScoreSummary();
+        scoreSummary59.setName(agentChannel1.getName());
+        scoreSummary59.setScore(91.7f);
+        scoreSummary59.setScoreType(ScoreType.TOTAL_CHANNEL);
+        scoreSummary59.setFkId(agentChannel1.getId());
+        scoreSummary59.setCutOffHistory(cutOffHistory);
+        scoreSummaryRepository.save(scoreSummary59);
+
         ScoreSummary scoreSummary51 = new ScoreSummary();
-        scoreSummary51.setName("Final Score");
+        scoreSummary51.setName("Total Review");
         scoreSummary51.setScore(85.7f);
         scoreSummary51.setScoreType(ScoreType.TOTAL_REVIEW);
         scoreSummary51.setCutOffHistory(cutOffHistory);

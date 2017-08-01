@@ -3,12 +3,12 @@ package com.blibli.future.detroit.model;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ParameterStatisticInfo {
+public class ChannelStatisticInfo {
     protected String name;
     protected Float score;
     protected BigDecimal diffScore;
 
-    public ParameterStatisticInfo(String name, Float score) {
+    public ChannelStatisticInfo(String name, Float score) {
         this.name = name;
         this.score = score;
     }

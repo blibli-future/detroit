@@ -1,6 +1,6 @@
 package com.blibli.future.detroit.model.response;
 
-import com.blibli.future.detroit.model.ParameterStatisticInfo;
+import com.blibli.future.detroit.model.ChannelStatisticInfo;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -9,9 +9,9 @@ public class StatisticInfoResponse {
     private Integer totalAgent;
     private Float finalScore;
     private BigDecimal diffFinalScore;
-    private List<ParameterStatisticInfo> parameters;
+    private List<ChannelStatisticInfo> parameters;
 
-    public StatisticInfoResponse(Integer totalAgent, Float finalScore, Float diffFinalScore, List<ParameterStatisticInfo> parameters) {
+    public StatisticInfoResponse(Integer totalAgent, Float finalScore, Float diffFinalScore, List<ChannelStatisticInfo> parameters) {
         this.totalAgent = totalAgent;
         this.finalScore = finalScore;
         this.diffFinalScore = new BigDecimal(diffFinalScore.toString()).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -42,11 +42,11 @@ public class StatisticInfoResponse {
         this.diffFinalScore = new BigDecimal(diffFinalScore.toString()).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-    public List<ParameterStatisticInfo> getParameters() {
+    public List<ChannelStatisticInfo> getParameters() {
         return parameters;
     }
 
-    public void setParameters(List<ParameterStatisticInfo> parameters) {
+    public void setParameters(List<ChannelStatisticInfo> parameters) {
         this.parameters = parameters;
     }
 }
