@@ -1,5 +1,6 @@
 package com.blibli.future.detroit.controller.api;
 
+import com.blibli.future.detroit.model.ScoreSummary;
 import com.blibli.future.detroit.model.StatisticInfo;
 import com.blibli.future.detroit.model.StatisticInfoIndividual;
 import com.blibli.future.detroit.model.User;
@@ -38,7 +39,7 @@ public class StatisticController {
     }
 
     @GetMapping(GET_TOP_AGENT)
-    public BaseRestListResponse<User> getTopAgent() {
+    public BaseRestListResponse<ScoreSummary> getTopAgent() {
         return new BaseRestListResponse<>(statisticService.getTopAgent());
     }
 

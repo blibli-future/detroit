@@ -72,10 +72,14 @@ public class StatisticService {
                 parameterScore = new ArrayList<>();
                 for(CutOffHistory cutOffHistory : cutOffHistories) {
                     for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(cutOffHistory)) {
-                        if (parameter.getName() == scoreSummary.getName() && parameter.getId() == scoreSummary.getFkId() && scoreSummary.getAgent() == null) {
+                        if (parameter.getName().equalsIgnoreCase(scoreSummary.getName())
+                            && parameter.getId().equals(scoreSummary.getFkId())
+                            && scoreSummary.getAgent() == null) {
                             parameterScore.add(scoreSummary.getScore());
                         }
-                        if (category.getName() == scoreSummary.getName() && category.getId() == scoreSummary.getFkId() && scoreSummary.getAgent() == null) {
+                        if (category.getName().equalsIgnoreCase(scoreSummary.getName())
+                            && category.getId().equals(scoreSummary.getFkId())
+                            && scoreSummary.getAgent() == null) {
                             categoryScore.add(scoreSummary.getScore());
                         }
                     }
@@ -128,10 +132,12 @@ public class StatisticService {
         return new StatisticInfoResponse(totalAgent, totalScore, totalScoreDiff, parameterStatisticInfos);
     }
 
-    public List<User> getTopAgent() {
-        AgentChannel agentChannel = agentChannelRepository.findOne(1l);
-        AgentPosition agentPosition = agentPositionRepository.findOne(1l);
-        return scoreSummaryRepository.topAgent(agentChannel.getId(), agentPosition.getId());
+    public List<ScoreSummary> getTopAgent() {
+        AgentChannel agentChannel = agentChannelRepository.findOne(6l);
+        AgentPosition agentPosition = agentPositionRepository.findOne(8l);
+        List<ScoreSummary> scoreSummaries = scoreSummaryRepository.topAgent(agentChannel, agentPosition);
+
+        return scoreSummaries;
     }
 
     public StatisticInfoIndividual getIndividualStatisticInfo(Long agentId) {
