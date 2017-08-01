@@ -246,6 +246,13 @@ public class DataSeeder implements ApplicationRunner {
         parameter1.setCategories(categoryList1);
         parameter1 = parameterRepository.saveAndFlush(parameter1);
 
+        // START Give specific role to reviewer
+
+        userRoleRepository.save(new UserRole(reviewer, parameter));
+        userRoleRepository.save(new UserRole(reviewer, parameter1));
+
+        // END Give specific role to reviewer
+
         Review review = new Review();
         review.setCasemgnt("1234");
         review.setInteractionType("Chat");

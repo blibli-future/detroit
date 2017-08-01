@@ -29,6 +29,11 @@ public class UserRole extends BaseModel implements Serializable {
         this.role = role;
     }
 
+    public UserRole(User user, Parameter parameter) {
+        this.email = user.getEmail();
+        this.role = parameter.getName();
+    }
+
     public long getId() {
         return id;
     }
