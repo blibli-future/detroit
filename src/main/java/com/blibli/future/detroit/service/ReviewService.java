@@ -1,6 +1,7 @@
 package com.blibli.future.detroit.service;
 
 import com.blibli.future.detroit.model.*;
+import com.blibli.future.detroit.model.Exception.NotAuthorizedException;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.AgentOverviewResponse;
@@ -28,6 +29,8 @@ public class ReviewService {
     @Autowired
     ParameterService parameterService;
     @Autowired
+    AuthenticationService authenticationService;
+    @Autowired
     Converter modelMapper;
 
     public List<UserReviewResponse> getAllReview(Long userId) {
@@ -50,7 +53,10 @@ public class ReviewService {
         return new OneReviewResponse(review);
     }
 
-    public Review createReview(NewReviewRequest request) {
+    public Review createReview(NewReviewRequest request) throws NotAuthorizedException {
+        checkReviewerIsAuthorized(authenticationService.getCurrentUser(),
+                                  request.getParameter());
+
         Float score = 0f;
 
         for (DetailReview detailReview : request.getDetailReviews()) {
@@ -66,7 +72,10 @@ public class ReviewService {
         return newReview;
     }
 
-    public Review updateReview(NewReviewRequest request) {
+    public Review updateReview(NewReviewRequest request) throws NotAuthorizedException {
+        checkReviewerIsAuthorized(authenticationService.getCurrentUser(),
+                                  request.getParameter());
+
         Review updatedReview = modelMapper.modelMapper()
             .map(request, Review.class);
         if (!reviewRepository.exists(updatedReview.getId())) {
@@ -128,6 +137,29 @@ public class ReviewService {
         }
 
         return new ArrayList<>(agentOverviewResponses);
+    }
+
+    /**
+     * Check if reviewer has privilege to review about a parameter.
+     *
+     * @param reviewer the user who doing the request.
+     * @param parameter parameter who want to be updated.
+     * @return authorized?
+     */
+    private boolean checkReviewerIsAuthorized(
+            User reviewer, Parameter parameter) throws NotAuthorizedException {
+        // Super admin could do anything
+        if (reviewer.isSuperAdmin()) {
+            return true;
+        }
+        for (UserRole role: reviewer.getUserRole()) {
+            if(role.getRole().equals(parameter.getName())) {
+                return true;
+            }
+        }
+        throw new NotAuthorizedException(
+            String.format("User \"%s\" doesn't have authorization for parameter \"%s\"",
+                          reviewer.getEmail(), parameter.getName()));
     }
 
     // TODO implement export all review into excel format

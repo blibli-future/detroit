@@ -1,5 +1,6 @@
 package com.blibli.future.detroit.controller.api;
 
+import com.blibli.future.detroit.model.Exception.NotAuthorizedException;
 import com.blibli.future.detroit.model.Review;
 import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
@@ -48,13 +49,21 @@ public class ReviewController {
 
     @PostMapping(CREATE_REVIEW)
     public BaseRestResponse createReview(@RequestBody NewReviewRequest request) {
-        reviewService.createReview(request);
+        try {
+            reviewService.createReview(request);
+        } catch (NotAuthorizedException e) {
+            return new BaseRestResponse(false, e.getCode(), e.getMessage());
+        }
         return new BaseRestResponse();
     }
 
     @PatchMapping(UPDATE_REVIEW)
     public BaseRestResponse updateReview(@RequestBody NewReviewRequest request) {
-        reviewService.updateReview(request);
+        try {
+            reviewService.updateReview(request);
+        } catch (NotAuthorizedException e) {
+            return new BaseRestResponse(false, e.getCode(), e.getMessage());
+        }
         return new BaseRestResponse();
     }
 
