@@ -6,6 +6,7 @@ public enum ScoreType {
     ALL_CATEGORY("All Category"),
     USER_PARAMETER("User Parameter"),
     USER_CATEGORY("User Category"),
+    USER_TOTAL("User Total"),
     TOTAL_CHANNEL("Total Channel");
 
     private final String type;

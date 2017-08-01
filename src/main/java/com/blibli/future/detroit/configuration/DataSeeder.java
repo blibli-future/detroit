@@ -127,9 +127,15 @@ public class DataSeeder implements ApplicationRunner {
         agent2.setGender(Gender.PRIA);
         agent2.setPassword("secret");
         agent2.setUserType(UserType.AGENT);
-        agent2.setAgentChannel(agentChannel);
+        agent2.setAgentChannel(agentChannel1);
         agent2.setAgentPosition(agentPosition);
         userRepository.save(agent2);
+
+        List<User> agents = new ArrayList<>();
+        agents.add(agent);
+        agents.add(agent2);
+        agentChannel.setUsers(agents);
+        agentChannel = agentChannelRepository.saveAndFlush(agentChannel);
 
         UserRole agentRole2 = new UserRole(
             agent2.getEmail(), agent2.getUserType().toString());
@@ -174,14 +180,14 @@ public class DataSeeder implements ApplicationRunner {
         parameter.setAgentChannel(agentChannel);
         parameter.setName("Live Monitoring");
         parameter.setDescription("Live Monitoring Parameter");
-        parameter.setWeight(50f);
+        parameter.setWeight(100f);
         parameter = parameterRepository.saveAndFlush(parameter);
 
         Parameter parameter1 = new Parameter();
         parameter1.setAgentChannel(agentChannel1);
         parameter1.setName("Best Conversation");
         parameter1.setDescription("Best Conversation Parameter");
-        parameter1.setWeight(50f);
+        parameter1.setWeight(100f);
         parameter1 = parameterRepository.saveAndFlush(parameter1);
 
         List<Parameter> parameters = new ArrayList<>();
@@ -225,13 +231,13 @@ public class DataSeeder implements ApplicationRunner {
         categoryList.add(category);
         categoryList.add(category1);
         parameter.setCategories(categoryList);
-        parameter = parameterRepository.save(parameter);
+        parameter = parameterRepository.saveAndFlush(parameter);
 
         List<Category> categoryList1 = new ArrayList<>();
         categoryList1.add(category2);
         categoryList1.add(category3);
         parameter1.setCategories(categoryList1);
-        parameter1 = parameterRepository.save(parameter1);
+        parameter1 = parameterRepository.saveAndFlush(parameter1);
 
         Review review = new Review();
         review.setCasemgnt("1234");
@@ -249,14 +255,14 @@ public class DataSeeder implements ApplicationRunner {
         detailReview.setScore(85f);
         detailReview.setNote("Good Opening, keep it up!");
         detailReview.setReview(review);
-        detailReviewRepository.save(detailReview);
+        detailReview = detailReviewRepository.saveAndFlush(detailReview);
 
         DetailReview detailReview1 = new DetailReview();
         detailReview1.setCategory(category1);
         detailReview1.setScore(65f);
         detailReview1.setNote("I think you can give better solution, please think better solution next time");
         detailReview1.setReview(review);
-        detailReviewRepository.save(detailReview1);
+        detailReview1 = detailReviewRepository.saveAndFlush(detailReview1);
 
         List<DetailReview> detailReviews = new ArrayList<>();
         detailReviews.add(detailReview);
@@ -287,14 +293,14 @@ public class DataSeeder implements ApplicationRunner {
         detailReview2.setScore(65f);
         detailReview2.setNote("Keep your opening performance, fix it up, you can do better than this!");
         detailReview2.setReview(review1);
-        detailReviewRepository.save(detailReview2);
+        detailReview2 = detailReviewRepository.saveAndFlush(detailReview2);
 
         DetailReview detailReview3 = new DetailReview();
         detailReview3.setCategory(category1);
         detailReview3.setScore(70f);
         detailReview3.setNote("that's it, keep improving your solution");
         detailReview3.setReview(review1);
-        detailReviewRepository.save(detailReview3);
+        detailReview3 = detailReviewRepository.saveAndFlush(detailReview3);
 
         List<DetailReview> detailReviews2 = new ArrayList<>();
         detailReviews2.add(detailReview2);

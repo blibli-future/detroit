@@ -1,5 +1,6 @@
 package com.blibli.future.detroit.repository;
 
+import com.blibli.future.detroit.model.Category;
 import com.blibli.future.detroit.model.DetailReview;
 import com.blibli.future.detroit.model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,5 @@ import java.util.List;
 @Repository
 public interface DetailReviewRepository extends JpaRepository<DetailReview, Long> {
     List<DetailReview> findByReview(Review review);
+    List<DetailReview> findByReviewAndCategory(Review review, Category category);
 }

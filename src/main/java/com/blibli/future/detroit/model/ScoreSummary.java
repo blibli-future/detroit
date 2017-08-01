@@ -29,6 +29,19 @@ public class ScoreSummary extends BaseModel implements Serializable{
     @ManyToOne
     private User agent;
 
+    public ScoreSummary() {
+
+    }
+
+    public ScoreSummary(String name, Float score, ScoreType scoreType, Long fkId, CutOffHistory cutOffHistory, User agent) {
+        this.name = name;
+        this.score = score;
+        this.scoreType = scoreType;
+        this.fkId = fkId;
+        this.cutOffHistory = cutOffHistory;
+        this.agent = agent;
+    }
+
     public Long getId() {
         return id;
     }
