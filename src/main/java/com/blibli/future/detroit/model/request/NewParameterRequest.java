@@ -1,10 +1,5 @@
 package com.blibli.future.detroit.model.request;
 
-import com.blibli.future.detroit.model.AgentPosition;
-import com.blibli.future.detroit.model.Category;
-
-import java.util.List;
-
 public class NewParameterRequest {
     private Long id;
     private String name;
@@ -12,7 +7,7 @@ public class NewParameterRequest {
     private Float weight;
     private boolean bulkStatus;
     private boolean isActive;
-    private AgentPosition agentPosition;
+    private Long agentChannelId;
 
     public Long getId() {
         return id;
@@ -62,12 +57,12 @@ public class NewParameterRequest {
         isActive = active;
     }
 
-    public AgentPosition getAgentPosition() {
-        return agentPosition;
+    public Long getAgentChannelId() {
+        return agentChannelId;
     }
 
-    public void setAgentPosition(AgentPosition agentPosition) {
-        this.agentPosition = agentPosition;
+    public void setAgentChannelId(Long agentChannelId) {
+        this.agentChannelId = agentChannelId;
     }
 
     @Override
@@ -83,7 +78,7 @@ public class NewParameterRequest {
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (weight != null ? !weight.equals(that.weight) : that.weight != null) return false;
-        return agentPosition != null ? agentPosition.equals(that.agentPosition) : that.agentPosition == null;
+        return agentChannelId != null ? agentChannelId.equals(that.agentChannelId) : that.agentChannelId == null;
     }
 
     @Override
@@ -94,7 +89,7 @@ public class NewParameterRequest {
         result = 31 * result + (weight != null ? weight.hashCode() : 0);
         result = 31 * result + (bulkStatus ? 1 : 0);
         result = 31 * result + (isActive ? 1 : 0);
-        result = 31 * result + (agentPosition != null ? agentPosition.hashCode() : 0);
+        result = 31 * result + (agentChannelId != null ? agentChannelId.hashCode() : 0);
         return result;
     }
 }

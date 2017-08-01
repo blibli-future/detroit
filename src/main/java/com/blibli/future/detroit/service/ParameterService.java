@@ -4,6 +4,7 @@ import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
 import com.blibli.future.detroit.model.request.NewParameterRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
+import com.blibli.future.detroit.repository.AgentChannelRepository;
 import com.blibli.future.detroit.repository.ParameterRepository;
 import com.blibli.future.detroit.util.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class ParameterService {
     @Autowired
     private ParameterRepository parameterRepository;
     @Autowired
+    private AgentChannelRepository agentChannelRepository;
+    @Autowired
     Converter modelMapper;
 
     public List<Parameter> getAllParameter() {
@@ -32,6 +35,8 @@ public class ParameterService {
     public Parameter createParameter(NewParameterRequest request) {
         Parameter newParameter = modelMapper.modelMapper()
             .map(request, Parameter.class);
+        newParameter.setAgentChannel(
+            agentChannelRepository.getOne(request.getAgentChannelId()));
         parameterRepository.saveAndFlush(newParameter);
 
         return newParameter;
