@@ -83,22 +83,25 @@ public class DataSeeder implements ApplicationRunner {
 //        cutOffHistory1.setEndCutOff(end);
         cutOffHistory1 = cutOffRepository.saveAndFlush(cutOffHistory1);
 
+        AgentPosition agentPosition = new AgentPosition();
+        agentPosition.setName("Inbound");
+        agentPosition = agentPositionRepository.saveAndFlush(agentPosition);
+
         AgentChannel agentChannel = new AgentChannel();
         agentChannel.setName("Chat");
+        agentChannel.setAgentPosition(agentPosition);
         agentChannel = agentChannelRepository.saveAndFlush(agentChannel);
 
         AgentChannel agentChannel1 = new AgentChannel();
         agentChannel1.setName("Call");
+        agentChannel1.setAgentPosition(agentPosition);
         agentChannel1 = agentChannelRepository.saveAndFlush(agentChannel1);
-
-        AgentPosition agentPosition = new AgentPosition();
-        agentPosition.setName("Inbound");
-        agentPosition = agentPositionRepository.saveAndFlush(agentPosition);
 
         List<AgentChannel> agentChannels = new ArrayList<>();
         agentChannels.add(agentChannel);
         agentChannels.add(agentChannel1);
         agentPosition.setAgentChannels(agentChannels);
+        agentPosition = agentPositionRepository.saveAndFlush(agentPosition);
 
         // API KEY = YWdlbnRAZXhhbXBsZS5jb206c2VjcmV0
         User agent = new User();
@@ -175,11 +178,20 @@ public class DataSeeder implements ApplicationRunner {
         parameter = parameterRepository.saveAndFlush(parameter);
 
         Parameter parameter1 = new Parameter();
-        parameter1.setAgentChannel(agentChannel);
+        parameter1.setAgentChannel(agentChannel1);
         parameter1.setName("Best Conversation");
         parameter1.setDescription("Best Conversation Parameter");
         parameter1.setWeight(50f);
         parameter1 = parameterRepository.saveAndFlush(parameter1);
+
+        List<Parameter> parameters = new ArrayList<>();
+        parameters.add(parameter);
+        agentChannel.setParameters(parameters);
+        agentChannel = agentChannelRepository.saveAndFlush(agentChannel);
+        parameters = new ArrayList<>();
+        parameters.add(parameter1);
+        agentChannel1.setParameters(parameters);
+        agentChannel1 = agentChannelRepository.saveAndFlush(agentChannel1);
 
         Category category = new Category();
         category.setName("Opening");

@@ -20,8 +20,7 @@ class StatisticAll extends BaseDetroitComponent {
     this.getStatisticInfo();
 
     this.totalProps = [];
-    this.parameterProps = [];
-    this.categoryProps = [];
+    this.positionChannelProps = [];
     this.getStatisticData();
   }
 
@@ -94,40 +93,28 @@ class StatisticAll extends BaseDetroitComponent {
         ]
       }]
       let xAxis = component.state.allStatistic['dateInISOFormat'];
-      let parameterDatasets = [];
-      component.state.allStatistic['parameter'].forEach((item,index)=> {
-        let categoryDatasets = [];
-        parameterDatasets.push({
-          label: item["name"],
-          data: item['scores'],
-          backgroundColor: [
-            component.generateRandomColor(item['name'])
-          ]
-        })
 
-        item['category'].forEach((item, index)=> {
-          categoryDatasets.push({
+      component.totalProps.push(
+        <TotalStatistic key="Total" title="Total" labels={ xAxis } datasets={ totalDatasets } />
+      )
+
+      component.state.allStatistic['positions'].forEach((item,index)=> {
+        let positionChannelDatasets = [];
+        item['parameters'].forEach((item,index)=> {
+          positionChannelDatasets.push({
             label: item['name'],
             data: item['scores'],
             backgroundColor: [
               component.generateRandomColor(item['name'])
-              ]
+            ]
           })
         })
 
-        component.categoryProps.push(
-          <TotalStatistic key={item['name']} title={item['name']} labels={xAxis} datasets={categoryDatasets} />
+        component.positionChannelProps.push(
+          <TotalStatistic key={ item['name'] } title={ item['name'] } labels={ xAxis } datasets={ positionChannelDatasets } />
         )
 
       })
-
-      component.totalProps.push(
-        <TotalStatistic key={"Total"} title={"Total"} labels={xAxis} datasets={totalDatasets} />
-      )
-
-      component.parameterProps.push(
-        <TotalStatistic key={"All"} title={"All"} labels={xAxis} datasets={parameterDatasets} />
-      )
     }
 
     let parameterInfo = [];
@@ -159,9 +146,7 @@ class StatisticAll extends BaseDetroitComponent {
 
           { this.totalProps }
 
-          { this.parameterProps }
-
-          { this.categoryProps }
+          { this.positionChannelProps }
         </div>
       </div>
     );

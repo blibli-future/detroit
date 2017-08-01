@@ -1,6 +1,7 @@
 package com.blibli.future.detroit.service;
 
 import com.blibli.future.detroit.model.*;
+import com.blibli.future.detroit.model.dto.AgentPositionDto;
 import com.blibli.future.detroit.model.enums.ScoreType;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.response.AgentReviewNoteResponse;
@@ -31,16 +32,21 @@ public class StatisticService {
     ScoreSummaryRepository scoreSummaryRepository;
     @Autowired
     CutOffRepository cutOffRepository;
+    @Autowired
+    AgentPositionRepository agentPositionRepository;
+    @Autowired
+    AgentChannelRepository agentChannelRepository;
 
     public StatisticDiagramResponseNew getCurrentAllStatisticDiagram() {
+        List<AgentPositionDto> positionDtos = new ArrayList<>();
         List<ParameterStatistic> parameterStatistics = new ArrayList<>();
-        List<CategoryStatistic> categoryStatistics =  new ArrayList<>();
 
         List<CutOffHistory> cutOffHistories = new ArrayList<>();
         List<LocalDate> dates = new ArrayList<>();
         List<Float> parameterScore = new ArrayList<>();
-        List<Float> categoryScore = new ArrayList<>();
         List<Float> totalScore = new ArrayList<>();
+
+        String positionChannel = "";
 
         LocalDate now = new LocalDate();
 
@@ -61,28 +67,30 @@ public class StatisticService {
             }
         }
 
-        for(Parameter parameter : parameterRepository.findAll()) {
-            parameterScore = new ArrayList<>();
-            categoryStatistics = new ArrayList<>();
-            for(Category category : parameter.getCategories()) {
-                parameterScore = new ArrayList<>();
-                for(CutOffHistory cutOffHistory : cutOffHistories) {
-                    for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(cutOffHistory)) {
-                        if (parameter.getName() == scoreSummary.getName() && parameter.getId() == scoreSummary.getFkId() && scoreSummary.getAgent() == null) {
-                            parameterScore.add(scoreSummary.getScore());
-                        }
-                        if (category.getName() == scoreSummary.getName() && category.getId() == scoreSummary.getFkId() && scoreSummary.getAgent() == null) {
-                            categoryScore.add(scoreSummary.getScore());
+        for(AgentPosition agentPosition : agentPositionRepository.findAll()) {
+            System.out.println(agentPosition.getName());
+            for(AgentChannel agentChannel : agentPosition.getAgentChannels()) {
+                System.out.println(agentChannel.getName());
+                for(Parameter parameter : agentChannel.getParameters()) {
+                    for(CutOffHistory cutOffHistory : cutOffHistories) {
+                        for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(cutOffHistory)) {
+                            if (parameter.getName().equalsIgnoreCase(scoreSummary.getName()) && parameter.getId().equals(scoreSummary.getFkId()) && scoreSummary.getAgent() == null) {
+                                System.out.println("parameter ID : "+parameter.getId()+" - score FK : "+scoreSummary.getFkId());
+                                parameterScore.add(scoreSummary.getScore());
+                            }
                         }
                     }
+                    parameterStatistics.add(new ParameterStatistic(parameter.getName(), parameterScore));
+                    parameterScore = new ArrayList<>();
                 }
-                categoryStatistics.add(new CategoryStatistic(category.getName(), categoryScore));
-                categoryScore = new ArrayList<>();
+                positionDtos.add(new AgentPositionDto(
+                    agentPosition.getName()+"-"+agentChannel.getName(),
+                    parameterStatistics));
+                parameterStatistics = new ArrayList<>();
             }
-            parameterStatistics.add(new ParameterStatistic(parameter.getName(), parameterScore, categoryStatistics));
         }
 
-        return new StatisticDiagramResponseNew(dates, totalScore, parameterStatistics);
+        return new StatisticDiagramResponseNew(dates, totalScore, positionDtos);
     }
 
     public StatisticInfoResponse getCurrentStatisticInfo() {
@@ -99,19 +107,19 @@ public class StatisticService {
         List<ParameterStatisticInfo> parameterStatisticInfos = new ArrayList<>();
 
         for(ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(lastCutOff)) {
-            if(scoreSummary.getScoreType() == ScoreType.TOTAL_REVIEW) {
+            if(scoreSummary.getScoreType().equals(ScoreType.TOTAL_REVIEW)) {
                 totalScore = scoreSummary.getScore();
             }
-            if(scoreSummary.getScoreType() == ScoreType.ALL_PARAMETER) {
+            if(scoreSummary.getScoreType().equals(ScoreType.ALL_PARAMETER)) {
                 parameterStatisticInfos.add(new ParameterStatisticInfo(scoreSummary.getName(), scoreSummary.getScore()));
             }
         }
 
         for(ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(beforeLastCutOff)) {
-            if(scoreSummary.getScoreType() == ScoreType.TOTAL_REVIEW) {
+            if(scoreSummary.getScoreType().equals(ScoreType.TOTAL_REVIEW)) {
                 totalScoreDiff = totalScore - scoreSummary.getScore();
             }
-            if(scoreSummary.getScoreType() == ScoreType.ALL_PARAMETER) {
+            if(scoreSummary.getScoreType().equals(ScoreType.ALL_PARAMETER)) {
                 for(ParameterStatisticInfo parameterStatisticInfo : parameterStatisticInfos) {
                     if(parameterStatisticInfo.getName().equalsIgnoreCase(scoreSummary.getName())) {
                         parameterDiff = parameterStatisticInfo.getScore() - scoreSummary.getScore();

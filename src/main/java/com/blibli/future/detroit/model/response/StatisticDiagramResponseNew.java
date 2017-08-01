@@ -2,6 +2,7 @@ package com.blibli.future.detroit.model.response;
 
 import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.ParameterStatistic;
+import com.blibli.future.detroit.model.dto.AgentPositionDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.joda.time.LocalDate;
 
@@ -11,12 +12,12 @@ import java.util.List;
 public class StatisticDiagramResponseNew {
     private List<LocalDate> dates;
     private List<Float> scores;
-    private List<ParameterStatistic> parameter;
+    private List<AgentPositionDto> positions;
 
-    public StatisticDiagramResponseNew(List<LocalDate> dates, List<Float> scores, List<ParameterStatistic> parameter) {
+    public StatisticDiagramResponseNew(List<LocalDate> dates, List<Float> scores, List<AgentPositionDto> positions) {
         this.dates = dates;
         this.scores = scores;
-        this.parameter = parameter;
+        this.positions = positions;
     }
 
     @JsonIgnore
@@ -44,12 +45,11 @@ public class StatisticDiagramResponseNew {
         this.scores = scores;
     }
 
-    public List<ParameterStatistic> getParameter() {
-        return parameter;
+    public List<AgentPositionDto> getPositions() {
+        return positions;
     }
 
-    public void setParameter(List<ParameterStatistic> parameter) {
-        this.parameter = parameter;
+    public void setPositions(List<AgentPositionDto> positions) {
+        this.positions = positions;
     }
-
 }

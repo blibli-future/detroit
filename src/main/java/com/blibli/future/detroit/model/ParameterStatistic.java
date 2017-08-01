@@ -5,12 +5,10 @@ import java.util.List;
 public class ParameterStatistic {
     protected String name;
     protected List<Float> scores;
-    protected List<CategoryStatistic> category;
 
-    public ParameterStatistic(String name, List<Float> scores, List<CategoryStatistic> category) {
+    public ParameterStatistic(String name, List<Float> scores) {
         this.name = name;
         this.scores = scores;
-        this.category = category;
     }
 
     public String getName() {
@@ -27,13 +25,5 @@ public class ParameterStatistic {
 
     public void setScores(List<Float> scores) {
         this.scores = scores;
-    }
-
-    public List<CategoryStatistic> getCategory() {
-        return category;
-    }
-
-    public void setCategory(List<CategoryStatistic> category) {
-        this.category = category;
     }
 }
