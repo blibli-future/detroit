@@ -85,11 +85,20 @@ public class DataSeeder implements ApplicationRunner {
 
         AgentChannel agentChannel = new AgentChannel();
         agentChannel.setName("Chat");
-        agentChannelRepository.save(agentChannel);
+        agentChannel = agentChannelRepository.saveAndFlush(agentChannel);
+
+        AgentChannel agentChannel1 = new AgentChannel();
+        agentChannel1.setName("Call");
+        agentChannel1 = agentChannelRepository.saveAndFlush(agentChannel1);
 
         AgentPosition agentPosition = new AgentPosition();
         agentPosition.setName("Inbound");
-        agentPositionRepository.save(agentPosition);
+        agentPosition = agentPositionRepository.saveAndFlush(agentPosition);
+
+        List<AgentChannel> agentChannels = new ArrayList<>();
+        agentChannels.add(agentChannel);
+        agentChannels.add(agentChannel1);
+        agentPosition.setAgentChannels(agentChannels);
 
         // API KEY = YWdlbnRAZXhhbXBsZS5jb206c2VjcmV0
         User agent = new User();
@@ -159,14 +168,14 @@ public class DataSeeder implements ApplicationRunner {
         userRoleRepository.save(superAdminParameter);
 
         Parameter parameter = new Parameter();
-        parameter.setAgentPosition(agentPosition);
+        parameter.setAgentChannel(agentChannel);
         parameter.setName("Live Monitoring");
         parameter.setDescription("Live Monitoring Parameter");
         parameter.setWeight(50f);
         parameter = parameterRepository.saveAndFlush(parameter);
 
         Parameter parameter1 = new Parameter();
-        parameter1.setAgentPosition(agentPosition);
+        parameter1.setAgentChannel(agentChannel);
         parameter1.setName("Best Conversation");
         parameter1.setDescription("Best Conversation Parameter");
         parameter1.setWeight(50f);
@@ -176,7 +185,6 @@ public class DataSeeder implements ApplicationRunner {
         category.setName("Opening");
         category.setDescription("Opening Category");
         category.setWeight(50f);
-        category.setAgentChannel(agentChannel);
         category.setParameter(parameter);
         category = categoryRepository.saveAndFlush(category);
 
@@ -184,7 +192,6 @@ public class DataSeeder implements ApplicationRunner {
         category1.setName("Solution");
         category1.setDescription("Solution Category");
         category1.setWeight(50f);
-        category1.setAgentChannel(agentChannel);
         category1.setParameter(parameter);
         category1 = categoryRepository.saveAndFlush(category1);
 
@@ -192,7 +199,6 @@ public class DataSeeder implements ApplicationRunner {
         category2.setName("Opening");
         category2.setDescription("Opening Category");
         category2.setWeight(50f);
-        category2.setAgentChannel(agentChannel);
         category2.setParameter(parameter1);
         category2 = categoryRepository.saveAndFlush(category2);
 
@@ -200,7 +206,6 @@ public class DataSeeder implements ApplicationRunner {
         category3.setName("Solution");
         category3.setDescription("Solution Category");
         category3.setWeight(50f);
-        category3.setAgentChannel(agentChannel);
         category3.setParameter(parameter1);
         category3 = categoryRepository.saveAndFlush(category3);
 
