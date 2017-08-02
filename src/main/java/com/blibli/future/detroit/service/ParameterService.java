@@ -3,6 +3,7 @@ package com.blibli.future.detroit.service;
 import com.blibli.future.detroit.model.AgentChannel;
 import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
+import com.blibli.future.detroit.model.dto.BatchUpdateParameterDto;
 import com.blibli.future.detroit.model.request.NewParameterRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.repository.AgentChannelRepository;
@@ -54,42 +55,43 @@ public class ParameterService {
      *
      * A valid update *must* have sum 100% in weight across all the categories.
      *
-     * @param channelId target channel id
      * @param parameterList param
      * @return edit success status
      */
     public boolean batchUpdateParameter(
-            Long channelId,
-            List<NewParameterRequest> parameterList)
+            List<BatchUpdateParameterDto> parameterList)
             throws WeightPercentageNotValid {
+        System.out.println(parameterList);
         List<Parameter> updatedParameterList = new ArrayList<>();
-        AgentChannel channel = agentChannelRepository.getOne(channelId);
-        for(NewParameterRequest input: parameterList) {
-            Parameter parameter = modelMapper.modelMapper().map(input, Parameter.class);
-            parameter.setAgentChannel(channel);
+        for (BatchUpdateParameterDto input: parameterList) {
+            Parameter parameter = parameterRepository.getOne(input.getParameterId());
+            parameter.setWeight(input.getWeight());
             updatedParameterList.add(parameter);
         }
-        boolean isValidUpdate = isAllParameterHaveBalancedWeight(channel);
-        if (!isValidUpdate) {
-            throw new WeightPercentageNotValid("Total percentage of all weight in parameter is not 100%");
-        }
         parameterRepository.save(updatedParameterList);
+        isAllParameterHaveBalancedWeight();
         return true;
     }
 
     /**
-     * Check if the combined weight of all parameter for a channel is ~~exactly~~
+     * Check if the combined weight of all parameter for all channel is ~~exactly~~
      * sorta close of 100%.
      *
      * @return boolean
      */
-    private boolean isAllParameterHaveBalancedWeight(AgentChannel channel) {
-        float sum = 0;
-        for(Parameter parameter : parameterRepository.findByAgentChannel(channel)) {
-            sum += parameter.getWeight();
+    private boolean isAllParameterHaveBalancedWeight() throws WeightPercentageNotValid {
+        for (AgentChannel channel: agentChannelRepository.findAll()) {
+            float sum = 0;
+            for(Parameter parameter : parameterRepository.findByAgentChannel(channel)) {
+                sum += parameter.getWeight();
+            }
+            // sorta close
+            if (Math.abs(sum - 100) > 0.001) {
+                throw new WeightPercentageNotValid(
+                    String.format("Total percentage of all weight in channel %s is not 100%%", channel.getName()));
+            }
         }
-        // sorta close
-        return Math.abs(sum - 100) < 0.001;
+        return true;
     }
 
 

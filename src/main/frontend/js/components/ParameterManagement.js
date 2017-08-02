@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import swal from 'sweetalert';
 
 import BaseDetroitComponent from './BaseDetroitComponent';
 
@@ -9,7 +10,11 @@ class ParameterManagement extends BaseDetroitComponent {
   constructor(props) {
     super(props);
     this.state = {
-      parameterList: []
+      parameterList: [],
+      saveBatch: false,
+    };
+    this.cellEditProp = {
+      mode: 'click',
     };
     this.deleteAgent = this.deleteAgent.bind(this);
   }
@@ -37,8 +42,21 @@ class ParameterManagement extends BaseDetroitComponent {
     }).then((response) => component.getAgentData());
   }
 
-  channelFormatter(agentChannel, row) {
-    return agentChannel.name;
+  batchSaveParameterWeight() {
+    let jsonLoad = this.state.parameterList.map((parameter) => {
+      return {parameterId: parameter.id, weight: parameter.weight}
+    });
+    this.auth.apiCall('/api/v1/parameters/batch-update', {
+      method: 'PATCH',
+      body: JSON.stringify(jsonLoad)
+    }).then((response) => response.json())
+      .then((json) => {
+        if (json.success) {
+          swal("Success", "New weight saved.", "success");
+        } else {
+          swal("Failed to save data", json.errorMessage, "error");
+        }
+      });
   }
 
   weightFormatter(weight, row) {
@@ -81,11 +99,13 @@ class ParameterManagement extends BaseDetroitComponent {
             <div className="col-md-12 col-sm-12 col-xs-12">
               <div className="x_panel">
                 <div className="x_content">
-                  <BootstrapTable data={this.state.parameterList} striped hover>
+                  <BootstrapTable data={this.state.parameterList}
+                                  cellEdit={this.cellEditProp}
+                                  striped hover>
                     <TableHeaderColumn isKey dataField='id'>ID</TableHeaderColumn>
                     <TableHeaderColumn
-                      dataField='agentChannel'
-                      dataFormat={ this.channelFormatter } >
+                      dataField='channelName'
+                      editable={ false }>
                       Channel Name
                     </TableHeaderColumn>
                     <TableHeaderColumn dataField='name'>Name</TableHeaderColumn>
@@ -96,10 +116,12 @@ class ParameterManagement extends BaseDetroitComponent {
                     </TableHeaderColumn>
                     <TableHeaderColumn
                         dataField="id"
-                        dataFormat={ this.actionButtonFormatter }>
+                        dataFormat={ this.actionButtonFormatter }
+                        editable={ false }>
                       Action
                     </TableHeaderColumn>
                   </BootstrapTable>
+                  <button onClick={this.batchSaveParameterWeight.bind(this)}>Save weight data</button>
                 </div>
               </div>
             </div>

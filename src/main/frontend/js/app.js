@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, BrowserHistory } from 'react-router-dom
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import 'react-select/dist/react-select.css';
+import 'sweetalert/dist/sweetalert.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 import '../css/app.css';
