@@ -6,11 +6,10 @@ import com.blibli.future.detroit.model.dto.AgentDto;
 import com.blibli.future.detroit.model.dto.ReviewerDto;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
-import com.blibli.future.detroit.repository.AgentChannelRepository;
-import com.blibli.future.detroit.repository.AgentPositionRepository;
-import com.blibli.future.detroit.repository.UserRepository;
-import com.blibli.future.detroit.repository.UserRoleRepository;
+import com.blibli.future.detroit.repository.*;
 import com.blibli.future.detroit.util.configuration.Converter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,12 @@ public class UserService {
     private AgentPositionRepository agentPositionRepository;
 
     @Autowired
+    private ParameterRepository parameterRepository;
+
+    @Autowired
     Converter modelMapper;
+
+    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
     public List<User> getAllUser() {
         return userRepository.findAll();
@@ -91,8 +95,23 @@ public class UserService {
     public User updateReviewer(ReviewerDto request) {
         User reviewer = userRepository.getOne(request.getId());
         modelMapper.modelMapper().map(request, reviewer);
+
+        // Update reviewer role
+        List<UserRole> oldRole = userRoleRepository.findReviewerRoleByEmail(reviewer.getEmail());
+        LOG.info("Deleting reviewer %s roles: %s", reviewer.getEmail(), oldRole);
+        userRoleRepository.delete(oldRole);
+
+        for (String role: request.getReviewerRole()) {
+            LOG.debug("Creating new role: %s", role);
+            UserRole ur = new UserRole(reviewer, role);
+            userRoleRepository.save(ur);
+        }
         userRepository.saveAndFlush(reviewer);
 
         return reviewer;
+    }
+
+    public List<String> getParameterRoles() {
+        return parameterRepository.getAllParameterNames();
     }
 }

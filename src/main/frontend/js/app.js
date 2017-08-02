@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, BrowserHistory } from 'react-router-dom
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
-import 'jquery/dist/jquery.min.js';
+import 'react-select/dist/react-select.css';
 import '../css/app.css';
 import '../css/gantellela-theme.css';
 import '../css/gantellela-js.js';

@@ -16,7 +16,7 @@ public class UserDto implements Serializable {
     Gender gender;
     String location;
     String phoneNumber;
-    UserType userRole;
+    UserType userType;
 
     public UserDto() {}
 
@@ -29,7 +29,7 @@ public class UserDto implements Serializable {
         this.gender = user.getGender();
         this.location = user.getLocation();
         this.phoneNumber = user.getPhoneNumber();
-        this.userRole = user.getUserType();
+        this.userType = user.getUserType();
     }
 
 
@@ -100,10 +100,10 @@ public class UserDto implements Serializable {
     }
 
     public UserType getUserRole() {
-        return userRole;
+        return userType;
     }
 
     public void setUserRole(UserType userRole) {
-        this.userRole = userRole;
+        this.userType = userRole;
     }
 }

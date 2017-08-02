@@ -9,11 +9,6 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
-@SQLDelete(sql =
-    "UPDATE user_role " +
-    "SET deleted = true " +
-    "WHERE id = ?")
-@Where(clause = "deleted=false")
 public class UserRole extends BaseModel implements Serializable {
     @Id
     @GeneratedValue
@@ -31,7 +26,12 @@ public class UserRole extends BaseModel implements Serializable {
 
     public UserRole(User user, Parameter parameter) {
         this.email = user.getEmail();
-        this.role = parameter.getName();
+        this.role = "PARAM " + parameter.getName();
+    }
+
+    public UserRole(User user, String role) {
+        this.email = user.getEmail();
+        this.role = role;
     }
 
     public long getId() {
