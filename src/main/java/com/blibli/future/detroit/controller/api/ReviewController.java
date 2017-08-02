@@ -1,12 +1,10 @@
 package com.blibli.future.detroit.controller.api;
 
 import com.blibli.future.detroit.model.Review;
+import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.*;
-import com.blibli.future.detroit.service.ParameterService;
-import com.blibli.future.detroit.service.ReviewService;
-import com.blibli.future.detroit.service.ScoreSummaryService;
-import com.blibli.future.detroit.service.UserService;
+import com.blibli.future.detroit.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +32,9 @@ public class ReviewController {
     @Autowired
     ScoreSummaryService scoreSummaryService;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     @GetMapping(GET_ALL_REVIEW)
     public BaseRestListResponse<UserReviewResponse> getAllReview(@PathVariable Long userId) {
         return new BaseRestListResponse<>(reviewService.getAllReview(userId));
@@ -59,7 +60,8 @@ public class ReviewController {
 
     @GetMapping(GET_REVIEW_OVERVIEW)
     public BaseRestListResponse<AgentOverviewResponse> getReviewOverview() {
-        return new BaseRestListResponse<>(reviewService.getReviewOverview());
+        User currentUser = authenticationService.getCurrentUser();
+        return new BaseRestListResponse<>(reviewService.getReviewOverview(currentUser));
     }
 
     @GetMapping(END_REVIEW_PERIOD)

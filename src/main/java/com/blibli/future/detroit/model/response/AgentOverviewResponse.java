@@ -7,33 +7,70 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AgentOverviewResponse {
-    private String name;
-    private HashMap<String, Integer> data;
+    private Long idAgent;
+    private String nickname;
+    private String email;
+    private String position;
+    private String channel;
+    private Integer reviewCount;
 
-    public AgentOverviewResponse(
-        User agent,
-        HashMap<String, Integer> data
-    ) {
-        this.name = agent.getFullname();
-        this.data = data;
+    public AgentOverviewResponse() {
     }
 
-    public String getName() {
-        return name;
+    public AgentOverviewResponse(Long idAgent, String nickname, String email, String position, String channel, Integer reviewCount) {
+        this.idAgent = idAgent;
+        this.nickname = nickname;
+        this.email = email;
+        this.position = position;
+        this.channel = channel;
+        this.reviewCount = reviewCount;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Long getIdAgent() {
+        return idAgent;
     }
 
-    public HashMap<String, Integer> getData()
-
-
-    {
-        return data;
+    public void setIdAgent(Long idAgent) {
+        this.idAgent = idAgent;
     }
 
-    public void setData(HashMap<String, Integer> data) {
-        this.data = data;
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public Integer getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(Integer reviewCount) {
+        this.reviewCount = reviewCount;
     }
 }

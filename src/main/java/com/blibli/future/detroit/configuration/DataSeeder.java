@@ -133,9 +133,12 @@ public class DataSeeder implements ApplicationRunner {
 
         List<User> agents = new ArrayList<>();
         agents.add(agent);
-        agents.add(agent2);
         agentChannel.setUsers(agents);
         agentChannel = agentChannelRepository.saveAndFlush(agentChannel);
+        agents = new ArrayList<>();
+        agents.add(agent2);
+        agentChannel1.setUsers(agents);
+        agentChannel1 = agentChannelRepository.saveAndFlush(agentChannel1);
 
         UserRole agentRole2 = new UserRole(
             agent2.getEmail(), agent2.getUserType().toString());
@@ -156,7 +159,7 @@ public class DataSeeder implements ApplicationRunner {
         userRoleRepository.save(reviewerRole);
 
         UserRole reviewerParameter = new UserRole(
-            reviewer.getEmail(), "Reviewer_Live_Monitoring");
+            reviewer.getEmail(), "PARAM Live Monitoring");
         userRoleRepository.save(reviewerParameter);
 
         // API KEY = c3VwZXJhZG1pbkBleGFtcGxlLmNvbTpzZWNyZXQ=
@@ -173,7 +176,7 @@ public class DataSeeder implements ApplicationRunner {
         userRoleRepository.save(superAdminRole);
 
         UserRole superAdminParameter = new UserRole(
-            superAdmin.getEmail(), "SuperAdmin_Live_Monitoring");
+            superAdmin.getEmail(), "PARAM Live Monitoring");
         userRoleRepository.save(superAdminParameter);
 
         Parameter parameter = new Parameter();

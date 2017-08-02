@@ -1,9 +1,6 @@
 package com.blibli.future.detroit.service;
 
-import com.blibli.future.detroit.model.DetailReview;
-import com.blibli.future.detroit.model.Parameter;
-import com.blibli.future.detroit.model.Review;
-import com.blibli.future.detroit.model.User;
+import com.blibli.future.detroit.model.*;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.AgentOverviewResponse;
@@ -80,18 +77,55 @@ public class ReviewService {
         return updatedReview;
     }
 
-    public List<AgentOverviewResponse> getReviewOverview() {
-        List<User> agentList = userService.getAllUser(UserType.AGENT);
-        List<Parameter> parameterList = parameterService.getAllParameter();
+    public List<AgentOverviewResponse> getReviewOverview(User currentUser) {
+        List<User> agentList = new ArrayList<>();
         List<AgentOverviewResponse> agentOverviewResponses = new ArrayList<>();
+
+        Integer reviewcount = 0;
+
+        for(UserRole userRole : currentUser.getUserRole()) {
+            String role = userRole.getRole().substring(6);
+            System.out.println(role);
+            for(Parameter parameter : parameterService.getAllParameter()) {
+                if (role.equalsIgnoreCase(parameter.getName())) {
+                    System.out.println(parameter.getName());
+                    for(User agent : parameter.getAgentChannel().getUsers()) {
+                        System.out.println(agent.getFullname());
+                        agentList.add(agent);
+                    }
+                }
+            }
+        }
+
+
         for (User agent: agentList) {
             HashMap<String, Integer> map = new HashMap<>();
-            for (Parameter parameter : parameterList) {
-                List<Review> reviewList = reviewRepository.findByAgentAndParameter(agent, parameter);
-                map.put(parameter.getName(), reviewList.size());
+            for (UserRole userRole : currentUser.getUserRole()) {
+                String role = userRole.getRole().substring(6);
+                for (Parameter parameter : parameterService.getAllParameter()) {
+                    if (role.equalsIgnoreCase(parameter.getName())) {
+                        List<Review> reviewList = reviewRepository.findByAgentAndParameter(agent, parameter);
+                        reviewcount = reviewList.size();
+                    }
+                }
             }
-            agentOverviewResponses.add(new AgentOverviewResponse(agent, map));
+            Long idAgent = agent.getId();
+            String agentName = agent.getNickname();
+            String agentEmail = agent.getEmail();
+            String agentPosition = agent.getAgentPosition().getName();
+            String agentChannel = agent.getAgentChannel().getName();
+            agentOverviewResponses.add(new AgentOverviewResponse(idAgent, agentName, agentEmail, agentPosition, agentChannel, reviewcount));
         }
+
+
+//        for (User agent: agentList) {
+//            HashMap<String, Integer> map = new HashMap<>();
+//            for (Parameter parameter : parameterList) {
+//                List<Review> reviewList = reviewRepository.findByAgentAndParameter(agent, parameter);
+//                map.put(parameter.getName(), reviewList.size());
+//            }
+//            agentOverviewResponses.add(new AgentOverviewResponse(agent, map));
+//        }
         return new ArrayList<>(agentOverviewResponses);
     }
 
