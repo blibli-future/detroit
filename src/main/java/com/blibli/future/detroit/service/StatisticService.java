@@ -189,29 +189,47 @@ public class StatisticService {
         return new StatisticDiagramIndividualResponse(dates, totalScore, parameterStatistics);
     }
 
-    public List<StatisticDiagramIndividualResponse> getIndividualStatisticInfo(Long agentId) {
-        List<StatisticDiagramIndividualResponse> statisticDiagramIndividualResponses = new ArrayList<>();
-//        User agent = userRepository.findOne(agentId);
-//        Float finalScore = 0f;
-//        LocalDate now = new LocalDate();
-//
-//        for(CutOffHistory cutOffHistory : cutOffRepository.findAll()) {
-//            if(cutOffHistory.getEndInISOFormat() == null) {
-//                continue;
-//            } else {
-//                if(cutOffHistory.getEndCutOff().getYear() != now.getYear()) {
-//                    continue;
-//                }
-//                for(Review review : cutOffHistory.getReviews()) {
-//                    if(review.getAgent() != agent) {
-//                        continue;
-//                    }
-//                    finalScore = finalScore + (review.getScore()*(review.getParameter().getWeight()/100) );
-//                }
-//                statisticDiagramIndividualResponses.add(new StatisticDiagramIndividualResponse(cutOffHistory.getEndCutOff(), finalScore));
-//            }
-//        }
-        return statisticDiagramIndividualResponses;
+    public StatisticInfoResponse getIndividualStatisticInfo(Long agentId) {
+
+        User agent = userRepository.findOne(agentId);
+        CutOffHistory lastCutOff = cutOffRepository.findByEndCutOff(
+            cutOffRepository.findByEndCutOffIsNull().getBeginCutOff()
+        );
+        CutOffHistory beforeLastCutOff = cutOffRepository.findByEndCutOff(lastCutOff.getBeginCutOff());
+
+        Float totalScore = 0f;
+        Float totalScoreDiff = 0f;
+        Float channelDiff = 0f;
+        List<ChannelStatisticInfo> channelStatisticInfos = new ArrayList<>();
+
+        for(ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistoryAndAgent(lastCutOff, agent)) {
+            if(scoreSummary.getScoreType().equals(ScoreType.USER_TOTAL)) {
+                totalScore = scoreSummary.getScore();
+            }
+            if(scoreSummary.getScoreType().equals(ScoreType.USER_PARAMETER)) {
+                channelStatisticInfos.add(
+                    new ChannelStatisticInfo(scoreSummary.getName()
+                        , scoreSummary.getScore()));
+            }
+        }
+
+        for(ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistoryAndAgent(beforeLastCutOff, agent)) {
+            if(scoreSummary.getScoreType().equals(ScoreType.USER_TOTAL)) {
+                totalScoreDiff = totalScore - scoreSummary.getScore();
+            }
+            if(scoreSummary.getScoreType().equals(ScoreType.USER_PARAMETER)) {
+                for(ChannelStatisticInfo channelStatisticInfo : channelStatisticInfos) {
+                    Parameter parameter = parameterRepository.findOne(scoreSummary.getFkId());
+                    String parameterName = parameter.getName();
+                    if(channelStatisticInfo.getName().equalsIgnoreCase(parameterName)) {
+                        channelDiff = channelStatisticInfo.getScore() - scoreSummary.getScore();
+                        channelStatisticInfo.setDiffScore(channelDiff);
+                    }
+                }
+            }
+        }
+
+        return new StatisticInfoResponse(totalScore, totalScoreDiff, channelStatisticInfos);
     }
 
     public List<AgentReviewNoteResponse> getIndividualReviewNote(Long agentId) {
@@ -228,7 +246,7 @@ public class StatisticService {
                 if(detailReview.getNote() == null) {
                     continue;
                 }
-                String categoryName = detailReview.getCategory().getName();
+                String categoryName = review.getParameter().getName()+"-"+detailReview.getCategory().getName();
                 Float detailReviewScore = detailReview.getScore();
                 String note = detailReview.getNote();
                 agentReviewNoteResponses.add(new AgentReviewNoteResponse(categoryName, detailReviewScore, note));

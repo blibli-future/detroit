@@ -35,8 +35,8 @@ public class StatisticController {
     }
 
     @GetMapping(GET_INDIVIDUAL_STATISTIC_INFO)
-    public BaseRestListResponse<StatisticDiagramIndividualResponse> getIndividualStatisticInfo(@PathVariable Long agentId) {
-        return new BaseRestListResponse<>(statisticService.getIndividualStatisticInfo(agentId));
+    public BaseRestResponse<StatisticInfoResponse> getIndividualStatisticInfo(@PathVariable Long agentId) {
+        return new BaseRestResponse<>(statisticService.getIndividualStatisticInfo(agentId));
     }
 
     @GetMapping(GET_INDIVIDUAL_STATISTIC_DIAGRAM)

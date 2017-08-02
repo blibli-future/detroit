@@ -13,12 +13,15 @@ class StatisticIndividual extends BaseDetroitComponent {
         finalScore: 0,
         diffFinalScore : 0,
         parameters: []
-      }
+      },
+      reviewNote: []
     }
   };
 
   componentDidMount() {
     this.getStatisticIndividualDiagram();
+    this.getStatisticInfo();
+    this.getReviewNote();
   }
 
   getStatisticIndividualDiagram() {
@@ -31,6 +34,34 @@ class StatisticIndividual extends BaseDetroitComponent {
           individualStatistic: json.content
         });
       });
+  }
+
+  getStatisticInfo() {
+    let component = this;
+    return this.auth.apiCall('/api/v1/statistic/info/'+this.props.match.params.agentId, {
+      method: 'GET'
+    }).then((response) => response.json())
+      .then((json) => {
+        component.setState({
+          individualInfo: json.content
+        });
+      });
+  }
+
+  getReviewNote() {
+    let component = this;
+    return this.auth.apiCall('/api/v1/statistic/review/note/'+this.props.match.params.agentId, {
+      method: 'GET'
+    }).then((response) => response.json())
+      .then((json) => {
+        component.setState({
+          reviewNote: json.content
+        });
+      });
+  }
+
+  getAgentProfile() {
+    
   }
 
   hashCode(str) { // java String#hashCode
@@ -66,12 +97,18 @@ class StatisticIndividual extends BaseDetroitComponent {
     return this.hexToRgbA(this.intToRGB(this.hashCode(str)))
   }
 
+  generateRandomNumber() {
+    return Math.random();
+  }
+
   render() {
     let component = this;
 
     let totalStatistic = [];
     let parameterStatistic = [];
     let categoryStatistic = [];
+
+    var count = 0;
 
     if(this.state.individualStatistic.length != 0) {
       let totalDatasets = [{
@@ -90,6 +127,7 @@ class StatisticIndividual extends BaseDetroitComponent {
 
       let parameterDatasets = [];
       component.state.individualStatistic['parameters'].forEach((item,index)=> {
+        count++;
         let categoryDatasets = [];
 
         parameterDatasets.push({
@@ -99,11 +137,9 @@ class StatisticIndividual extends BaseDetroitComponent {
             component.generateRandomColor(item['name'])
           ]
         });
-        parameterStatistic.push(
-          <IndividualStatistic key="All" title="All" labels={ xAxis } datasets={ parameterDatasets } />
-        )
 
         item['categories'].forEach((item,index)=> {
+          count++;
           categoryDatasets.push({
             label : item['name'],
             data: item['scores'],
@@ -114,9 +150,34 @@ class StatisticIndividual extends BaseDetroitComponent {
         });
 
         categoryStatistic.push(
-          <IndividualStatistic key={ item['name'] } title={ item['name'] } labels={ xAxis } datasets={ categoryDatasets } />
+          <IndividualStatistic key={ count } title={ item['name'] } labels={ xAxis } datasets={ categoryDatasets } />
         )
 
+      });
+      parameterStatistic.push(
+        <IndividualStatistic key={ count } title="All" labels={ xAxis } datasets={ parameterDatasets } />
+      )
+    }
+
+    let parameterInfoIndividual = [];
+    if(this.state.individualInfo.length != 0) {
+      count = 0;
+      this.state.individualInfo['parameters'].forEach((item, index)=> {
+        count++;
+        parameterInfoIndividual.push(
+          <StatisticInfoIndividual key={ count } title={ item['name'] } score={ item['score'] } diff={ item['diffScore'] }  />
+        )
+      })
+    }
+
+    let individualReviewNote = [];
+    if(this.state.reviewNote.length != 0) {
+      count = 0;
+      this.state.reviewNote.forEach((item,index) => {
+        count++;
+        individualReviewNote.push(
+          <IndividualReviewNote key={ count } title={ item['category'] } score={ item['score'] }  note={ item['note'] } />
+        )
       });
     }
 
@@ -173,36 +234,8 @@ class StatisticIndividual extends BaseDetroitComponent {
                       </div>
                     </div>
                     <div className="row tile_count">
-                      <div className="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
-                        <span className="count_top"><i className="fa fa-clock-o"></i> Total Value Avg</span>
-                        <div className="count green">92</div>
-                        <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>5% </i> From last Month</span>
-                      </div>
-                      <div className="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
-                        <span className="count_top"><i className="fa fa-user"></i> Technical Review Avg</span>
-                        <div className="count red">68</div>
-                        <span className="count_bottom"><i className="red"><i className="fa fa-sort-desc"></i>8% </i> From last Month</span>
-                      </div>
-                      <div className="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
-                        <span className="count_top"><i className="fa fa-user"></i> Services Review Avg</span>
-                        <div className="count">85</div>
-                        <span className="count_bottom">Same with last Month</span>
-                      </div>
-                      <div className="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
-                        <span className="count_top"><i className="fa fa-user"></i> Other Review Avg</span>
-                        <div className="count green">78</div>
-                        <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>2% </i> From last Month</span>
-                      </div>
-                      <div className="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
-                        <span className="count_top"><i className="fa fa-user"></i> Attendance</span>
-                        <div className="count">99%</div>
-                        <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>2% </i> From last Month</span>
-                      </div>
-                      <div className="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
-                        <span className="count_top"><i className="fa fa-user"></i> Custom Review Count</span>
-                        <div className="count">16</div>
-                        <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i>2 </i> From last Month</span>
-                      </div>
+                      <StatisticInfoIndividual key="Total Review Score" title="Total Review Score" score={ this.state.individualInfo['finalScore'] } diff={ this.state.individualInfo['diffFinalScore'] }  />
+                      { parameterInfoIndividual }
                     </div>
 
                     { totalStatistic }
@@ -211,292 +244,24 @@ class StatisticIndividual extends BaseDetroitComponent {
 
                     { categoryStatistic }
 
-          <div className="" role="tabpanel" data-example-id="togglable-tabs">
-            <ul id="myTab" className="nav nav-tabs bar_tabs" role="tablist">
-              <li role="presentation" className="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Technical Review</a>
-              </li>
-              <li role="presentation" className=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Services Review</a>
-              </li>
-              <li role="presentation" className=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Other Review</a>
-              </li>
-            </ul>
-            <div id="myTabContent" className="tab-content">
-              <div role="tabpanel" className="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                <div className="" role="tabpanel" data-example-id="togglable-tabs">
-                  <ul id="myTab" className="nav nav-tabs bar_tabs" role="tablist">
-                    <li role="presentation" className="active"><a href="#tab_content111" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Reactiveness</a>
-                    </li>
-                    <li role="presentation" className=""><a href="#tab_content222" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Accuracy</a>
-                    </li>
-                  </ul>
-                  <div id="myTabContent" className="tab-content">
-                    <div role="tabpanel" className="tab-pane fade active in" id="tab_content111" aria-labelledby="home-tab">
-
-                      <ul className="messages">
-                        <li>
-                          <div className="message_date">
-                            <h3 className="date text-info">24</h3>
-                            <p className="month">May</p>
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="x_panel">
+                          <div className="x_title">
+                            <h2>Review Note
+                              <small>All note from reviewer</small>
+                            </h2>
+                            <div className="clearfix"></div>
                           </div>
-                          <div className="message_wrapper">
-                            <h4 className="heading">Value : 55</h4>
-                            <p className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.
-                            </p>
-                            <br />
+                          <br/>
+                          <div className="x_content">
+                            <ul className="messages">
+                              { individualReviewNote }
+                            </ul>
                           </div>
-                        </li>
-                        <li>
-                          <div className="message_date">
-                            <h3 className="date text-info">24</h3>
-                            <p className="month">May</p>
-                          </div>
-                          <div className="message_wrapper">
-                            <h4 className="heading">Value : 55</h4>
-                            <p className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.
-                            </p>
-                            <br />
-                          </div>
-                        </li>
-                        <li>
-                          <div className="message_date">
-                            <h3 className="date text-info">24</h3>
-                            <p className="month">May</p>
-                          </div>
-                          <div className="message_wrapper">
-                            <h4 className="heading">Value : 55</h4>
-                            <p className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.
-                            </p>
-                            <br />
-                          </div>
-                        </li>
-                        <li>
-                          <div className="message_date">
-                            <h3 className="date text-info">24</h3>
-                            <p className="month">May</p>
-                          </div>
-                          <div className="message_wrapper">
-                            <h4 className="heading">Value : 55</h4>
-                            <p className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.
-                            </p>
-                            <br />
-                          </div>
-                        </li>
-
-                      </ul>
-
+                        </div>
+                      </div>
                     </div>
-                    <div role="tabpanel" className="tab-pane fade" id="tab_content222" aria-labelledby="profile-tab">
-
-                      <ul className="messages">
-                        <li>
-                          <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                            <div className="message_date">
-                              <h3 className="date text-info">24</h3>
-                              <p className="month">May</p>
-                            </div>
-                            <div className="message_wrapper">
-                              <h4 className="heading">Value : 55</h4>
-                              <p className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.
-                              </p>
-                              <br />
-                            </div>
-                        </li>
-                        <li>
-                          <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                            <div className="message_date">
-                              <h3 className="date text-error">21</h3>
-                              <p className="month">May</p>
-                            </div>
-                            <div className="message_wrapper">
-                              <h4 className="heading">Value : 55</h4>
-                              <p className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.
-                              </p>
-                              <br />
-                            </div>
-                        </li>
-                        <li>
-                          <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                            <div className="message_date">
-                              <h3 className="date text-info">24</h3>
-                              <p className="month">May</p>
-                            </div>
-                            <div className="message_wrapper">
-                              <h4 className="heading">Desmond Davison</h4>
-                              <blockquote className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                              <br />
-                              <p className="url">
-                                <span className="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                <a href="#"><i className="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                              </p>
-                            </div>
-                        </li>
-                        <li>
-                          <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                            <div className="message_date">
-                              <h3 className="date text-error">21</h3>
-                              <p className="month">May</p>
-                            </div>
-                            <div className="message_wrapper">
-                              <h4 className="heading">Brian Michaels</h4>
-                              <blockquote className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                              <br />
-                              <p className="url">
-                                <span className="fs1" aria-hidden="true" data-icon=""></span>
-                                <a href="#" data-original-title="">Download</a>
-                              </p>
-                            </div>
-                        </li>
-
-                      </ul>
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              <div role="tabpanel" className="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-
-                <ul className="messages">
-                  <li>
-                    <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                      <div className="message_date">
-                        <h3 className="date text-info">24</h3>
-                        <p className="month">May</p>
-                      </div>
-                      <div className="message_wrapper">
-                        <h4 className="heading">Desmond Davison</h4>
-                        <blockquote className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p className="url">
-                          <span className="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                          <a href="#"><i className="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                        </p>
-                      </div>
-                  </li>
-                  <li>
-                    <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                      <div className="message_date">
-                        <h3 className="date text-error">21</h3>
-                        <p className="month">May</p>
-                      </div>
-                      <div className="message_wrapper">
-                        <h4 className="heading">Brian Michaels</h4>
-                        <blockquote className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p className="url">
-                          <span className="fs1" aria-hidden="true" data-icon=""></span>
-                          <a href="#" data-original-title="">Download</a>
-                        </p>
-                      </div>
-                  </li>
-                  <li>
-                    <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                      <div className="message_date">
-                        <h3 className="date text-info">24</h3>
-                        <p className="month">May</p>
-                      </div>
-                      <div className="message_wrapper">
-                        <h4 className="heading">Desmond Davison</h4>
-                        <blockquote className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p className="url">
-                          <span className="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                          <a href="#"><i className="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                        </p>
-                      </div>
-                  </li>
-                  <li>
-                    <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                      <div className="message_date">
-                        <h3 className="date text-error">21</h3>
-                        <p className="month">May</p>
-                      </div>
-                      <div className="message_wrapper">
-                        <h4 className="heading">Brian Michaels</h4>
-                        <blockquote className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p className="url">
-                          <span className="fs1" aria-hidden="true" data-icon=""></span>
-                          <a href="#" data-original-title="">Download</a>
-                        </p>
-                      </div>
-                  </li>
-
-                </ul>
-
-              </div>
-              <div role="tabpanel" className="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-
-                <ul className="messages">
-                  <li>
-                    <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                      <div className="message_date">
-                        <h3 className="date text-info">24</h3>
-                        <p className="month">May</p>
-                      </div>
-                      <div className="message_wrapper">
-                        <h4 className="heading">Desmond Davison</h4>
-                        <blockquote className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p className="url">
-                          <span className="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                          <a href="#"><i className="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                        </p>
-                      </div>
-                  </li>
-                  <li>
-                    <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                      <div className="message_date">
-                        <h3 className="date text-error">21</h3>
-                        <p className="month">May</p>
-                      </div>
-                      <div className="message_wrapper">
-                        <h4 className="heading">Brian Michaels</h4>
-                        <blockquote className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p className="url">
-                          <span className="fs1" aria-hidden="true" data-icon=""></span>
-                          <a href="#" data-original-title="">Download</a>
-                        </p>
-                      </div>
-                  </li>
-                  <li>
-                    <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                      <div className="message_date">
-                        <h3 className="date text-info">24</h3>
-                        <p className="month">May</p>
-                      </div>
-                      <div className="message_wrapper">
-                        <h4 className="heading">Desmond Davison</h4>
-                        <blockquote className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p className="url">
-                          <span className="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                          <a href="#"><i className="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                        </p>
-                      </div>
-                  </li>
-                  <li>
-                    <img src="images/img.jpg" className="avatar" alt="Avatar"/>
-                      <div className="message_date">
-                        <h3 className="date text-error">21</h3>
-                        <p className="month">May</p>
-                      </div>
-                      <div className="message_wrapper">
-                        <h4 className="heading">Brian Michaels</h4>
-                        <blockquote className="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p className="url">
-                          <span className="fs1" aria-hidden="true" data-icon=""></span>
-                          <a href="#" data-original-title="">Download</a>
-                        </p>
-                      </div>
-                  </li>
-
-                </ul>
-              </div>
-            </div>
-          </div>
 
         </div>
       </div>
@@ -550,6 +315,56 @@ class IndividualStatistic extends React.Component {
         </div>
       </div>
     );
+  }
+}
+
+class StatisticInfoIndividual extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    var status;
+    if(this.props.diff !== null) {
+      if(this.props.diff > 0) {
+        status = (
+          <span className="count_bottom"><i className="green"><i className="fa fa-sort-asc"></i> +{ this.props.diff } </i>From last Month</span>
+        );
+      } else if(this.props.diff < 0) {
+        status = (
+          <span className="count_bottom"><i className="red"><i className="fa fa-sort-desc"></i> { this.props.diff } </i>From last Month</span>
+        );
+      } else {
+        status = (
+          <span className="count_bottom">Same with last Month</span>
+        );
+      }
+    }
+    return (
+      <div className="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span className="count_top"><i className="fa fa-user"></i> { this.props.title } </span>
+        <div className="count">{ this.props.score }</div>
+        { status }
+      </div>
+    );
+  }
+}
+
+class IndividualReviewNote extends  React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    return (
+      <li>
+        <div className="message_wrapper">
+          <h4 className="heading">{this.props.title} (Score : {this.props.score})</h4>
+          <p className="message">{this.props.note}</p>
+          <br/>
+        </div>
+      </li>
+    )
   }
 }
 
