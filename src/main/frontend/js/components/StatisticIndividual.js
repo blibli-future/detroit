@@ -14,7 +14,8 @@ class StatisticIndividual extends BaseDetroitComponent {
         diffFinalScore : 0,
         parameters: []
       },
-      reviewNote: []
+      reviewNote: [],
+      agentProfile: []
     }
   };
 
@@ -22,6 +23,7 @@ class StatisticIndividual extends BaseDetroitComponent {
     this.getStatisticIndividualDiagram();
     this.getStatisticInfo();
     this.getReviewNote();
+    this.getAgentProfile();
   }
 
   getStatisticIndividualDiagram() {
@@ -61,7 +63,15 @@ class StatisticIndividual extends BaseDetroitComponent {
   }
 
   getAgentProfile() {
-    
+    let component = this;
+    return this.auth.apiCall('/api/v1/users/'+this.props.match.params.agentId, {
+      method: 'GET'
+    }).then((response) => response.json())
+      .then((json) => {
+        component.setState({
+          agentProfile: json.content
+        });
+      });
   }
 
   hashCode(str) { // java String#hashCode
@@ -197,28 +207,45 @@ class StatisticIndividual extends BaseDetroitComponent {
             <div className="col-md-12 col-sm-12 col-xs-12">
               <div className="x_panel">
                 <div className="x_content">
+                  <div className="x_title">
+                    <h2>Agent Report <small>Activity report</small></h2>
+                    <div className="clearfix"></div>
+                  </div>
                   <div className="col-md-3 col-sm-3 col-xs-12 profile_left">
                     <div className="profile_img">
                       <div id="crop-avatar">
                         <img className="img-responsive avatar-view" src="https://qph.ec.quoracdn.net/main-qimg-220ae86dafbf81b8227586161b2aee61-c?convert_to_webp=true" alt="Avatar" title="Change the avatar"/>
                       </div>
                     </div>
-                    <h3>Samuel Doe</h3>
+                    <h3> { this.state.agentProfile['fullname']} </h3>
 
                     <ul className="list-unstyled user_data">
-                      <li>Nickname : John
-                      </li>
-
                       <li>
-                        Phone Number : 21309123809
+                        <i className="fa fa-address-card user-profile-icon"/>  <b>Nickname :</b> { this.state.agentProfile['nickname']}
                       </li>
-
-                      <li className="m-top-xs">
-                        Email : samuel.doe@gmail.com
+                      <li>
+                        <i className="fa fa-users user-profile-icon"/> <b>Position :</b> { this.state.agentProfile['agentPosition']}
                       </li>
-
-                      <li className="m-top-xs">
-                        etc.
+                      <li>
+                        <i className="fa fa-user user-profile-icon"/> <b>Channel :</b> { this.state.agentProfile['agentChannel']}
+                      </li>
+                      <li>
+                        <i className="fa fa-user-circle-o user-profile-icon"/> <b>Team Leader :</b> { this.state.agentProfile['teamLeader']}
+                      </li>
+                      <li>
+                        <i className="fa fa-envelope user-profile-icon"/> <b>Email :</b> { this.state.agentProfile['email']}
+                      </li>
+                      <li>
+                        <i className="fa fa-phone-square user-profile-icon"/> <b>Phone Number :</b> { this.state.agentProfile['phoneNumber']}
+                      </li>
+                      <li>
+                        <i className="fa fa-birthday-cake user-profile-icon"/> <b>Date of Birth :</b> { this.state.agentProfile['dateOfBirth']}
+                      </li>
+                      <li>
+                        <i className="fa fa-venus-mars user-profile-icon"/> <b>Gender :</b> { this.state.agentProfile['gender']}
+                      </li>
+                      <li>
+                        <i className="fa fa-map-marker user-profile-icon"/> <b>Address :</b> { this.state.agentProfile['location']}
                       </li>
                     </ul>
                     <br />
@@ -226,11 +253,12 @@ class StatisticIndividual extends BaseDetroitComponent {
 
 
                   </div>
+
                   <div className="col-md-9 col-sm-9 col-xs-12">
 
                     <div className="profile_title">
                       <div className="col-md-6">
-                        <h2>Agent Activity Report</h2>
+                        <h2>Agent Activity</h2>
                       </div>
                     </div>
                     <div className="row tile_count">
