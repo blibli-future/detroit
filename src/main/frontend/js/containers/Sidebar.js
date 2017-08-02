@@ -38,9 +38,10 @@ class Sidebar extends React.Component {
                   currentLink="testign">
                   <i className="fa fa-clone"></i>Review Overview
                 </Sidebar_Link_WithRouter>
-                <li><a href="domino-category-overview.html"><i className="fa fa-list-ol"></i> Category
-                  Setting</a>
-                </li>
+                <Sidebar_Link_WithRouter
+                    to="/view/parameter-management">
+                  <i className="fa fa-list-ol" /> Parameter Management
+                </Sidebar_Link_WithRouter>
                 <Sidebar_Link_WithRouter
                   to="/view/agent-list"
                   currentLink="testign">

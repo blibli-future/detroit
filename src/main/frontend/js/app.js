@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Route, BrowserHistory } from 'react-router-dom
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import 'react-select/dist/react-select.css';
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+
 import '../css/app.css';
 import '../css/gantellela-theme.css';
 import '../css/gantellela-js.js';
@@ -22,6 +24,7 @@ import ReviewerDetail from './components/user/ReviewerDetail.js';
 import StatisticAll from './components/StatisticAll.js';
 import StatisticIndividual from './components/StatisticIndividual';
 import ReviewOverview from './components/ReviewOverview';
+import ParameterManagement from './components/ParameterManagement.js';
 
 class App extends React.Component {
 
@@ -42,8 +45,8 @@ class App extends React.Component {
               <Route exact path="/view/agent/:userId" component={AgentDetail} />
               <Route exact path="/view/reviewer-list" component={ReviewerList} />
               <Route exact path="/view/reviewer/:reviewerId" component={ReviewerDetail} />
+              <Route exact path="/view/parameter-management" component={ParameterManagement} />
               <Route exact path="/view/login" component={LoginPage} />
-
 
               <Footer />
             </div>
