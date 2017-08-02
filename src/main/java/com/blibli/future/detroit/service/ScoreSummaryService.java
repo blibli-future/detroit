@@ -62,11 +62,10 @@ public class ScoreSummaryService {
                     totalParameterUser = totalParameterUser + review.getScore();
                     countParameterUser++;
                 }
-                if(countParameterUser == 0 {
+                if(countParameterUser == 0) {
                     continue;
                 }
                 totalParameterUser = totalParameterUser / countParameterUser;
-                System.out.println();
                 scoreSummaryRepository.save(
                     new ScoreSummary(parameter.getName(),
                         totalParameterUser,

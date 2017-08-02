@@ -2,6 +2,7 @@ package com.blibli.future.detroit.service;
 
 import com.blibli.future.detroit.model.*;
 import com.blibli.future.detroit.model.dto.AgentPositionDto;
+import com.blibli.future.detroit.model.dto.StatisticDto;
 import com.blibli.future.detroit.model.enums.ScoreType;
 import com.blibli.future.detroit.model.response.AgentReviewNoteResponse;
 import com.blibli.future.detroit.model.response.StatisticDiagramIndividualResponse;
@@ -66,14 +67,11 @@ public class StatisticService {
         }
 
         for(AgentPosition agentPosition : agentPositionRepository.findAll()) {
-            System.out.println(agentPosition.getName());
             for(AgentChannel agentChannel : agentPosition.getAgentChannels()) {
-                System.out.println(agentChannel.getName());
                 for(Parameter parameter : agentChannel.getParameters()) {
                     for(CutOffHistory cutOffHistory : cutOffHistories) {
                         for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistory(cutOffHistory)) {
                             if (parameter.getName().equalsIgnoreCase(scoreSummary.getName()) && parameter.getId().equals(scoreSummary.getFkId()) && scoreSummary.getAgent() == null) {
-                                System.out.println("parameter ID : "+parameter.getId()+" - score FK : "+scoreSummary.getFkId());
                                 parameterScore.add(scoreSummary.getScore());
                             }
                         }
@@ -135,58 +133,84 @@ public class StatisticService {
         return new StatisticInfoResponse(totalAgent, totalScore, totalScoreDiff, channelStatisticInfos);
     }
 
-    public StatisticInfoIndividual getIndividualStatisticInfo(Long agentId) {
-        StatisticInfoIndividual statisticInfoIndividual = new StatisticInfoIndividual();
-        Float finalScore = 0f;
-        HashMap<String, Float> parameterScore = new HashMap<>();
-        HashMap<String, Integer> parameterCount = new HashMap<>();
-
-        User user = userRepository.findOne(agentId);
-        CutOffHistory cutOffLast = cutOffRepository.findByEndCutOffIsNull();
-        CutOffHistory cutOff = cutOffRepository.findByEndCutOff(cutOffLast.getBeginCutOff());
-
-        List<Review> reviewList = reviewRepository.findByAgentAndCutOffHistory(user, cutOff);
-
-        for (Review review : reviewList) {
-            String parameterName = review.getParameter().getName();
-
-            finalScore = finalScore + (review.getScore()*(review.getParameter().getWeight()/100) );
-
-            Integer currentCount = parameterCount.getOrDefault(parameterName, 0);
-            parameterCount.put(parameterName, currentCount+1);
-
-            Float currentAvg = parameterScore.getOrDefault(parameterName, 0f);
-            Float nextAvg = ((currentAvg*currentCount)+review.getScore()) / (currentCount+1);
-            parameterScore.put(parameterName,nextAvg);
-        }
-        statisticInfoIndividual.setTotalScore(finalScore);
-        statisticInfoIndividual.setParameterScore(parameterScore);
-
-        return statisticInfoIndividual;
-    }
-
-    public List<StatisticDiagramIndividualResponse> getIndividualStatisticDiagram(Long agentId) {
-        List<StatisticDiagramIndividualResponse> statisticDiagramIndividualResponses = new ArrayList<>();
+    public StatisticDiagramIndividualResponse getIndividualStatisticDiagram(Long agentId) {
         User agent = userRepository.findOne(agentId);
-        Float finalScore = 0f;
+
+        List<LocalDate> dates = new ArrayList<>();
+        List<Float> totalScore = new ArrayList<>();
+
         LocalDate now = new LocalDate();
+        List<CutOffHistory> cutOffHistories = new ArrayList<>();
 
         for(CutOffHistory cutOffHistory : cutOffRepository.findAll()) {
-            if(cutOffHistory.getEndInISOFormat() == null) {
-                continue;
-            } else {
-                if(cutOffHistory.getEndCutOff().getYear() != now.getYear()) {
-                    continue;
+            if(cutOffHistory.getEndCutOff() != null) {
+                if(cutOffHistory.getEndCutOff().getYear() == now.getYear()) {
+                    cutOffHistories.add(cutOffHistory);
+                    dates.add(cutOffHistory.getEndCutOff());
                 }
-                for(Review review : cutOffHistory.getReviews()) {
-                    if(review.getAgent() != agent) {
-                        continue;
-                    }
-                    finalScore = finalScore + (review.getScore()*(review.getParameter().getWeight()/100) );
-                }
-                statisticDiagramIndividualResponses.add(new StatisticDiagramIndividualResponse(cutOffHistory.getEndCutOff(), finalScore));
             }
         }
+
+        for(CutOffHistory cutOffHistory : cutOffHistories) {
+            for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistoryAndAgent(cutOffHistory, agent)) {
+                if (scoreSummary.getScoreType() == ScoreType.USER_TOTAL) {
+                    totalScore.add(scoreSummary.getScore());
+                }
+            }
+        }
+
+        List<Float> parameterScore = new ArrayList<>();
+        List<Float> categoryScore = new ArrayList<>();
+
+        List<StatisticDto> parameterStatistics = new ArrayList<>();
+        List<StatisticDto> categoryStatistics = new ArrayList<>();
+
+        for(Parameter parameter : parameterRepository.findAll()) {
+            parameterScore = new ArrayList<>();
+            categoryStatistics = new ArrayList<>();
+            for(Category category : parameter.getCategories()) {
+                parameterScore = new ArrayList<>();
+                for(CutOffHistory cutOffHistory : cutOffHistories) {
+                    for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistoryAndAgent(cutOffHistory,agent)) {
+                        if (parameter.getName().equalsIgnoreCase(scoreSummary.getName()) && parameter.getId().equals(scoreSummary.getFkId()) && scoreSummary.getAgent() != null) {
+                            parameterScore.add(scoreSummary.getScore());
+                        }
+                        if (category.getName().equalsIgnoreCase(scoreSummary.getName()) && category.getId().equals(scoreSummary.getFkId()) && scoreSummary.getAgent() != null) {
+                            categoryScore.add(scoreSummary.getScore());
+                        }
+                    }
+                }
+                categoryStatistics.add(new StatisticDto(category.getName(), categoryScore));
+                categoryScore = new ArrayList<>();
+            }
+            parameterStatistics.add(new StatisticDto(parameter.getName(), parameterScore, categoryStatistics));
+        }
+
+        return new StatisticDiagramIndividualResponse(dates, totalScore, parameterStatistics);
+    }
+
+    public List<StatisticDiagramIndividualResponse> getIndividualStatisticInfo(Long agentId) {
+        List<StatisticDiagramIndividualResponse> statisticDiagramIndividualResponses = new ArrayList<>();
+//        User agent = userRepository.findOne(agentId);
+//        Float finalScore = 0f;
+//        LocalDate now = new LocalDate();
+//
+//        for(CutOffHistory cutOffHistory : cutOffRepository.findAll()) {
+//            if(cutOffHistory.getEndInISOFormat() == null) {
+//                continue;
+//            } else {
+//                if(cutOffHistory.getEndCutOff().getYear() != now.getYear()) {
+//                    continue;
+//                }
+//                for(Review review : cutOffHistory.getReviews()) {
+//                    if(review.getAgent() != agent) {
+//                        continue;
+//                    }
+//                    finalScore = finalScore + (review.getScore()*(review.getParameter().getWeight()/100) );
+//                }
+//                statisticDiagramIndividualResponses.add(new StatisticDiagramIndividualResponse(cutOffHistory.getEndCutOff(), finalScore));
+//            }
+//        }
         return statisticDiagramIndividualResponses;
     }
 

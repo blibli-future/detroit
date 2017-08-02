@@ -1,30 +1,56 @@
 package com.blibli.future.detroit.model.response;
 
 
+import com.blibli.future.detroit.model.ParameterStatistic;
+import com.blibli.future.detroit.model.dto.AgentPositionDto;
+import com.blibli.future.detroit.model.dto.StatisticDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.joda.time.LocalDate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StatisticDiagramIndividualResponse {
-    private LocalDate date;
-    private Float score;
+    private List<LocalDate> dates;
+    private List<Float> scores;
+    private List<StatisticDto> parameters;
 
-    public StatisticDiagramIndividualResponse(LocalDate date, Float score) {
-        this.date = date;
-        this.score = score;
+    public StatisticDiagramIndividualResponse(List<LocalDate> dates, List<Float> scores, List<StatisticDto> parameters) {
+        this.dates = dates;
+        this.scores = scores;
+        this.parameters = parameters;
     }
 
-    public String getDate() {
-        return this.date.toString();
+    @JsonIgnore
+    public List<LocalDate> getDates() {
+        return dates;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public List<String> getDateInISOFormat() {
+        List<String> listOfString = new ArrayList<>();
+        for(LocalDate date : this.dates) {
+            listOfString.add(date.toString());
+        }
+        return listOfString;
     }
 
-    public Float getScore() {
-        return score;
+    public void setDates(List<LocalDate> dates) {
+        this.dates = dates;
     }
 
-    public void setScore(Float score) {
-        this.score = score;
+    public List<Float> getScores() {
+        return scores;
+    }
+
+    public void setScores(List<Float> scores) {
+        this.scores = scores;
+    }
+
+    public List<StatisticDto> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<StatisticDto> parameters) {
+        this.parameters = parameters;
     }
 }

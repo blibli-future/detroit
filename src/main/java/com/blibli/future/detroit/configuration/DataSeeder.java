@@ -439,6 +439,14 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary26.setCutOffHistory(cutOffHistoryLama);
         scoreSummaryRepository.save(scoreSummary26);
 
+        ScoreSummary scoreSummary60 = new ScoreSummary();
+        scoreSummary60.setName("User Total");
+        scoreSummary60.setScore(77.1f);
+        scoreSummary60.setScoreType(ScoreType.USER_TOTAL);
+        scoreSummary60.setCutOffHistory(cutOffHistoryLama);
+        scoreSummary60.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary60);
+
         ScoreSummary scoreSummary3 = new ScoreSummary();
         scoreSummary3.setName("Live Monitoring");
         scoreSummary3.setScore(82.5f);
@@ -564,6 +572,14 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary32.setFkId(category3.getId());
         scoreSummary32.setCutOffHistory(cutOffHistoryLama1);
         scoreSummaryRepository.save(scoreSummary32);
+
+        ScoreSummary scoreSummary61 = new ScoreSummary();
+        scoreSummary61.setName("User Total");
+        scoreSummary61.setScore(96.3f);
+        scoreSummary61.setScoreType(ScoreType.USER_TOTAL);
+        scoreSummary61.setCutOffHistory(cutOffHistoryLama1);
+        scoreSummary61.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary61);
 
         ScoreSummary scoreSummary9 = new ScoreSummary();
         scoreSummary9.setName("Live Monitoring");
@@ -691,6 +707,14 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary38.setCutOffHistory(cutOffHistoryLama2);
         scoreSummaryRepository.save(scoreSummary38);
 
+        ScoreSummary scoreSummary62 = new ScoreSummary();
+        scoreSummary62.setName("User Total");
+        scoreSummary62.setScore(87.3f);
+        scoreSummary62.setScoreType(ScoreType.USER_TOTAL);
+        scoreSummary62.setCutOffHistory(cutOffHistoryLama2);
+        scoreSummary62.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary62);
+
         ScoreSummary scoreSummary15 = new ScoreSummary();
         scoreSummary15.setName("Live Monitoring");
         scoreSummary15.setScore(96.2f);
@@ -816,6 +840,14 @@ public class DataSeeder implements ApplicationRunner {
         scoreSummary44.setFkId(category3.getId());
         scoreSummary44.setCutOffHistory(cutOffHistory);
         scoreSummaryRepository.save(scoreSummary44);
+
+        ScoreSummary scoreSummary63 = new ScoreSummary();
+        scoreSummary63.setName("User Total");
+        scoreSummary63.setScore(66.9f);
+        scoreSummary63.setScoreType(ScoreType.USER_TOTAL);
+        scoreSummary63.setCutOffHistory(cutOffHistory);
+        scoreSummary63.setAgent(agent);
+        scoreSummaryRepository.save(scoreSummary63);
 
         ScoreSummary scoreSummary21 = new ScoreSummary();
         scoreSummary21.setName("Live Monitoring");

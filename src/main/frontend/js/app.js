@@ -19,6 +19,7 @@ import LoginPage from './components/LoginPage.js';
 import ReviewerList from './components/ReviewerList.js';
 import ReviewerDetail from './components/user/ReviewerDetail.js';
 import StatisticAll from './components/StatisticAll.js';
+import StatisticIndividual from './components/StatisticIndividual';
 
 class App extends React.Component {
 
@@ -32,6 +33,7 @@ class App extends React.Component {
               <TopNavigation />
 
               <Route path="/view/statistic-all" component={StatisticAll} />
+              <Route path="/view/statistic-individual/:agentId" component={StatisticIndividual} />
               <Route exact path="/view/agent-list" component={AgentList} />
               <Route exact path="/view/create-agent" component={AgentDetail} />
               <Route exact path="/view/agent/:userId" component={AgentDetail} />
