@@ -65,7 +65,6 @@ class UserDetail extends BaseDetroitComponent {
                 <div className="x_content">
                   <br />
                   <form id="demo-form2" data-parsley-validate className="form-horizontal form-label-left">
-
                     <div className="form-group">
                       <label className="control-label col-md-3 col-sm-3 col-xs-12">
                         Profile Picture <span className="required">*</span>

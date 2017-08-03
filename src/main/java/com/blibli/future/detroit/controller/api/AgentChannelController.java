@@ -1,6 +1,7 @@
 package com.blibli.future.detroit.controller.api;
 
 import com.blibli.future.detroit.model.AgentChannel;
+import com.blibli.future.detroit.model.dto.AgentChannelPositionDto;
 import com.blibli.future.detroit.model.request.NewAgentChannelRequest;
 import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Null;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class AgentChannelController {
@@ -20,6 +22,7 @@ public class AgentChannelController {
     public static final String CREATE_AGENT_CHANNEL = BASE_PATH;
     public static final String DELETE_AGENT_CHANNEL = BASE_PATH + "/{agentChannelId}";
     public static final String UPDATE_AGENT_CHANNEL = BASE_PATH + "/{agentChannelId}";
+    public static final String GET_ALL_AGENT_CHANNEL_POSITION = BASE_PATH + "/with-position";
 
     @Autowired
     private AgentChannelService agentChannelService;
@@ -27,6 +30,13 @@ public class AgentChannelController {
     @GetMapping(GET_ALL_AGENT_CHANNEL)
     public BaseRestListResponse<AgentChannel> getAllAgentChannel() {
         List<AgentChannel> allAgentChannel = agentChannelService.getAllAgentChannel();
+        return new BaseRestListResponse<>(allAgentChannel);
+    }
+
+    @GetMapping(GET_ALL_AGENT_CHANNEL_POSITION)
+    public BaseRestListResponse<AgentChannelPositionDto> getAllAgentChannelPosition() {
+        List<AgentChannelPositionDto> allAgentChannel = agentChannelService.getAllAgentChannel().stream()
+                                                        .map(AgentChannelPositionDto::new).collect(Collectors.toList());
         return new BaseRestListResponse<>(allAgentChannel);
     }
 
@@ -47,7 +57,7 @@ public class AgentChannelController {
     }
 
     @DeleteMapping(DELETE_AGENT_CHANNEL)
-    public BaseRestResponse<AgentChannel> deleteAgentChannel(@PathVariable Long agentChannelId) {
+    public BaseRestResponse deleteAgentChannel(@PathVariable Long agentChannelId) {
         if(agentChannelService.deleteAgentChannel(agentChannelId)) {
             return new BaseRestResponse();
         }

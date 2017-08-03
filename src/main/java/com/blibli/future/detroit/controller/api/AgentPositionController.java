@@ -46,7 +46,7 @@ public class AgentPositionController {
     }
 
     @DeleteMapping(DELETE_AGENT_POSITION)
-    public BaseRestResponse<AgentPosition> deleteAgentPosition(@PathVariable Long agentPositionId) {
+    public BaseRestResponse deleteAgentPosition(@PathVariable Long agentPositionId) {
         if(agentPositionService.deleteAgentPosition(agentPositionId)) {
             return new BaseRestResponse();
         }
