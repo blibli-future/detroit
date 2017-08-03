@@ -1,76 +1,100 @@
 package com.blibli.future.detroit.model.response;
 
-import com.blibli.future.detroit.model.Review;
-import com.blibli.future.detroit.model.User;
-
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AgentOverviewResponse {
-    private Long idAgent;
-    private String nickname;
-    private String email;
-    private String position;
-    private String channel;
-    private Integer reviewCount;
+    private String role;
+    private List<AgentOverview> agents;
 
     public AgentOverviewResponse() {
+        this.role = new String();
+        this.agents = new ArrayList<>();
     }
 
-    public AgentOverviewResponse(Long idAgent, String nickname, String email, String position, String channel, Integer reviewCount) {
-        this.idAgent = idAgent;
-        this.nickname = nickname;
-        this.email = email;
-        this.position = position;
-        this.channel = channel;
-        this.reviewCount = reviewCount;
+    public String getRole() {
+        return role;
     }
 
-    public Long getIdAgent() {
-        return idAgent;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public void setIdAgent(Long idAgent) {
-        this.idAgent = idAgent;
+    public List<AgentOverview> getAgents() {
+        return agents;
     }
 
-    public String getNickname() {
-        return nickname;
+    public void setAgents(List<AgentOverview> agents) {
+        this.agents = agents;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void addAgents(Long idAgent, String nickname, String email, String position, String channel, Integer reviewCount) {
+        this.agents.add(new AgentOverview(idAgent, nickname, email, position, channel, reviewCount));
     }
 
-    public String getEmail() {
-        return email;
-    }
+    class AgentOverview {
+        private Long idAgent;
+        private String nickname;
+        private String email;
+        private String position;
+        private String channel;
+        private Integer reviewCount;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+        public AgentOverview(Long idAgent, String nickname, String email, String position, String channel, Integer reviewCount) {
+            this.idAgent = idAgent;
+            this.nickname = nickname;
+            this.email = email;
+            this.position = position;
+            this.channel = channel;
+            this.reviewCount = reviewCount;
+        }
 
-    public String getPosition() {
-        return position;
-    }
+        public Long getIdAgent() {
+            return idAgent;
+        }
 
-    public void setPosition(String position) {
-        this.position = position;
-    }
+        public void setIdAgent(Long idAgent) {
+            this.idAgent = idAgent;
+        }
 
-    public String getChannel() {
-        return channel;
-    }
+        public String getNickname() {
+            return nickname;
+        }
 
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
 
-    public Integer getReviewCount() {
-        return reviewCount;
-    }
+        public String getEmail() {
+            return email;
+        }
 
-    public void setReviewCount(Integer reviewCount) {
-        this.reviewCount = reviewCount;
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getPosition() {
+            return position;
+        }
+
+        public void setPosition(String position) {
+            this.position = position;
+        }
+
+        public String getChannel() {
+            return channel;
+        }
+
+        public void setChannel(String channel) {
+            this.channel = channel;
+        }
+
+        public Integer getReviewCount() {
+            return reviewCount;
+        }
+
+        public void setReviewCount(Integer reviewCount) {
+            this.reviewCount = reviewCount;
+        }
     }
 }

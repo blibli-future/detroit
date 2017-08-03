@@ -3,6 +3,8 @@ import React from 'react';
 import BaseDetroitComponent from './BaseDetroitComponent';
 import { Link } from 'react-router-dom'
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 class ReviewOverview extends BaseDetroitComponent {
   constructor(props) {
@@ -28,11 +30,29 @@ class ReviewOverview extends BaseDetroitComponent {
       });
   }
 
-  rowFormatter(cell, row) {
-    return <a href={ cell } className="btn btn-success btn-xs">Review</a>;
-  }
-
   render() {
+    let component = this;
+
+    let tabTitle = [];
+    let reviewData = [];
+
+    var counter = 0;
+
+    if(this.state.reviewOverviews.length != 0) {
+      this.state.reviewOverviews.forEach((item, index) => {
+        counter++;
+        tabTitle.push(
+            <Tab key={ counter }>{ item['role'] }</Tab>
+        )
+
+        reviewData.push(
+          <TabPanel key={ counter }>
+            <TabContent key={ counter } title={ item['role'] } data={ item['agents'] } />
+          </TabPanel>
+        )
+      })
+    }
+
     return (
       <div className="right_col" role="main">
         <div className="">
@@ -57,21 +77,15 @@ class ReviewOverview extends BaseDetroitComponent {
 
           <div className="row">
             <div className="col-md-12 col-sm-12 col-xs-12">
-              <div className="x_panel">
-                <div className="x_title">
-                  <h2>Basic Tables <small>basic table subtitle</small></h2>
-                  <div className="clearfix"></div>
-                </div>
-                <div className="x_content">
-                  <BootstrapTable data={ this.state.reviewOverviews }>
-                    <TableHeaderColumn dataField='email' isKey>Email</TableHeaderColumn>
-                    <TableHeaderColumn dataField='nickname'>Nickname</TableHeaderColumn>
-                    <TableHeaderColumn dataField='position' >Position</TableHeaderColumn>
-                    <TableHeaderColumn dataField='channel' >Channel</TableHeaderColumn>
-                    <TableHeaderColumn dataField='reviewCount' >Review Count</TableHeaderColumn>
-                    <TableHeaderColumn dataField='idAgent' dataFormat={ this.rowFormatter }>Action</TableHeaderColumn>
-                  </BootstrapTable>
-                </div>
+              <div className="x_content">
+                <Tabs>
+                  <TabList>
+                    { tabTitle }
+                  </TabList>
+
+                  { reviewData }
+                </Tabs>
+
               </div>
             </div>
           </div>
@@ -81,5 +95,41 @@ class ReviewOverview extends BaseDetroitComponent {
     );
   }
 }
+
+class TabContent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: this.props.title,
+        data: this.props.data
+    }
+  }
+
+  rowFormatter(cell, row) {
+    return <a href={cell} className="btn btn-success btn-xs">Review</a>;
+  }
+
+  render() {
+    return (
+        <div className="x_panel">
+          <div className="x_title">
+            <h2> { this.props.title } Review Table</h2>
+            <div className="clearfix"></div>
+          </div>
+          <div className="x_content">
+            <BootstrapTable data={this.props.data}>
+            <TableHeaderColumn dataField='email' isKey>Email</TableHeaderColumn>
+            <TableHeaderColumn dataField='nickname'>Nickname</TableHeaderColumn>
+            <TableHeaderColumn dataField='position'>Position</TableHeaderColumn>
+            <TableHeaderColumn dataField='channel'>Channel</TableHeaderColumn>
+            <TableHeaderColumn dataField='reviewCount'>Review Count</TableHeaderColumn>
+            <TableHeaderColumn dataField='idAgent' dataFormat={this.rowFormatter}>Action</TableHeaderColumn>
+            </BootstrapTable>
+          </div>
+        </div>
+    )
+  }
+}
+
 
 export default ReviewOverview;

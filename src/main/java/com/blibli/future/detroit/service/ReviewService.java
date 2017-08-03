@@ -80,52 +80,53 @@ public class ReviewService {
     public List<AgentOverviewResponse> getReviewOverview(User currentUser) {
         List<User> agentList = new ArrayList<>();
         List<AgentOverviewResponse> agentOverviewResponses = new ArrayList<>();
+        AgentOverviewResponse agentOverviewResponse = new AgentOverviewResponse();
+        List<String> roleList = new ArrayList<>();
+
+        for (UserRole userRole : currentUser.getUserRole()) {
+            String rolePrefix = userRole.getRole().substring(0,5);
+            if(rolePrefix.equalsIgnoreCase("PARAM")) {
+                String role = userRole.getRole().substring(6);
+                roleList.add(role);
+                System.out.println(role);
+            }
+        }
 
         Integer reviewcount = 0;
 
         for(UserRole userRole : currentUser.getUserRole()) {
             String role = userRole.getRole().substring(6);
-            System.out.println(role);
             for(Parameter parameter : parameterService.getAllParameter()) {
                 if (role.equalsIgnoreCase(parameter.getName())) {
-                    System.out.println(parameter.getName());
                     for(User agent : parameter.getAgentChannel().getUsers()) {
-                        System.out.println(agent.getFullname());
                         agentList.add(agent);
                     }
                 }
             }
         }
 
-
-        for (User agent: agentList) {
-            HashMap<String, Integer> map = new HashMap<>();
-            for (UserRole userRole : currentUser.getUserRole()) {
-                String role = userRole.getRole().substring(6);
-                for (Parameter parameter : parameterService.getAllParameter()) {
-                    if (role.equalsIgnoreCase(parameter.getName())) {
-                        List<Review> reviewList = reviewRepository.findByAgentAndParameter(agent, parameter);
-                        reviewcount = reviewList.size();
+        if(roleList.size() >0) {
+            for(String roles : roleList) {
+                for (User agent: agentList) {
+                    for (Parameter parameter :  agent.getAgentChannel().getParameters() /*parameterService.getAllParameter()*/) {
+                        if (roles.equalsIgnoreCase(parameter.getName())) {
+                            List<Review> reviewList = reviewRepository.findByAgentAndParameter(agent, parameter);
+                            reviewcount = reviewList.size();
+                            Long idAgent = agent.getId();
+                            String agentName = agent.getNickname();
+                            String agentEmail = agent.getEmail();
+                            String agentPosition = agent.getAgentPosition().getName();
+                            String agentChannel = agent.getAgentChannel().getName();
+                            agentOverviewResponse.addAgents(idAgent, agentName, agentEmail, agentPosition, agentChannel, reviewcount);
+                        }
                     }
                 }
+                agentOverviewResponse.setRole(roles);
+                agentOverviewResponses.add(agentOverviewResponse);
+                agentOverviewResponse = new AgentOverviewResponse();
             }
-            Long idAgent = agent.getId();
-            String agentName = agent.getNickname();
-            String agentEmail = agent.getEmail();
-            String agentPosition = agent.getAgentPosition().getName();
-            String agentChannel = agent.getAgentChannel().getName();
-            agentOverviewResponses.add(new AgentOverviewResponse(idAgent, agentName, agentEmail, agentPosition, agentChannel, reviewcount));
         }
 
-
-//        for (User agent: agentList) {
-//            HashMap<String, Integer> map = new HashMap<>();
-//            for (Parameter parameter : parameterList) {
-//                List<Review> reviewList = reviewRepository.findByAgentAndParameter(agent, parameter);
-//                map.put(parameter.getName(), reviewList.size());
-//            }
-//            agentOverviewResponses.add(new AgentOverviewResponse(agent, map));
-//        }
         return new ArrayList<>(agentOverviewResponses);
     }
 

@@ -162,6 +162,10 @@ public class DataSeeder implements ApplicationRunner {
             reviewer.getEmail(), "PARAM Live Monitoring");
         userRoleRepository.save(reviewerParameter);
 
+//        UserRole reviewerParameter1 = new UserRole(
+//            reviewer.getEmail(), "PARAM Best Conversation");
+//        userRoleRepository.save(reviewerParameter1);
+
         // API KEY = c3VwZXJhZG1pbkBleGFtcGxlLmNvbTpzZWNyZXQ=
         User superAdmin = new User();
         superAdmin.setEmail("superadmin@example.com");

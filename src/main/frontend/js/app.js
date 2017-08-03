@@ -8,6 +8,7 @@ import 'jquery/dist/jquery.min.js';
 import '../css/app.css';
 import '../css/gantellela-theme.css';
 import '../css/gantellela-js.js';
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 import Footer from './containers/Footer.js';
 import Sidebar from './containers/Sidebar.js';
