@@ -25,6 +25,7 @@ import ReviewerDetail from './components/user/ReviewerDetail.js';
 import StatisticAll from './components/StatisticAll.js';
 import StatisticIndividual from './components/StatisticIndividual';
 import ReviewOverview from './components/ReviewOverview';
+import ReviewForm from './components/ReviewForm';
 import ParameterManagement from './components/ParameterManagement.js';
 import ParameterDetail from './components/ParameterDetail.js';
 
@@ -42,6 +43,7 @@ class App extends React.Component {
               <Route path="/view/statistic-all" component={StatisticAll} />
               <Route path="/view/statistic-individual/:agentId" component={StatisticIndividual} />
               <Route path="/view/review/overview" component={ReviewOverview} />
+              <Route path="/view/review/form" component={ReviewForm} />
               <Route exact path="/view/agent-list" component={AgentList} />
               <Route exact path="/view/create-agent" component={AgentDetail} />
               <Route exact path="/view/agent/:userId" component={AgentDetail} />

@@ -53,6 +53,10 @@ class Sidebar extends React.Component {
                   <i className="fa fa-user"></i>Reviewer Management
                 </Sidebar_Link_WithRouter>
                 <Sidebar_Link_WithRouter
+                  to="/view/review/form/">
+                  <i className="fa fa-user"></i>Review Form
+                </Sidebar_Link_WithRouter>
+                <Sidebar_Link_WithRouter
                   to="/view/review/overview">
                   <i className="fa fa-user"></i>Review Overview
                 </Sidebar_Link_WithRouter>
@@ -64,12 +68,6 @@ class Sidebar extends React.Component {
                   to="/view/statistic-individual">
                   <i className="fa fa-user"></i>Statistic Individual
                 </Sidebar_Link_WithRouter>
-                {/*<li><a><i className="fa fa-bar-chart-o"></i> Statistics <span className="fa fa-chevron-down"></span></a>*/}
-                  {/*<ul className="nav child_menu">*/}
-                    {/*<li><a>Summary All Data</a></li>*/}
-                    {/*<li><a>Individual Data</a></li>*/}
-                  {/*</ul>*/}
-                {/*</li>*/}
                 <li><a><i className="fa fa-cog"></i> Settings</a>
                 </li>
               </ul>
