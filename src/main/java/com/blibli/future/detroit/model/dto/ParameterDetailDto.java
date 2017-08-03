@@ -27,6 +27,13 @@ public class ParameterDetailDto {
                               .collect(Collectors.toList());
     }
 
+    public Parameter convertToParameter(Parameter parameter) {
+        parameter.setName(name);
+        parameter.setWeight(weight);
+        parameter.setDescription(description);
+        return parameter;
+    }
+
     public Long getId() {
         return id;
     }

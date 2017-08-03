@@ -30,6 +30,7 @@ class ParameterDetail extends BaseDetroitComponent {
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleCategoryInputChange = this.handleCategoryInputChange.bind(this);
+    this.handleSave = this.handleSave.bind(this);
     this.getParameterData();
     this.getAgentChannelPositionData();
   }
@@ -84,16 +85,43 @@ class ParameterDetail extends BaseDetroitComponent {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-    const parameter = this.state.parameter.categories[categoryId];
+    const parameter = this.state.parameter;
     parameter.categories[categoryCounter][name] = value;
+
     this.setState({
       parameter
     });
   }
 
+  handleSave(event) {
+    event.preventDefault();
+    // validate
+    let totalWeight = this.state.parameter.categories.reduce((sum, category) => {
+      return sum + Number(category.weight);
+    }, 0);
+    if (Math.abs(totalWeight - 100) > 0.001) {
+      return swal("Error", "Total weight of categories is not 100%.", "error");
+    }
+
+    // Save to API
+    let component = this;
+    this.auth.apiCall('/api/v1/parameters/' + this.state.parameter.id, {
+      method: 'PUT',
+      body: JSON.stringify(component.state.parameter),
+    }).then((response) => response.json())
+      .then((json) => {
+        if (json.success) {
+          swal("Success", "Parameter data has been saved.", "success");
+        } else {
+          return swal("Error", json.errorMessage, "error");
+        }
+      });
+  }
+
   render() {
     let categoryComponents = this.state.parameter.categories.map((category, index) => {
       return <CategoryDetail key={index}
+                             index={index}
                              category={category}
                              handleInputChange={this.handleCategoryInputChange} />
     });
@@ -142,7 +170,10 @@ class ParameterDetail extends BaseDetroitComponent {
 
                     <div className="ln_solid" />
                     <div className="form-group">
-                      Button here
+                      <button className="btn btn-success"
+                              onClick={this.handleSave}>
+                        Save Changes
+                      </button>
                     </div>
 
                   </form>

@@ -135,4 +135,19 @@ public class Parameter extends BaseModel implements Serializable {
         result = 31 * result + (reviews != null ? reviews.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Parameter{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", weight=" + weight +
+            ", bulkStatus=" + bulkStatus +
+            ", isActive=" + isActive +
+            ", Categories=" + Categories +
+            ", agentChannel=" + agentChannel +
+            ", reviews=" + reviews +
+            '}';
+    }
 }

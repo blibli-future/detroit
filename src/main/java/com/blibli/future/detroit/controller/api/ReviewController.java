@@ -36,9 +36,6 @@ public class ReviewController {
     @Autowired
     ScoreSummaryService scoreSummaryService;
 
-    @Autowired
-    AuthenticationService authenticationService;
-
     @GetMapping(GET_ALL_REVIEW)
     public BaseRestListResponse<UserReviewResponse> getAllReview(@PathVariable Long userId) {
         return new BaseRestListResponse<>(reviewService.getAllReview(userId));

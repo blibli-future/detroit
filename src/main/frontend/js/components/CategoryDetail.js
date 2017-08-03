@@ -5,8 +5,13 @@ import { InputText } from '../containers/GantellelaTheme';
 
 export default class CategoryDetail extends BaseDetroitComponent {
 
+  constructor(props) {
+    super(props);
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
   handleInputChange(event) {
-    this.props.handleInputChange(event, this.props.key);
+    this.props.handleInputChange(event, this.props.index);
   }
 
   render() {
@@ -22,7 +27,7 @@ export default class CategoryDetail extends BaseDetroitComponent {
                    label="Weight" />
         <InputText data={this.props.category.description}
                    onChange={this.handleInputChange}
-                   name={this.props}
+                   name="description"
                    label="Description" />
 
         <div className="form-group">

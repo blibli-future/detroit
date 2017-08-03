@@ -22,7 +22,7 @@ public class AgentChannel extends BaseModel implements Serializable {
     private List<User> users;
     @ManyToOne
     private AgentPosition agentPosition;
-    @OneToMany
+    @OneToMany(mappedBy = "agentChannel")
     private List<Parameter> parameters;
 
     public Long getId() {
@@ -88,5 +88,16 @@ public class AgentChannel extends BaseModel implements Serializable {
         result = 31 * result + (agentPosition != null ? agentPosition.hashCode() : 0);
         result = 31 * result + (parameters != null ? parameters.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AgentChannel{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", users=" + users +
+            ", agentPosition=" + agentPosition +
+//            ", parameters=" + parameters +
+            '}';
     }
 }

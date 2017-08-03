@@ -92,4 +92,15 @@ public class Category extends BaseModel implements Serializable {
         result = 31 * result + (parameter != null ? parameter.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", weight=" + weight +
+//            ", parameter=" + parameter +
+            '}';
+    }
 }
