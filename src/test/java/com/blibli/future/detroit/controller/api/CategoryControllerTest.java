@@ -73,13 +73,13 @@ public class CategoryControllerTest {
         request.setDescription("Lorem Ipsum");
         request.setName("Kategori1");
         request.setWeight(100F);
-        request.setParameter(parameter);
+        request.setParameterId(parameter.getId());
 
         request2.setId(2L);
         request2.setDescription("Lorem Ipsum");
         request2.setName("Kategori2");
         request2.setWeight(100f);
-        request2.setParameter(parameter);
+        request2.setParameterId(parameter.getId());
 
         List<NewCategoryRequest> list = new ArrayList<>();
         list.add(request);
@@ -95,7 +95,7 @@ public class CategoryControllerTest {
         } catch (Exception e) {
             assert false;
         }
-        when(categoryService.createCategory(eq(request))).thenReturn(Category);
+        when(categoryService.createCategory(PARAMETER_ID, eq(request))).thenReturn(Category);
 
         given()
             .contentType("application/json")
@@ -107,7 +107,7 @@ public class CategoryControllerTest {
             .body(containsString("true"))
             .statusCode(200);
 
-        verify(categoryService).createCategory(eq(request));
+        verify(categoryService).createCategory(PARAMETER_ID, eq(request));
     }
 
     @Test

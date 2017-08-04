@@ -1,8 +1,5 @@
 package com.blibli.future.detroit.model.request;
 
-import com.blibli.future.detroit.model.AgentChannel;
-import com.blibli.future.detroit.model.Parameter;
-
 import java.io.Serializable;
 
 public class NewCategoryRequest implements Serializable {
@@ -10,8 +7,7 @@ public class NewCategoryRequest implements Serializable {
     private String name;
     private String description;
     private Float weight;
-    private Parameter parameter;
-    private AgentChannel agentChannel;
+    private Long parameterId;
 
     public Long getId() {
         return id;
@@ -45,20 +41,12 @@ public class NewCategoryRequest implements Serializable {
         this.weight = weight;
     }
 
-    public Parameter getParameter() {
-        return parameter;
+    public Long getParameterId() {
+        return parameterId;
     }
 
-    public void setParameter(Parameter parameter) {
-        this.parameter = parameter;
-    }
-
-    public AgentChannel getAgentChannel() {
-        return agentChannel;
-    }
-
-    public void setAgentChannel(AgentChannel agentChannel) {
-        this.agentChannel = agentChannel;
+    public void setParameterId(Long parameterId) {
+        this.parameterId = parameterId;
     }
 
     @Override
@@ -72,8 +60,7 @@ public class NewCategoryRequest implements Serializable {
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (weight != null ? !weight.equals(that.weight) : that.weight != null) return false;
-        if (parameter != null ? !parameter.equals(that.parameter) : that.parameter != null) return false;
-        return agentChannel != null ? agentChannel.equals(that.agentChannel) : that.agentChannel == null;
+        return parameterId != null ? parameterId.equals(that.parameterId) : that.parameterId == null;
     }
 
     @Override
@@ -82,8 +69,7 @@ public class NewCategoryRequest implements Serializable {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (weight != null ? weight.hashCode() : 0);
-        result = 31 * result + (parameter != null ? parameter.hashCode() : 0);
-        result = 31 * result + (agentChannel != null ? agentChannel.hashCode() : 0);
+        result = 31 * result + (parameterId != null ? parameterId.hashCode() : 0);
         return result;
     }
 }

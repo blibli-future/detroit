@@ -23,7 +23,7 @@ public class Parameter extends BaseModel implements Serializable {
     private Float weight;
     private boolean bulkStatus = false;
     private boolean isActive = true;
-    @OneToMany(fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "parameter")
     private List<Category> Categories;
     @ManyToOne
     private AgentChannel agentChannel;

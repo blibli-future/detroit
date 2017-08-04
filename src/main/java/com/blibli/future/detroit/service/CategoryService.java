@@ -6,6 +6,7 @@ import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.repository.CategoryRepository;
+import com.blibli.future.detroit.repository.ParameterRepository;
 import com.blibli.future.detroit.util.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,13 +20,17 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
+    private ParameterRepository parameterRepository;
+    @Autowired
     private ParameterService parameterService;
     @Autowired
     Converter modelMapper;
 
-    public Category createCategory(NewCategoryRequest request) {
+    public Category createCategory(Long parameterId, NewCategoryRequest request) {
         Category newCategory = modelMapper.modelMapper()
-            .map(request, Category.class);
+                                          .map(request, Category.class);
+        Parameter parameter = parameterRepository.getOne(parameterId);
+        newCategory.setParameter(parameter);
         categoryRepository.saveAndFlush(newCategory);
         return newCategory;
     }

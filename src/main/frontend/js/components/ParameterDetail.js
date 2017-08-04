@@ -1,4 +1,5 @@
 import React from 'react';
+import { Modal, Form, FormControl, FormGroup, Button, Col, ControlLabel, HelpBlock } from 'react-bootstrap';
 import swal from 'sweetalert';
 
 import BaseDetroitComponent from './BaseDetroitComponent';
@@ -27,6 +28,13 @@ class ParameterDetail extends BaseDetroitComponent {
         name: '',
         value: '',
       }],
+      newCategory: {
+        name: '',
+        weight: 0,
+        description: '',
+      },
+      unsavedChanges: false,
+      showAddModal: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleCategoryInputChange = this.handleCategoryInputChange.bind(this);
@@ -68,7 +76,8 @@ class ParameterDetail extends BaseDetroitComponent {
     const parameter = this.state.parameter;
     parameter[name] = value;
     this.setState({
-      parameter
+      parameter,
+      unsavedChanges: true,
     });
   }
 
@@ -76,7 +85,8 @@ class ParameterDetail extends BaseDetroitComponent {
     const parameter = this.state.parameter;
     parameter.agentChannelId = data.value;
     this.setState({
-      parameter
+      parameter,
+      unsavedChanges: true,
     })
   }
 
@@ -87,9 +97,9 @@ class ParameterDetail extends BaseDetroitComponent {
 
     const parameter = this.state.parameter;
     parameter.categories[categoryCounter][name] = value;
-
     this.setState({
-      parameter
+      parameter,
+      unsavedChanges: true,
     });
   }
 
@@ -111,11 +121,56 @@ class ParameterDetail extends BaseDetroitComponent {
     }).then((response) => response.json())
       .then((json) => {
         if (json.success) {
+          component.setState({
+            unsavedChanges: false,
+          });
           swal("Success", "Parameter data has been saved.", "success");
         } else {
           return swal("Error", json.errorMessage, "error");
         }
       });
+  }
+
+  handleNewCategoryChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.id.split("-").pop();
+
+    const newCategory = this.state.newCategory;
+    newCategory[name] = value;
+    this.setState({newCategory});
+  }
+
+  saveNewCategory(event) {
+    event.preventDefault();
+    let component = this;
+    this.auth.apiCall("/api/v1/parameters/" + this.state.parameter.id + "/categories", {
+      method: 'POST',
+      body: JSON.stringify(component.state.newCategory),
+    }).then(response => response.json())
+      .then(json => {
+        if (json.success) {
+          component.getParameterData();
+          swal({
+            title: "Success",
+            text: "New category has been created.",
+            type: "success",
+          }, () => {
+            component.setState({showAddModal:false});
+          });
+        } else {
+          swal("Error", json.errorMessage, "error");
+        }
+      });
+  }
+
+  closeAddModal() {
+    this.setState({ showAddModal: false });
+  }
+
+  openAddModal(event) {
+    event.preventDefault();
+    this.setState({ showAddModal: true });
   }
 
   render() {
@@ -169,21 +224,101 @@ class ParameterDetail extends BaseDetroitComponent {
                     {categoryComponents}
 
                     <div className="ln_solid" />
+                    { this.state.unsavedChanges &&
+                    <p className="text-warning">You have unsaved changes</p>
+                    }
                     <div className="form-group">
                       <button className="btn btn-success"
-                              onClick={this.handleSave}>
+                              onClick={this.handleSave}
+                              disabled={!this.state.unsavedChanges}>
                         Save Changes
                       </button>
+                      <button className="btn"
+                              onClick={this.openAddModal.bind(this)}>
+                        Add new parameter
+                      </button>
                     </div>
-
                   </form>
+
+                  <AddNewCategoryModal show={this.state.showAddModal}
+                                       newCategory={this.state.newCategory}
+                                       onChange={this.handleNewCategoryChange.bind(this)}
+                                       onSubmit={this.saveNewCategory.bind(this)}
+                                       close={this.closeAddModal.bind(this)}
+                                       />
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    )
+    );
+  }
+}
+
+class AddNewCategoryModal extends React.Component {
+  render() {
+    return (
+      <Modal show={this.props.show}>
+        <Modal.Header closeButton onClick={this.props.close}>
+          <Modal.Title>Add new category</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form horizontal>
+
+            <FormGroup controlId="newCategory-name">
+              <Col componentClass={ControlLabel} sm={2}>
+                Name
+              </Col>
+              <Col sm={10}>
+                <FormControl type="text"
+                             placeholder="Category name"
+                             value={this.props.newCategory.name}
+                             onChange={this.props.onChange}
+                />
+                <FormControl.Feedback />
+              </Col>
+            </FormGroup>
+
+            <FormGroup controlId="newCategory-weight">
+              <Col componentClass={ControlLabel} sm={2}>
+                Weight
+              </Col>
+              <Col sm={10}>
+                <FormControl type="text"
+                             placeholder="Category name"
+                             value={this.props.newCategory.weight}/>
+                <FormControl.Feedback />
+                <HelpBlock>Please change weight after creating category.</HelpBlock>
+              </Col>
+            </FormGroup>
+
+            <FormGroup controlId="newCategory-description">
+              <Col componentClass={ControlLabel} sm={2}>
+                Description
+              </Col>
+              <Col sm={10}>
+                <FormControl type="text"
+                             placeholder="Category description"
+                             value={this.props.newCategory.description}
+                             onChange={this.props.onChange}
+                />
+                <FormControl.Feedback />
+              </Col>
+            </FormGroup>
+
+            <FormGroup>
+              <Col smOffset={2} sm={10}>
+                <Button bsStyle="primary" type="submit" onClick={this.props.onSubmit}>
+                  Create category
+                </Button>
+              </Col>
+            </FormGroup>
+
+          </Form>
+        </Modal.Body>
+      </Modal>
+    );
   }
 }
 
