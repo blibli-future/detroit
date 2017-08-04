@@ -28,20 +28,22 @@ public class AgentOverviewResponse {
         this.agents = agents;
     }
 
-    public void addAgents(Long idAgent, String nickname, String email, String position, String channel, Integer reviewCount) {
-        this.agents.add(new AgentOverview(idAgent, nickname, email, position, channel, reviewCount));
+    public void addAgents(Long idAgent, Long idParameter, String nickname, String email, String position, String channel, Integer reviewCount) {
+        this.agents.add(new AgentOverview(idAgent, idParameter, nickname, email, position, channel, reviewCount));
     }
 
     class AgentOverview {
         private Long idAgent;
+        private Long idParameter;
         private String nickname;
         private String email;
         private String position;
         private String channel;
         private Integer reviewCount;
 
-        public AgentOverview(Long idAgent, String nickname, String email, String position, String channel, Integer reviewCount) {
+        public AgentOverview(Long idAgent, Long idParameter, String nickname, String email, String position, String channel, Integer reviewCount) {
             this.idAgent = idAgent;
+            this.idParameter = idParameter;
             this.nickname = nickname;
             this.email = email;
             this.position = position;
@@ -55,6 +57,14 @@ public class AgentOverviewResponse {
 
         public void setIdAgent(Long idAgent) {
             this.idAgent = idAgent;
+        }
+
+        public Long getIdParameter() {
+            return idParameter;
+        }
+
+        public void setIdParameter(Long idParameter) {
+            this.idParameter = idParameter;
         }
 
         public String getNickname() {

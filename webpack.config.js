@@ -14,6 +14,10 @@ module.exports = {
             filename: './src/main/resources/static/style.css',
             allChunks: true,
         }),
+        new webpack.ProvidePlugin({
+          $: "jquery",
+          jQuery: "jquery"
+        })
     ],
     output: {
         path: __dirname,

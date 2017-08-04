@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, BrowserHistory } from 'react-router-dom';
 
+import $ from 'jquery/dist/jquery.min';
+import 'bootstrap/dist/js/bootstrap.min.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import 'react-select/dist/react-select.css';
@@ -43,7 +45,7 @@ class App extends React.Component {
               <Route path="/view/statistic-all" component={StatisticAll} />
               <Route path="/view/statistic-individual/:agentId" component={StatisticIndividual} />
               <Route path="/view/review/overview" component={ReviewOverview} />
-              <Route path="/view/review/form" component={ReviewForm} />
+              <Route path="/view/review/form/:parameterId" component={ReviewForm} />
               <Route exact path="/view/agent-list" component={AgentList} />
               <Route exact path="/view/create-agent" component={AgentDetail} />
               <Route exact path="/view/agent/:userId" component={AgentDetail} />

@@ -248,8 +248,8 @@ public class DataSeeder implements ApplicationRunner {
 
         // START Give specific role to reviewer
 
-        userRoleRepository.save(new UserRole(reviewer, parameter));
-        userRoleRepository.save(new UserRole(reviewer, parameter1));
+//        userRoleRepository.save(new UserRole(reviewer, parameter));
+//        userRoleRepository.save(new UserRole(reviewer, parameter1));
 
         // END Give specific role to reviewer
 

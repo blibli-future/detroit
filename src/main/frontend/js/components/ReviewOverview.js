@@ -10,12 +10,28 @@ class ReviewOverview extends BaseDetroitComponent {
   constructor(props) {
     super(props);
     this.state = {
-      reviewOverviews: []
+      reviewOverviews: [
+        {
+          role: '',
+          agents: [
+            {
+              idAgent: 0,
+              idParameter: 0,
+              nickname: '',
+              email: '',
+              position: '',
+              channel: '',
+              reviewCount: 0
+            }
+          ]
+        }
+      ]
     }
+    this.getReviewOverview();
   }
 
   componentDidMount() {
-    this.getReviewOverview();
+
   }
 
   getReviewOverview() {
@@ -106,7 +122,7 @@ class TabContent extends React.Component {
   }
 
   rowFormatter(cell, row) {
-    return <a href={cell} className="btn btn-success btn-xs">Review</a>;
+    return <a href={ row.idParameter+"/"+cell } className="btn btn-success btn-xs">Review</a>;
   }
 
   render() {

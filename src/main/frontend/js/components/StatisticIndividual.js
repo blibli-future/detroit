@@ -40,7 +40,7 @@ class StatisticIndividual extends BaseDetroitComponent {
 
   getStatisticInfo() {
     let component = this;
-    return this.auth.apiCall('/api/v1/statistic/info/'+this.props.match.params.agentId, {
+    return this.auth.apiCall('/api/v1/statistic/info/' + this.props.match.params.agentId, {
       method: 'GET'
     }).then((response) => response.json())
       .then((json) => {

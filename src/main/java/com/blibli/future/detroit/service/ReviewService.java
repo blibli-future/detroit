@@ -8,6 +8,7 @@ import com.blibli.future.detroit.model.response.AgentOverviewResponse;
 import com.blibli.future.detroit.model.response.OneReviewResponse;
 import com.blibli.future.detroit.model.response.UserReviewResponse;
 import com.blibli.future.detroit.repository.DetailReviewRepository;
+import com.blibli.future.detroit.repository.ParameterRepository;
 import com.blibli.future.detroit.repository.ReviewRepository;
 import com.blibli.future.detroit.util.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class ReviewService {
     UserService userService;
     @Autowired
     ParameterService parameterService;
+    @Autowired
+    ParameterRepository parameterRepository;
     @Autowired
     Converter modelMapper;
 
@@ -93,7 +96,6 @@ public class ReviewService {
             if(rolePrefix.equalsIgnoreCase("PARAM")) {
                 String role = userRole.getRole().substring(6);
                 roleList.add(role);
-                System.out.println(role);
             }
         }
 
@@ -122,7 +124,7 @@ public class ReviewService {
                             String agentEmail = agent.getEmail();
                             String agentPosition = agent.getAgentPosition().getName();
                             String agentChannel = agent.getAgentChannel().getName();
-                            agentOverviewResponse.addAgents(idAgent, agentName, agentEmail, agentPosition, agentChannel, reviewcount);
+                            agentOverviewResponse.addAgents(idAgent, parameter.getId(), agentName, agentEmail, agentPosition, agentChannel, reviewcount);
                         }
                     }
                 }

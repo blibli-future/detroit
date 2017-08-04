@@ -28,9 +28,6 @@ public class ReviewController {
     UserService userService;
 
     @Autowired
-    AuthenticationService authenticationService;
-
-    @Autowired
     ParameterService parameterService;
 
     @Autowired
