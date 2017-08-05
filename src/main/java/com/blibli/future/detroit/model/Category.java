@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Entity
 @SQLDelete(sql =
-    "UPDATE detroit_users " +
+    "UPDATE category " +
     "SET deleted = true " +
     "WHERE id = ?")
 @Where(clause = "deleted=false")

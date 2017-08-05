@@ -24,6 +24,7 @@ public class Parameter extends BaseModel implements Serializable {
     private boolean bulkStatus = false;
     private boolean isActive = true;
     @OneToMany(mappedBy = "parameter")
+    @Where(clause = "deleted=false")
     private List<Category> Categories;
     @ManyToOne
     private AgentChannel agentChannel;

@@ -14,6 +14,10 @@ export default class CategoryDetail extends BaseDetroitComponent {
     this.props.handleInputChange(event, this.props.index);
   }
 
+  onDelete(event) {
+    this.props.onDelete(event, this.props.category.id);
+  }
+
   render() {
     return (
       <div>
@@ -32,7 +36,10 @@ export default class CategoryDetail extends BaseDetroitComponent {
 
         <div className="form-group">
           <div className="col-md-offset-3 col-md-6 col-sm-6 col-xs-12">
-            <button className="btn btn-small btn-danger">Delete this category</button>
+            <button className="btn btn-small btn-danger"
+                    onClick={this.onDelete.bind(this)}>
+              Delete this category
+            </button>
           </div>
         </div>
         <hr />

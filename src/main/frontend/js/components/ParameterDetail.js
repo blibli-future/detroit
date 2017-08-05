@@ -39,6 +39,7 @@ class ParameterDetail extends BaseDetroitComponent {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleCategoryInputChange = this.handleCategoryInputChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.onDeleteCategoryClick = this.onDeleteCategoryClick.bind(this);
     this.getParameterData();
     this.getAgentChannelPositionData();
   }
@@ -131,6 +132,37 @@ class ParameterDetail extends BaseDetroitComponent {
       });
   }
 
+  onDeleteCategoryClick(event, categoryId) {
+    event.preventDefault();
+    swal({
+      title: 'Are you sure?',
+      text: 'Deleting a category may make statistics behave incorrectly. Do this with precaution!',
+      type: 'warning',
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Yes, delete it!",
+      closeOnConfirm: false,
+      showCancelButton: true,
+      showLoaderOnConfirm: true,
+    }, () => {
+      this.deleteCategory(categoryId)
+    });
+  }
+
+  deleteCategory(categoryId) {
+    let component = this;
+    this.auth.apiCall('/api/v1/parameters/' + this.state.parameter.id + '/categories/' + categoryId, {
+      method: 'DELETE'
+    }).then(response => response.json())
+      .then(json => {
+        if (json.success) {
+          component.getParameterData();
+          swal('Success', 'Category has been deleted.', 'success');
+        } else {
+          return swal('Error', json.errorMessage, 'error');
+        }
+      });
+  }
+
   handleNewCategoryChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -178,8 +210,17 @@ class ParameterDetail extends BaseDetroitComponent {
       return <CategoryDetail key={index}
                              index={index}
                              category={category}
-                             handleInputChange={this.handleCategoryInputChange} />
+                             handleInputChange={this.handleCategoryInputChange}
+                             onDelete={this.onDeleteCategoryClick} />
     });
+    if (categoryComponents.length < 1) {
+      categoryComponents =
+        <div className="row">
+          <div className="col-md-offset-3 col-md-9">
+            <div className="alert alert-warning">This parameter doesn't have any category.</div>
+          </div>
+        </div>
+    }
     return (
       <div className="right_col" role="main">
         <div className="">
@@ -223,6 +264,7 @@ class ParameterDetail extends BaseDetroitComponent {
 
                     {categoryComponents}
 
+                    <div className="clearfix" />
                     <div className="ln_solid" />
                     { this.state.unsavedChanges &&
                     <p className="text-warning">You have unsaved changes</p>
