@@ -11,6 +11,7 @@ public class NewUserRequest implements Serializable {
     private Long id;
     private String fullname;
     private String nickname;
+    private String password;
     private String email;
     private String channel;
     private String teamLeader;
@@ -44,6 +45,14 @@ public class NewUserRequest implements Serializable {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -136,11 +145,12 @@ public class NewUserRequest implements Serializable {
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (fullname != null ? !fullname.equals(that.fullname) : that.fullname != null) return false;
         if (nickname != null ? !nickname.equals(that.nickname) : that.nickname != null) return false;
+        if (password != null ? !password.equals(that.password) : that.password != null) return false;
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
         if (channel != null ? !channel.equals(that.channel) : that.channel != null) return false;
         if (teamLeader != null ? !teamLeader.equals(that.teamLeader) : that.teamLeader != null) return false;
         if (dateOfBirth != null ? !dateOfBirth.equals(that.dateOfBirth) : that.dateOfBirth != null) return false;
-        if (gender != null ? !gender.equals(that.gender) : that.gender != null) return false;
+        if (gender != that.gender) return false;
         if (location != null ? !location.equals(that.location) : that.location != null) return false;
         if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
         if (agentChannel != null ? !agentChannel.equals(that.agentChannel) : that.agentChannel != null) return false;
@@ -154,6 +164,7 @@ public class NewUserRequest implements Serializable {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (fullname != null ? fullname.hashCode() : 0);
         result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (channel != null ? channel.hashCode() : 0);
         result = 31 * result + (teamLeader != null ? teamLeader.hashCode() : 0);

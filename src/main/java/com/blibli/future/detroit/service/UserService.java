@@ -11,6 +11,8 @@ import com.blibli.future.detroit.util.configuration.Converter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +34,9 @@ public class UserService {
 
     @Autowired
     private ParameterRepository parameterRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     Converter modelMapper;
@@ -56,6 +61,8 @@ public class UserService {
     public User createUser(NewUserRequest request) {
         User newUser = modelMapper.modelMapper()
             .map(request, User.class);
+        String encryptedPassword = passwordEncoder.encode(request.getPassword());
+        newUser.setPassword(encryptedPassword);
         newUser = userRepository.saveAndFlush(newUser);
 
         UserRole role = new UserRole();

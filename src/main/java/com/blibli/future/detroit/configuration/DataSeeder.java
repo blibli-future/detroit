@@ -109,7 +109,7 @@ public class DataSeeder implements ApplicationRunner {
         agent.setNickname("agent");
         agent.setFullname("Agent Nomor 1");
         agent.setGender(Gender.PRIA);
-        agent.setPassword("secret");
+        agent.setPassword("$2a$12$igSBCxqY8EDkZnt5w95bvu77996NpvBzTdF4QIgjW8RmwZCthCWlm");
         agent.setUserType(UserType.AGENT);
         agent.setAgentChannel(agentChannel);
         agent.setAgentPosition(agentPosition);
@@ -125,7 +125,7 @@ public class DataSeeder implements ApplicationRunner {
         agent2.setNickname("agent2");
         agent2.setFullname("Agent Nomor 2");
         agent2.setGender(Gender.PRIA);
-        agent2.setPassword("secret");
+        agent2.setPassword("$2a$12$igSBCxqY8EDkZnt5w95bvu77996NpvBzTdF4QIgjW8RmwZCthCWlm");
         agent2.setUserType(UserType.AGENT);
         agent2.setAgentChannel(agentChannel1);
         agent2.setAgentPosition(agentPosition);
@@ -150,7 +150,7 @@ public class DataSeeder implements ApplicationRunner {
         reviewer.setNickname("reviewer");
         reviewer.setFullname("Reviewer Nomor 1");
         reviewer.setGender(Gender.PRIA);
-        reviewer.setPassword("secret");
+        reviewer.setPassword("$2a$12$igSBCxqY8EDkZnt5w95bvu77996NpvBzTdF4QIgjW8RmwZCthCWlm");
         reviewer.setUserType(UserType.REVIEWER);
         reviewer = userRepository.saveAndFlush(reviewer);
 
@@ -171,7 +171,7 @@ public class DataSeeder implements ApplicationRunner {
         superAdmin.setEmail("superadmin@example.com");
         superAdmin.setFullname("Super Admin");
         superAdmin.setGender(Gender.PRIA);
-        superAdmin.setPassword("secret");
+        superAdmin.setPassword("$2a$12$igSBCxqY8EDkZnt5w95bvu77996NpvBzTdF4QIgjW8RmwZCthCWlm");
         superAdmin.setUserType(UserType.SUPER_ADMIN);
         superAdmin = userRepository.saveAndFlush(superAdmin);
 
