@@ -23,9 +23,21 @@ public class DetailReview extends BaseModel implements Serializable {
     private float score;
     private String note;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private Review review;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private Category category;
+
+    public DetailReview() {
+    }
+
+    public DetailReview(float score, String note, Review review, Category category) {
+        this.score = score;
+        this.note = note;
+        this.review = review;
+        this.category = category;
+    }
 
     public Long getId() {
         return id;

@@ -27,8 +27,10 @@ public class Parameter extends BaseModel implements Serializable {
     @Where(clause = "deleted=false")
     private List<Category> Categories;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private AgentChannel agentChannel;
-    @OneToMany
+    @OneToMany(mappedBy = "parameter")
+    @Where(clause = "deleted=false")
     private List<Review> reviews;
 
     public Long getId() {

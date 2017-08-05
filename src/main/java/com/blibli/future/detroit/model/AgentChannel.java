@@ -18,11 +18,14 @@ public class AgentChannel extends BaseModel implements Serializable {
     @GeneratedValue
     private Long id;
     private String name;
-    @OneToMany
+    @OneToMany(mappedBy = "agent_channel")
+    @Where(clause = "deleted=false")
     private List<User> users;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private AgentPosition agentPosition;
-    @OneToMany(mappedBy = "agentChannel")
+    @OneToMany(mappedBy = "agent_channel")
+    @Where(clause = "deleted=false")
     private List<Parameter> parameters;
 
     public Long getId() {

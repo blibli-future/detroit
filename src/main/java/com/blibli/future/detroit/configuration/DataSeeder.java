@@ -201,10 +201,10 @@ public class DataSeeder implements ApplicationRunner {
         parameters.add(parameter);
         agentChannel.setParameters(parameters);
         agentChannel = agentChannelRepository.saveAndFlush(agentChannel);
-        parameters = new ArrayList<>();
-        parameters.add(parameter1);
-        agentChannel1.setParameters(parameters);
-        agentChannel1 = agentChannelRepository.saveAndFlush(agentChannel1);
+//        parameters = new ArrayList<>();
+//        parameters.add(parameter1);
+//        agentChannel1.setParameters(parameters);
+//        agentChannel1 = agentChannelRepository.saveAndFlush(agentChannel1);
 
         Category category = new Category();
         category.setName("Opening");

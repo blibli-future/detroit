@@ -24,14 +24,19 @@ public class Review extends BaseModel implements Serializable {
     private String tlName;
     private Float score;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private Parameter parameter;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private User agent;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private User reviewer;
-    @OneToMany
+    @OneToMany(mappedBy = "review")
+    @Where(clause = "deleted=false")
     private List<DetailReview> detailReview;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private CutOffHistory cutOffHistory;
 
     public CutOffHistory getCutOffHistory() {

@@ -38,11 +38,15 @@ public class User extends BaseModel implements Serializable {
     private UserType userType;
     @OneToMany
     @JoinColumn(name = "email", referencedColumnName = "email")
+    @Where(clause = "deleted=false")
     private List<UserRole> userRole;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private AgentChannel agentChannel;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private AgentPosition agentPosition;
+
 
     public boolean isReviewer() {
         return this.userType.equals(UserType.REVIEWER);

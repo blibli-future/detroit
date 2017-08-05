@@ -25,8 +25,10 @@ public class ScoreSummary extends BaseModel implements Serializable{
     private ScoreType scoreType;
     private Long fkId;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private CutOffHistory cutOffHistory;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private User agent;
 
     public ScoreSummary() {

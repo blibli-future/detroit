@@ -24,7 +24,8 @@ public class CutOffHistory extends BaseModel implements Serializable {
     private Long id;
     private LocalDate beginCutOff;
     private LocalDate endCutOff;
-    @OneToMany
+    @OneToMany( mappedBy = "cut_off_history" )
+    @Where(clause = "deleted=false")
     private List<Review> reviews;
 
     public List<Review> getReviews() {

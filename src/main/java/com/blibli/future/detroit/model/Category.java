@@ -25,6 +25,7 @@ public class Category extends BaseModel implements Serializable {
     private String description;
     private Float weight;
     @ManyToOne
+    @Where(clause = "deleted=false")
     private Parameter parameter;
 
     public Long getId() {

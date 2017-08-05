@@ -3,6 +3,7 @@ package com.blibli.future.detroit.model.request;
 import com.blibli.future.detroit.model.DetailReview;
 import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.User;
+import com.blibli.future.detroit.model.dto.DetailReviewDto;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,7 +17,7 @@ public class NewReviewRequest implements Serializable {
     private Parameter parameter;
     private User agent;
     private User reviewer;
-    private List<DetailReview> detailReviews;
+    private List<DetailReviewDto> detailReviews;
 
     public Long getId() {
         return id;
@@ -82,11 +83,11 @@ public class NewReviewRequest implements Serializable {
         this.reviewer = reviewer;
     }
 
-    public List<DetailReview> getDetailReviews() {
+    public List<DetailReviewDto> getDetailReviews() {
         return detailReviews;
     }
 
-    public void setDetailReviews(List<DetailReview> detailReviews) {
+    public void setDetailReviews(List<DetailReviewDto> detailReviews) {
         this.detailReviews = detailReviews;
     }
 }

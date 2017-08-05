@@ -2,11 +2,13 @@ package com.blibli.future.detroit.service;
 
 import com.blibli.future.detroit.model.*;
 import com.blibli.future.detroit.model.Exception.NotAuthorizedException;
+import com.blibli.future.detroit.model.dto.DetailReviewDto;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.AgentOverviewResponse;
 import com.blibli.future.detroit.model.response.OneReviewResponse;
 import com.blibli.future.detroit.model.response.UserReviewResponse;
+import com.blibli.future.detroit.repository.CategoryRepository;
 import com.blibli.future.detroit.repository.DetailReviewRepository;
 import com.blibli.future.detroit.repository.ParameterRepository;
 import com.blibli.future.detroit.repository.ReviewRepository;
@@ -31,6 +33,8 @@ public class ReviewService {
     ParameterService parameterService;
     @Autowired
     ParameterRepository parameterRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
     @Autowired
     Converter modelMapper;
 
@@ -59,29 +63,67 @@ public class ReviewService {
 
         Float score = 0f;
 
-        for (DetailReview detailReview : request.getDetailReviews()) {
-            score = score + (detailReview.getCategory().getWeight() / 100) * detailReview.getScore();
+        for (DetailReviewDto detailReviewDto : request.getDetailReviews()) {
+            Category category = categoryRepository.getOne(detailReviewDto.getCategory());
+            score = score + ((category.getWeight() / 100) * detailReviewDto.getScore());
         }
 
-        Review newReview = modelMapper.modelMapper()
-            .map(request, Review.class);
+        Review newReview = new Review();
+        newReview.setCasemgnt(request.getCasemgnt());
+        newReview.setInteractionType(request.getInteractionType());
+        newReview.setCustomerName(request.getCustomerName());
+        newReview.setParameter(request.getParameter());
         newReview.setScore(score);
         newReview = reviewRepository.saveAndFlush(newReview);
 
-        detailReviewRepository.save(request.getDetailReviews());
+        List<DetailReview> detailReviews = new ArrayList<>();
+
+        for (DetailReviewDto detailReviewDto : request.getDetailReviews()) {
+            Category category = categoryRepository.getOne(detailReviewDto.getCategory());
+            detailReviews.add(new DetailReview(detailReviewDto.getScore(),
+                detailReviewDto.getNote(), newReview, category));
+        }
+
+        detailReviewRepository.save(detailReviews);
+
         return newReview;
     }
 
     public Review updateReview(User user, NewReviewRequest request) throws NotAuthorizedException {
         checkReviewerIsAuthorized(user, request.getParameter());
 
-        Review updatedReview = modelMapper.modelMapper()
-            .map(request, Review.class);
-        if (!reviewRepository.exists(updatedReview.getId())) {
+        if (!reviewRepository.exists(request.getId())) {
             throw new EntityNotFoundException();
         }
-        reviewRepository.save(updatedReview);
-        detailReviewRepository.save(request.getDetailReviews());
+
+        Float score = 0f;
+
+        for (DetailReviewDto detailReviewDto : request.getDetailReviews()) {
+            Category category = categoryRepository.getOne(detailReviewDto.getCategory());
+            score = score + ((category.getWeight() / 100) * detailReviewDto.getScore());
+        }
+
+        Review updatedReview = new Review();
+        updatedReview.setCasemgnt(request.getCasemgnt());
+        updatedReview.setInteractionType(request.getInteractionType());
+        updatedReview.setCustomerName(request.getCustomerName());
+        updatedReview.setParameter(request.getParameter());
+        updatedReview.setScore(score);
+        updatedReview = reviewRepository.saveAndFlush(updatedReview);
+
+        for (DetailReviewDto detailReviewDto : request.getDetailReviews()) {
+            if (!detailReviewRepository.exists(detailReviewDto.getId())) {
+                throw new EntityNotFoundException();
+            }
+            DetailReview detailReview = detailReviewRepository.findOne(detailReviewDto.getId());
+            Category category = categoryRepository.getOne(detailReviewDto.getCategory());
+            detailReview.setScore(detailReviewDto.getScore());
+            detailReview.setNote(detailReviewDto.getNote());
+            detailReview.setCategory(category);
+            detailReview.setReview(updatedReview);
+            detailReviewRepository.save(detailReview);
+        }
+
         return updatedReview;
     }
 

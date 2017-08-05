@@ -165,7 +165,7 @@ public class StatisticService {
         List<StatisticDto> parameterStatistics = new ArrayList<>();
         List<StatisticDto> categoryStatistics = new ArrayList<>();
 
-        for(Parameter parameter : parameterRepository.findAll()) {
+        for(Parameter parameter : agent.getAgentChannel().getParameters()) {
             parameterScore = new ArrayList<>();
             categoryStatistics = new ArrayList<>();
             for(Category category : parameter.getCategories()) {
