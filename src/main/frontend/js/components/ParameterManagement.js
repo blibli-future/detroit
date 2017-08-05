@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import {Button, ButtonGroup} from 'react-bootstrap';
 import swal from 'sweetalert';
 
 import BaseDetroitComponent from './BaseDetroitComponent';
@@ -16,7 +17,6 @@ class ParameterManagement extends BaseDetroitComponent {
     this.cellEditProp = {
       mode: 'click',
     };
-    this.deleteAgent = this.deleteAgent.bind(this);
   }
 
   componentDidMount() {
@@ -35,11 +35,34 @@ class ParameterManagement extends BaseDetroitComponent {
       });
   }
 
-  deleteAgent(agent) {
+  handleDeleteButton(parameterId) {
+    swal({
+      title: 'Are you sure?',
+      text: 'Deleting a parameter may make statistics behave incorrectly. Do this with precaution!',
+      type: 'warning',
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Yes, delete it!",
+      closeOnConfirm: false,
+      showCancelButton: true,
+      showLoaderOnConfirm: true,
+    }, () => {
+      this.deleteParameter(parameterId)
+    });
+  }
+
+  deleteParameter(parameterId) {
     let component = this;
-    this.auth.apiCall('/api/v1/users/' + agent.id, {
+    this.auth.apiCall('/api/v1/parameters/' + parameterId, {
       method: 'DELETE'
-    }).then((response) => component.getAgentData());
+    }).then((response) => response.json())
+      .then(json => {
+        if (json.success) {
+          component.getAgentData();
+          swal("Success", "Parameter has been deleted.", "success");
+        } else {
+          swal("Failed to save data", json.errorMessage, "error");
+        }
+      });
   }
 
   batchSaveParameterWeight() {
@@ -65,10 +88,15 @@ class ParameterManagement extends BaseDetroitComponent {
 
   actionButtonFormatter(id, row) {
     return (
-      <Link to={'/view/parameter-detail/' + id}
-            className="btn btn-info btn-xs">
-        Detail
-      </Link>
+      <ButtonGroup>
+        <Link to={'/view/parameter-detail/' + id}
+              className="btn btn-info btn-xs">
+          Detail
+        </Link>
+        <Button bsSize="xs" bsStyle="danger" onClick={this.handleDeleteButton.bind(this, id)}>
+          Delete
+        </Button>
+      </ButtonGroup>
     )
   }
 
@@ -116,7 +144,7 @@ class ParameterManagement extends BaseDetroitComponent {
                     </TableHeaderColumn>
                     <TableHeaderColumn
                         dataField="id"
-                        dataFormat={ this.actionButtonFormatter }
+                        dataFormat={ this.actionButtonFormatter.bind(this) }
                         editable={ false }>
                       Action
                     </TableHeaderColumn>
