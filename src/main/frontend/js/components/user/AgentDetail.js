@@ -1,5 +1,7 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 
 import BaseDetroitComponent from '../BaseDetroitComponent';
 import UserDetail from './UserDetail';
@@ -9,8 +11,21 @@ class AgentDetail extends BaseDetroitComponent {
   constructor(props) {
     super(props);
     this.state = {
-      user: {},
-      editMode: false
+      user: {
+        id: 0,
+        fullname: '',
+        nickname: '',
+        email: '',
+        dateOfBirth: '',
+        gender: '',
+        location: '',
+        phoneNumber: '',
+        userType: '',
+        teamLeader: '',
+        agentChannel: '',
+        agentPosition: '',
+      },
+      editMode: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.switchEditMode = this.switchEditMode.bind(this);
@@ -19,41 +34,54 @@ class AgentDetail extends BaseDetroitComponent {
   }
 
   componentDidMount(){
-    let component = this;
-    this.getUserData(this.props.match.params.userId)
-      .then(data => {
-        component.setState({user: data})
-      });
+    this.getUserData();
   }
 
-  getUserData(id) {
-    return this.auth.apiCall('/api/v1/users/' + id, {
+  getUserData() {
+    let component = this;
+    return this.auth.apiCall('/api/v1/users/' + this.props.match.params.userId, {
       method: 'GET',
     }).then((response) => response.json())
       .then((json) => {
-        return json.content;
-      })
+        component.setState({user: json.content})
+      });
   }
 
   saveEditData(event) {
     event.preventDefault();
-    return this.auth.apiCall('/api/v1/users/reviewer/' + this.state.user.id, {
+    let component = this;
+    return this.auth.apiCall('/api/v1/users/agent/' + this.state.user.id, {
       method: 'PATCH',
       body: JSON.stringify(this.state.user)
     }).then((response) => response.json())
       .then((json) => {
-        return json.content;
-      }).bind(this)
+        if (json.success) {
+          swal("Success", "User data has been edited.", "success");
+          component.setState({editMode: false});
+          component.getUserData();
+        } else {
+          swal('error', json.errorMessage, 'error');
+        }
+      });
   }
 
   deleteUser(event) {
     event.preventDefault();
-    this.auth.apiCall('/api/v1/users/' + this.state.user.id, {
-      method: 'DELETE'
-    }).then((response) => {
-      if (response.status) {
-        window.location.assign("/view/agent-list");
-      }
+    swal({
+      title: 'Warning',
+      text: 'Are you sure want to delete this agent?',
+      type: 'warning',
+    }, () => {
+      return this.auth.apiCall('/api/v1/users/' + this.state.user.id, {
+        method: 'DELETE'
+      }).then(response => response.json())
+        .then(json => {
+        if (json.success) {
+          this.props.history.push('/view/agent-list');
+        } else {
+          swal('Error', json.errorMessage, 'error');
+        }
+      });
     });
   }
 
@@ -77,14 +105,9 @@ class AgentDetail extends BaseDetroitComponent {
   }
 
   render() {
-    var opts = {};
-    if(!this.state.editMode) {
-      opts['readOnly'] = 'readOnly';
-    }
-
     return (
-      <UserDetail title="Reviewer Detail"
-                  backLink="/view/reviewer-list"
+      <UserDetail title="Agent Detail"
+                  backLink="/view/agent-list"
                   user={ this.state.user }
                   editMode={ this.state.editMode }
                   switchEditMode={ this.switchEditMode }
@@ -98,7 +121,7 @@ class AgentDetail extends BaseDetroitComponent {
           </label>
           <div className="col-md-6 col-sm-6 col-xs-12">
             <input className="form-control col-md-7 col-xs-12"
-                   type="text" name="agentPosition" {...opts}
+                   type="text" name="agentPosition" readOnly={!this.state.editMode}
                    value={ this.state.user.agentPosition }
                    onChange={ this.handleInputChange } />
           </div>
@@ -110,7 +133,7 @@ class AgentDetail extends BaseDetroitComponent {
           </label>
           <div className="col-md-6 col-sm-6 col-xs-12">
             <input className="form-control col-md-7 col-xs-12"
-                   type="text" name="agentChannel" {...opts}
+                   type="text" name="agentChannel" readOnly={!this.state.editMode}
                    value={ this.state.user.agentChannel }
                    onChange={ this.handleInputChange } />
           </div>
@@ -122,7 +145,7 @@ class AgentDetail extends BaseDetroitComponent {
           </label>
           <div className="col-md-6 col-sm-6 col-xs-12">
             <input id="teamLeader" className="form-control col-md-7 col-xs-12"
-                   name="teamLeader" type="text" {...opts}
+                   name="teamLeader" type="text" readOnly={!this.state.editMode}
                    value={ this.state.user.teamLeader }
                    onChange={ this.handleInputChange } />
           </div>
@@ -132,4 +155,4 @@ class AgentDetail extends BaseDetroitComponent {
   }
 }
 
-export default AgentDetail;
+export default withRouter(AgentDetail);

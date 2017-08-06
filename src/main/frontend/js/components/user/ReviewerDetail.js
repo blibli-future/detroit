@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
+import { withRouter } from 'react-router';
 
 import BaseDetroitComponent from '../BaseDetroitComponent';
 import UserDetail from './UserDetail';
@@ -10,7 +11,19 @@ class ReviewerDetail extends BaseDetroitComponent {
   constructor(props) {
     super(props);
     this.state = {
-      user: {},
+      user: {
+        id: 0,
+        fullname: '',
+        nickname: '',
+        email: '',
+        dateOfBirth: '',
+        gender: '',
+        location: '',
+        phoneNumber: '',
+        userType: '',
+        teamLeader: '',
+        reviewerRole: [''],
+      },
       editMode: false,
       roleList: [],
     };
@@ -59,18 +72,33 @@ class ReviewerDetail extends BaseDetroitComponent {
       body: JSON.stringify(this.state.user)
     }).then((response) => response.json())
       .then((json) => {
-        return json.content;
-      }).bind(this)
+        if (json.success) {
+          swal("Success", "User data has been edited.", "success");
+          component.setState({editMode: false});
+          component.getUserData();
+        } else {
+          swal('error', json.errorMessage, 'error');
+        }
+      });
   }
 
   deleteUser(event) {
     event.preventDefault();
-    this.auth.apiCall('/api/v1/users/' + this.state.user.id, {
-      method: 'DELETE'
-    }).then((response) => {
-      if (response.status) {
-        window.location.assign("/view/reviewer-list");
-      }
+    swal({
+      title: 'Warning',
+      text: 'Are you sure want to delete this user?',
+      type: 'warning',
+    }, () => {
+      this.auth.apiCall('/api/v1/users/' + this.state.user.id, {
+        method: 'DELETE'
+      }).then((response) => response.json())
+        .then(json => {
+          if (json.success) {
+            this.props.history.push('/view/reviewer-list');
+          } else {
+            swal('Error', json.errorMessage, 'error');
+          }
+        });
     });
   }
 
@@ -132,4 +160,4 @@ class ReviewerDetail extends BaseDetroitComponent {
   }
 }
 
-export default ReviewerDetail;
+export default withRouter(ReviewerDetail);

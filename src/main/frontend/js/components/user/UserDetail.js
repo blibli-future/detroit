@@ -41,11 +41,9 @@ class UserDetail extends BaseDetroitComponent {
   }
 
   render() {
-    var opts = {};
     if (this.props.editMode) {
       this.buttons = this.buttonsInEditMode
     } else {
-      opts['readOnly'] = 'readOnly';
       this.buttons = this.buttonsInViewMode
     }
 
@@ -82,7 +80,8 @@ class UserDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input type="text" required="required" name="fullname"
-                               className="form-control col-md-7 col-xs-12" { ...opts }
+                               className="form-control col-md-7 col-xs-12"
+                               readOnly={!this.props.editMode}
                                onChange={ this.props.onChange }
                                value={ this.props.user.fullname } />
                       </div>
@@ -94,7 +93,8 @@ class UserDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input type="text" name="nickname" required="required"
-                               className="form-control col-md-7 col-xs-12" { ...opts }
+                               className="form-control col-md-7 col-xs-12"
+                               readOnly={!this.props.editMode}
                                onChange={ this.props.onChange }
                                value={ this.props.user.nickname }/>
                       </div>
@@ -106,7 +106,8 @@ class UserDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input className="form-control col-md-7 col-xs-12" type="email"
-                               name="email" { ...opts }
+                               name="email"
+                               readOnly={!this.props.editMode}
                                onChange={ this.props.onChange }
                                value={ this.props.user.email } />
                       </div>
@@ -118,7 +119,8 @@ class UserDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input id="phoneNumber" className="form-control col-md-7 col-xs-12"
-                               type="text" name="phoneNumber" { ...opts }
+                               type="text" name="phoneNumber"
+                               readOnly={!this.props.editMode}
                                onChange={ this.props.onChange }
                                value={ this.props.user.phoneNumber }/>
                       </div>
@@ -130,7 +132,8 @@ class UserDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input id="location" className="form-control col-md-7 col-xs-12"
-                               type="text" name="location" { ...opts }
+                               type="text" name="location"
+                               readOnly={!this.props.editMode}
                                onChange={ this.props.onChange }
                                value={ this.props.user.location }/>
                       </div>
@@ -142,7 +145,7 @@ class UserDetail extends BaseDetroitComponent {
                         <select name="gender"
                                 value={ this.props.user.gender }
                                 onChange={ this.props.onChange }
-                                { ...opts }>
+                                readOnly={!this.props.editMode}>
                           <option value="PRIA">Pria</option>
                           <option value="WANITA">Wanita</option>
                           <option value="UNSPECIFIED">-</option>
@@ -156,7 +159,8 @@ class UserDetail extends BaseDetroitComponent {
                       </label>
                       <div className="col-md-6 col-sm-6 col-xs-12">
                         <input className="date-picker form-control col-md-7 col-xs-12"
-                               name="dateOfBirth" type="text" { ...opts }
+                               name="dateOfBirth" type="text"
+                               readOnly={!this.props.editMode}
                                onChange={ this.props.onChange }
                                value={ this.props.user.dateOfBirth } />
                       </div>
