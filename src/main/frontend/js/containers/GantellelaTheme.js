@@ -19,7 +19,9 @@ export class InputText extends React.Component {
           <input id={this.props.name} className="form-control col-md-7 col-xs-12"
                  type={ this.props.inputType? this.props.inputType :"text" } name={this.props.name}
                  onChange={ this.props.onChange }
-                 value={ this.props.data }/>
+                 value={ this.props.data }
+                 required= { this.props.required }
+          />
         </div>
       </div>
     );

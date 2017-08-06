@@ -21,10 +21,10 @@ public class AgentPosition extends BaseModel implements Serializable {
     @GeneratedValue
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "agent_position")
+    @OneToMany(mappedBy = "agentPosition")
     @Where(clause = "deleted=false")
     private List<User> users;
-    @OneToMany(mappedBy = "agent_position")
+    @OneToMany(mappedBy = "agentPosition")
     @Where(clause = "deleted=false")
     private List<AgentChannel> agentChannels;
 

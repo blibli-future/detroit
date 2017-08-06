@@ -1,11 +1,16 @@
 package com.blibli.future.detroit.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,6 +28,8 @@ public class Review extends BaseModel implements Serializable {
     private String customerName;
     private String tlName;
     private Float score;
+    @CreatedDate
+    private LocalDateTime createdAt = new LocalDateTime();
     @ManyToOne
     @Where(clause = "deleted=false")
     private Parameter parameter;

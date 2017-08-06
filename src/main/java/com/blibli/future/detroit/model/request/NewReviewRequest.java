@@ -14,9 +14,9 @@ public class NewReviewRequest implements Serializable {
     private String interactionType;
     private String customerName;
     private String tlName;
-    private Parameter parameter;
-    private User agent;
-    private User reviewer;
+    private Long parameter;
+    private Long agent;
+    private Long reviewer;
     private List<DetailReviewDto> detailReviews;
 
     public Long getId() {
@@ -59,27 +59,27 @@ public class NewReviewRequest implements Serializable {
         this.tlName = tlName;
     }
 
-    public Parameter getParameter() {
+    public Long getParameter() {
         return parameter;
     }
 
-    public void setParameter(Parameter parameter) {
+    public void setParameter(Long parameter) {
         this.parameter = parameter;
     }
 
-    public User getAgent() {
+    public Long getAgent() {
         return agent;
     }
 
-    public void setAgent(User agent) {
+    public void setAgent(Long agent) {
         this.agent = agent;
     }
 
-    public User getReviewer() {
+    public Long getReviewer() {
         return reviewer;
     }
 
-    public void setReviewer(User reviewer) {
+    public void setReviewer(Long reviewer) {
         this.reviewer = reviewer;
     }
 

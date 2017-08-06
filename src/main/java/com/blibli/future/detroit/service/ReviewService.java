@@ -8,10 +8,7 @@ import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.AgentOverviewResponse;
 import com.blibli.future.detroit.model.response.OneReviewResponse;
 import com.blibli.future.detroit.model.response.UserReviewResponse;
-import com.blibli.future.detroit.repository.CategoryRepository;
-import com.blibli.future.detroit.repository.DetailReviewRepository;
-import com.blibli.future.detroit.repository.ParameterRepository;
-import com.blibli.future.detroit.repository.ReviewRepository;
+import com.blibli.future.detroit.repository.*;
 import com.blibli.future.detroit.util.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +33,10 @@ public class ReviewService {
     @Autowired
     CategoryRepository categoryRepository;
     @Autowired
+    UserRepository userRepository;
+    @Autowired
+    CutOffRepository cutOffRepository;
+    @Autowired
     Converter modelMapper;
 
     public List<UserReviewResponse> getAllReview(Long userId) {
@@ -59,7 +60,10 @@ public class ReviewService {
     }
 
     public Review createReview(User user, NewReviewRequest request) throws NotAuthorizedException {
-        checkReviewerIsAuthorized(user, request.getParameter());
+        Parameter parameter = parameterRepository.findOne(request.getParameter());
+        checkReviewerIsAuthorized(user, parameter);
+
+        CutOffHistory currentCutOff = cutOffRepository.findByEndCutOffIsNull();
 
         Float score = 0f;
 
@@ -68,12 +72,18 @@ public class ReviewService {
             score = score + ((category.getWeight() / 100) * detailReviewDto.getScore());
         }
 
+        User agent = userRepository.getOne(request.getAgent());
+
         Review newReview = new Review();
         newReview.setCasemgnt(request.getCasemgnt());
         newReview.setInteractionType(request.getInteractionType());
         newReview.setCustomerName(request.getCustomerName());
-        newReview.setParameter(request.getParameter());
+        newReview.setParameter(parameter);
         newReview.setScore(score);
+        newReview.setReviewer(user);
+        newReview.setAgent(agent);
+        newReview.setCutOffHistory(currentCutOff);
+
         newReview = reviewRepository.saveAndFlush(newReview);
 
         List<DetailReview> detailReviews = new ArrayList<>();
@@ -90,7 +100,8 @@ public class ReviewService {
     }
 
     public Review updateReview(User user, NewReviewRequest request) throws NotAuthorizedException {
-        checkReviewerIsAuthorized(user, request.getParameter());
+        Parameter parameter = parameterRepository.findOne(request.getParameter());
+        checkReviewerIsAuthorized(user, parameter);
 
         if (!reviewRepository.exists(request.getId())) {
             throw new EntityNotFoundException();
@@ -107,7 +118,7 @@ public class ReviewService {
         updatedReview.setCasemgnt(request.getCasemgnt());
         updatedReview.setInteractionType(request.getInteractionType());
         updatedReview.setCustomerName(request.getCustomerName());
-        updatedReview.setParameter(request.getParameter());
+        updatedReview.setParameter(parameter);
         updatedReview.setScore(score);
         updatedReview = reviewRepository.saveAndFlush(updatedReview);
 
@@ -193,7 +204,8 @@ public class ReviewService {
             return true;
         }
         for (UserRole role: reviewer.getUserRole()) {
-            if(role.getRole().equals(parameter.getName())) {
+            String roleParameter = role.getRole().substring(6);
+            if(roleParameter.equalsIgnoreCase(parameter.getName())) {
                 return true;
             }
         }

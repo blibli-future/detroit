@@ -1,5 +1,6 @@
 import React from 'react';
 import swal from 'sweetalert';
+import { withRouter } from 'react-router';
 
 import BaseDetroitComponent from './BaseDetroitComponent';
 import CategoryForm from './CategoryForm';
@@ -16,8 +17,10 @@ class ReviewForm extends BaseDetroitComponent {
         casemgnt: '',
         interactionType: '',
         customerName: '',
+        tlName: '',
         parameter: 0,
-        agent: '',
+        agent: 0,
+        reviewer: 0,
         detailReviews: [
           {
             id: 0,
@@ -43,6 +46,7 @@ class ReviewForm extends BaseDetroitComponent {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleInputChangeCategoryForm = this.handleInputChangeCategoryForm.bind(this);
+    this.saveNewReview = this.saveNewReview.bind(this);
   }
 
   componentDidMount() {
@@ -66,10 +70,48 @@ class ReviewForm extends BaseDetroitComponent {
         const reviewRequest = this.state.reviewRequest;
         reviewRequest.detailReviews = category;
         reviewRequest.parameter = this.props.match.params.parameterId;
+        reviewRequest.agent = this.props.match.params.agentId;
         component.setState({
           parameter: json.content,
           reviewRequest
         });
+      });
+  }
+
+  validateDetailReviewScore() {
+    let component = this;
+    var check = true;
+    component.state.reviewRequest.detailReviews.forEach((item)=> {
+      if(item['score'] > 100 || item['score'] <0) {
+        check = false;
+      }
+    })
+    return check;
+  }
+
+  saveNewReview(event) {
+    event.preventDefault();
+    let component = this;
+
+    if(!this.validateDetailReviewScore()) {
+      return swal("Error", "Score cannot more than 100 or less than 0", "error");
+    }
+
+    this.auth.apiCall("/api/v1/reviews", {
+      method: 'POST',
+      body: JSON.stringify(component.state.reviewRequest),
+    }).then(response => response.json())
+      .then(json => {
+        if (json.success) {
+          swal({
+            title: "Success",
+            text: "New review has been created.",
+            type: "success",
+          });
+          component.props.router.push('/view/review/overview')
+        } else {
+          swal("Error", json.errorMessage, "error");
+        }
       });
   }
 
@@ -128,6 +170,7 @@ class ReviewForm extends BaseDetroitComponent {
             </div>
           </div>
 
+          <form id="form" onSubmit={ this.saveNewReview } className="form-horizontal form-label-left">
           <div className="clearfix"></div>
           <div className="row">
             <div className="col-md-12 col-sm-12 col-xs-12">
@@ -137,7 +180,7 @@ class ReviewForm extends BaseDetroitComponent {
                   <div className="clearfix"></div>
                 </div>
                 <div className="x_content">
-                  <form id="form" className="form-horizontal form-label-left">
+
                     <InputText data={this.state.reviewRequest.casemgnt}
                                onChange={this.handleInputChange}
                                name="casemgnt"
@@ -152,8 +195,8 @@ class ReviewForm extends BaseDetroitComponent {
                                onChange={this.handleInputChange}
                                name="customerName"
                                label="Customer Name"
+                               required="required"
                     />
-                  </form>
                 </div>
               </div>
             </div>
@@ -168,23 +211,26 @@ class ReviewForm extends BaseDetroitComponent {
                   <div className="clearfix"></div>
                 </div>
                 <div className="x_content">
-                  <form id="form" className="form-horizontal form-label-left">
 
                     { categoryComponent }
 
                     <div className="clearfix"></div>
                     <div className="form-group">
-                      Button here
+                      <button type="submit" className="btn btn-success" value="submit">
+                        Submit Review
+                      </button>
                     </div>
-                  </form>
+
                 </div>
               </div>
             </div>
           </div>
+          </form>
+
         </div>
       </div>
     )
   }
 }
 
-export default ReviewForm;
+export default withRouter(ReviewForm);

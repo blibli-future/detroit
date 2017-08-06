@@ -122,7 +122,7 @@ class TabContent extends React.Component {
   }
 
   rowFormatter(cell, row) {
-    return <a href={ row.idParameter+"/"+cell } className="btn btn-success btn-xs">Review</a>;
+    return <a href={ "form/"+row.idParameter+"/"+cell } className="btn btn-success btn-xs">Review</a>;
   }
 
   render() {
