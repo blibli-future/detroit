@@ -30,6 +30,8 @@ import ReviewOverview from './components/ReviewOverview';
 import ReviewForm from './components/ReviewForm';
 import ParameterManagement from './components/ParameterManagement.js';
 import ParameterDetail from './components/ParameterDetail.js';
+import ReviewHistory from './components/ReviewHistory';
+import ReviewEdit from './components/ReviewEdit';
 
 class App extends React.Component {
 
@@ -42,10 +44,12 @@ class App extends React.Component {
               <Sidebar />
               <TopNavigation />
 
-              <Route path="/view/statistic-all" component={StatisticAll} />
-              <Route path="/view/statistic-individual/:agentId" component={StatisticIndividual} />
-              <Route path="/view/review/overview" component={ReviewOverview} />
-              <Route path="/view/review/form/:parameterId/:agentId" component={ReviewForm} />
+              <Route exact path="/view/statistic-all" component={StatisticAll} />
+              <Route exact path="/view/statistic-individual/:agentId" component={StatisticIndividual} />
+              <Route exact path="/view/review/overview" component={ReviewOverview} />
+              <Route exact path="/view/review/form/:parameterId/:agentId" component={ReviewForm} />
+              <Route exact path="/view/review/history" component={ReviewHistory} />
+              <Route exact path="/view/review/edit/:reviewId" component={ReviewEdit} />
               <Route exact path="/view/agent-list" component={AgentList} />
               <Route exact path="/view/create-agent" component={AgentDetail} />
               <Route exact path="/view/agent/:userId" component={AgentDetail} />

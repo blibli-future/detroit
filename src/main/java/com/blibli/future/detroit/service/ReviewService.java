@@ -3,6 +3,7 @@ package com.blibli.future.detroit.service;
 import com.blibli.future.detroit.model.*;
 import com.blibli.future.detroit.model.Exception.NotAuthorizedException;
 import com.blibli.future.detroit.model.dto.DetailReviewDto;
+import com.blibli.future.detroit.model.dto.ReviewHistoryDto;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.AgentOverviewResponse;
@@ -114,7 +115,7 @@ public class ReviewService {
             score = score + ((category.getWeight() / 100) * detailReviewDto.getScore());
         }
 
-        Review updatedReview = new Review();
+        Review updatedReview = reviewRepository.findOne(request.getId());
         updatedReview.setCasemgnt(request.getCasemgnt());
         updatedReview.setInteractionType(request.getInteractionType());
         updatedReview.setCustomerName(request.getCustomerName());
@@ -136,6 +137,23 @@ public class ReviewService {
         }
 
         return updatedReview;
+    }
+
+    public Boolean deleteReview(User currentUser, Long reviewId) throws NotAuthorizedException {
+        Boolean check;
+
+        Review review = reviewRepository.findOne(reviewId);
+
+        checkReviewerIsAuthorized(currentUser, review.getParameter());
+
+        if(review.getReviewer().equals(currentUser)) {
+            reviewRepository.delete(reviewId);
+            check = true;
+        } else {
+            check = false;
+        }
+
+        return check;
     }
 
     public List<AgentOverviewResponse> getReviewOverview(User currentUser) {
@@ -188,6 +206,27 @@ public class ReviewService {
         }
 
         return new ArrayList<>(agentOverviewResponses);
+    }
+
+    public List<ReviewHistoryDto> getReviewHistory(User currentUser) {
+        List<ReviewHistoryDto> reviewHistoryDtos = new ArrayList<>();
+        CutOffHistory currentCutOff = cutOffRepository.findByEndCutOffIsNull();
+
+
+        for(Review review : reviewRepository.findByReviewerAndCutOffHistory(currentUser, currentCutOff)) {
+            reviewHistoryDtos.add(new ReviewHistoryDto(
+                review.getId(),
+                review.getAgent().getEmail(),
+                review.getAgent().getFullname(),
+                review.getParameter().getAgentChannel().getAgentPosition().getName(),
+                review.getParameter().getAgentChannel().getName(),
+                review.getParameter().getName(),
+                review.getScore(),
+                review.getCreatedAtInISOFormat()
+            ));
+        }
+
+        return reviewHistoryDtos;
     }
 
     /**

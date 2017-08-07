@@ -19,7 +19,7 @@ public class OneReviewResponse {
     private Long agent;
     private Long reviewer;
     private Long cutOff;
-    private List<SingleDetailReview> detailReview;
+    private List<SingleDetailReview> detailReviews;
 
     public OneReviewResponse(Review review) {
         this.id = review.getId();
@@ -32,9 +32,9 @@ public class OneReviewResponse {
         this.agent = review.getAgent().getId();
         this.reviewer = review.getReviewer().getId();
         this.cutOff = review.getCutOffHistory().getId();
-        this.detailReview = new ArrayList<>();
+        this.detailReviews = new ArrayList<>();
         for (DetailReview detailReview : review.getDetailReview()) {
-            this.detailReview.add(new SingleDetailReview(detailReview));
+            this.detailReviews.add(new SingleDetailReview(detailReview));
         }
     }
 
@@ -118,25 +118,31 @@ public class OneReviewResponse {
         this.cutOff = cutOff;
     }
 
-    public List<SingleDetailReview> getDetailReview() {
-        return detailReview;
+    public List<SingleDetailReview> getDetailReviews() {
+        return detailReviews;
     }
 
-    public void setDetailReview(List<SingleDetailReview> detailReview) {
-        this.detailReview = detailReview;
+    public void setDetailReviews(List<SingleDetailReview> detailReviews) {
+        this.detailReviews = detailReviews;
     }
 
     class SingleDetailReview {
         public Long id;
         public Float score;
         public String note;
-        public String category;
+        public Long category;
+        public String name;
+        public Float weight;
+        public String description;
 
         public SingleDetailReview(DetailReview detailReview) {
             this.id = detailReview.getId();
             this.score = detailReview.getScore();
             this.note = detailReview.getNote();
-            this.category = detailReview.getCategory().getName();
+            this.category = detailReview.getCategory().getId();
+            this.name = detailReview.getCategory().getName();
+            this.weight = detailReview.getCategory().getWeight();
+            this.description = detailReview.getCategory().getDescription();
         }
 
         public Long getId() {
@@ -163,12 +169,36 @@ public class OneReviewResponse {
             this.note = note;
         }
 
-        public String getCategory() {
+        public Long getCategory() {
             return category;
         }
 
-        public void setCategory(String category) {
+        public void setCategory(Long category) {
             this.category = category;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Float getWeight() {
+            return weight;
+        }
+
+        public void setWeight(Float weight) {
+            this.weight = weight;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
         }
     }
 }

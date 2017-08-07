@@ -1,6 +1,7 @@
 package com.blibli.future.detroit.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -41,6 +42,7 @@ public class Review extends BaseModel implements Serializable {
     private User reviewer;
     @OneToMany(mappedBy = "review")
     @Where(clause = "deleted=false")
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE)
     private List<DetailReview> detailReview;
     @ManyToOne
     @Where(clause = "deleted=false")
@@ -100,6 +102,19 @@ public class Review extends BaseModel implements Serializable {
 
     public void setScore(Float score) {
         this.score = score;
+    }
+
+    @JsonIgnore
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getCreatedAtInISOFormat() {
+        return this.createdAt.toString();
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Parameter getParameter() {

@@ -7,27 +7,29 @@ import BaseDetroitComponent from './BaseDetroitComponent';
 import CategoryForm from './CategoryForm';
 import {InputText} from "../containers/GantellelaTheme";
 
-
-class ReviewForm extends BaseDetroitComponent {
-
+class ReviewEdit extends BaseDetroitComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      reviewRequest: {
+    this.state= {
+      review: {
         id: 0,
         casemgnt: '',
         interactionType: '',
         customerName: '',
         tlName: '',
+        score: 0,
         parameter: 0,
         agent: 0,
         reviewer: 0,
+        cutOff: 0,
         detailReviews: [
           {
             id: 0,
             score: 0,
             note: '',
-            category: 0
+            name: '',
+            weight: 0,
+            description: ''
           }
         ]
       },
@@ -47,34 +49,21 @@ class ReviewForm extends BaseDetroitComponent {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleInputChangeCategoryForm = this.handleInputChangeCategoryForm.bind(this);
-    this.saveNewReview = this.saveNewReview.bind(this);
+    this.updateReview = this.updateReview.bind(this);
   }
 
   componentDidMount() {
-    this.getCategories();
+    this.getReview();
   }
 
-  getCategories() {
+  getReview() {
     let component = this;
-    return this.auth.apiCall('/api/v1/parameters/'+this.props.match.params.parameterId, {
+    return this.auth.apiCall('/api/v1/reviews/'+this.props.match.params.reviewId, {
       method: 'GET'
     }).then((response) => response.json())
       .then((json) => {
-        let category = [];
-        for(var i=0; i<json.content.categories.length ; i++) {
-          category.push({
-            score: 0,
-            note: '',
-            category: json.content.categories[i].id
-          });
-        }
-        const reviewRequest = this.state.reviewRequest;
-        reviewRequest.detailReviews = category;
-        reviewRequest.parameter = this.props.match.params.parameterId;
-        reviewRequest.agent = this.props.match.params.agentId;
         component.setState({
-          parameter: json.content,
-          reviewRequest
+          review: json.content
         });
       });
   }
@@ -82,7 +71,7 @@ class ReviewForm extends BaseDetroitComponent {
   validateDetailReviewScore() {
     let component = this;
     var check = true;
-    component.state.reviewRequest.detailReviews.forEach((item)=> {
+    component.state.review.detailReviews.forEach((item)=> {
       if(item['score'] > 100 || item['score'] <0) {
         check = false;
       }
@@ -90,7 +79,7 @@ class ReviewForm extends BaseDetroitComponent {
     return check;
   }
 
-  saveNewReview(event) {
+  updateReview(event) {
     event.preventDefault();
     let component = this;
 
@@ -98,18 +87,18 @@ class ReviewForm extends BaseDetroitComponent {
       return swal("Error", "Score cannot more than 100 or less than 0", "error");
     }
 
-    this.auth.apiCall("/api/v1/reviews", {
-      method: 'POST',
-      body: JSON.stringify(component.state.reviewRequest),
+    this.auth.apiCall("/api/v1/reviews/"+this.props.match.params.reviewId, {
+      method: 'PATCH',
+      body: JSON.stringify(component.state.review),
     }).then(response => response.json())
       .then(json => {
         if (json.success) {
           swal({
             title: "Success",
-            text: "New review has been created.",
+            text: "Review has been updated.",
             type: "success",
           });
-          component.props.history.push('/view/review/overview')
+          component.props.history.push('/view/review/history');
         } else {
           swal("Error", json.errorMessage, "error");
         }
@@ -126,7 +115,7 @@ class ReviewForm extends BaseDetroitComponent {
     }
     const name = target.name;
 
-    const review = this.state.reviewRequest;
+    const review = this.state.review;
     review[name] = value;
     this.setState({
       review
@@ -145,7 +134,7 @@ class ReviewForm extends BaseDetroitComponent {
     }
     const name = target.name;
 
-    const detailReview = this.state.reviewRequest.detailReviews;
+    const detailReview = this.state.review.detailReviews;
     detailReview[detailReviewIndex][name] = value;
     this.setState({
       detailReview
@@ -155,13 +144,11 @@ class ReviewForm extends BaseDetroitComponent {
   render() {
     let categoryComponent =  [];
 
-    this.state.parameter.categories.forEach((item, index)=> {
+    this.state.review.detailReviews.forEach((item, index)=> {
       categoryComponent.push(
         <CategoryForm key={ index } id={ index } category={ item } handleInputChange={this.handleInputChangeCategoryForm} />
       )
     })
-
-
     return (
       <div className="right_col" role="main">
         <div className="">
@@ -171,65 +158,65 @@ class ReviewForm extends BaseDetroitComponent {
             </div>
           </div>
 
-          <form id="form" onSubmit={ this.saveNewReview } className="form-horizontal form-label-left">
-          <div className="clearfix"></div>
-          <div className="row">
-            <div className="col-md-12 col-sm-12 col-xs-12">
-              <div className="x_panel">
-                <div className="x_title">
-                  <h2> General Form</h2>
-                  <div className="clearfix"></div>
-                </div>
-                <div className="x_content">
+          <form id="form" onSubmit={ this.updateReview } className="form-horizontal form-label-left">
+            <div className="clearfix"></div>
+            <div className="row">
+              <div className="col-md-12 col-sm-12 col-xs-12">
+                <div className="x_panel">
+                  <div className="x_title">
+                    <h2> General Form</h2>
+                    <div className="clearfix"></div>
+                  </div>
+                  <div className="x_content">
 
-                    <InputText data={this.state.reviewRequest.casemgnt}
+                    <InputText data={this.state.review.casemgnt}
                                onChange={this.handleInputChange}
                                name="casemgnt"
                                label="Case Management"
                     />
-                    <InputText data={this.state.reviewRequest.interactionType}
+                    <InputText data={this.state.review.interactionType}
                                onChange={this.handleInputChange}
                                name="interactionType"
                                label="Interaction Type"
                     />
-                    <InputText data={this.state.reviewRequest.customerName}
+                    <InputText data={this.state.review.customerName}
                                onChange={this.handleInputChange}
                                name="customerName"
                                label="Customer Name"
                                required="required"
                     />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="clearfix"></div>
-          <div className="row">
-            <div className="col-md-12 col-sm-12 col-xs-12">
-              <div className="x_panel">
-                <div className="x_title">
-                  <h2> Categories</h2>
-                  <div className="clearfix"></div>
-                </div>
-                <div className="x_content">
+            <div className="clearfix"></div>
+            <div className="row">
+              <div className="col-md-12 col-sm-12 col-xs-12">
+                <div className="x_panel">
+                  <div className="x_title">
+                    <h2> Categories</h2>
+                    <div className="clearfix"></div>
+                  </div>
+                  <div className="x_content">
 
                     { categoryComponent }
 
                     <div className="clearfix"></div>
                     <div className="form-group">
-                      <Link to={'/view/review/overview'}
+                      <Link to={'/view/review/history'}
                             className="btn btn-default">
                         Cancel
                       </Link>
                       <button type="submit" className="btn btn-success" value="submit">
-                        Submit Review
+                        Update Review
                       </button>
                     </div>
 
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           </form>
 
         </div>
@@ -238,4 +225,4 @@ class ReviewForm extends BaseDetroitComponent {
   }
 }
 
-export default withRouter(ReviewForm);
+export default withRouter(ReviewEdit);

@@ -3,6 +3,7 @@ package com.blibli.future.detroit.controller.api;
 import com.blibli.future.detroit.model.Exception.NotAuthorizedException;
 import com.blibli.future.detroit.model.Review;
 import com.blibli.future.detroit.model.User;
+import com.blibli.future.detroit.model.dto.ReviewHistoryDto;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.*;
 import com.blibli.future.detroit.service.*;
@@ -18,8 +19,10 @@ public class ReviewController {
     public static final String GET_ONE_REVIEW = BASE_PATH + "/{reviewId}";
     public static final String CREATE_REVIEW  = BASE_PATH;
     public static final String UPDATE_REVIEW  = BASE_PATH + "/{reviewId}";
+    public static final String DELETE_REVIEW = BASE_PATH + "/{reviewId}";
     public static final String GET_REVIEW_OVERVIEW = BASE_PATH + "/overviews";
     public static final String END_REVIEW_PERIOD = BASE_PATH + "/end-period";
+    public static final String GET_REVIEW_HISTORY = BASE_PATH + "/history";
 
     @Autowired
     ReviewService reviewService;
@@ -52,7 +55,7 @@ public class ReviewController {
         try {
             reviewService.createReview(authenticationService.getCurrentUser(), request);
         } catch (NotAuthorizedException e) {
-            return new BaseRestResponse(false, e.getCode(), e.getMessage());
+            return new BaseRestResponse(false, e.getClass().getSimpleName(), e.getMessage());
         }
         return new BaseRestResponse();
     }
@@ -62,9 +65,18 @@ public class ReviewController {
         try {
             reviewService.updateReview(authenticationService.getCurrentUser(), request);
         } catch (NotAuthorizedException e) {
-            return new BaseRestResponse(false, e.getCode(), e.getMessage());
+            return new BaseRestResponse(false, e.getClass().getSimpleName(), e.getMessage());
         }
         return new BaseRestResponse();
+    }
+
+    @DeleteMapping(DELETE_REVIEW)
+    public BaseRestResponse<Boolean> deleteReview(@PathVariable Long reviewId) {
+        try {
+            return new BaseRestResponse<>(reviewService.deleteReview(authenticationService.getCurrentUser(), reviewId));
+        } catch (NotAuthorizedException e) {
+            return new BaseRestResponse(false, e.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
     @GetMapping(GET_REVIEW_OVERVIEW)
@@ -76,5 +88,11 @@ public class ReviewController {
     @GetMapping(END_REVIEW_PERIOD)
     public BaseRestResponse<Boolean> endReviewPeriod() {
         return new BaseRestResponse<>(scoreSummaryService.closeCurrentCutOff());
+    }
+
+    @GetMapping(GET_REVIEW_HISTORY)
+    public BaseRestListResponse<ReviewHistoryDto> getReviewHistory() {
+        User currentUser = authenticationService.getCurrentUser();
+        return new BaseRestListResponse<>(reviewService.getReviewHistory(currentUser));
     }
 }

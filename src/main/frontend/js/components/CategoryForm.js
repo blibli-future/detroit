@@ -39,7 +39,7 @@ export default class CategoryForm extends BaseDetroitComponent {
         <div className="col-md-12 col-sm-12 col-xs-12">
           <h2>Notes</h2>
           <InputTextArea
-            data={this.props.category.note}
+            content={this.props.category.note}
             onChange={this.handleInputChange}
             name="note"
             height={ 350 }

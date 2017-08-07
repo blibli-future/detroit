@@ -61,6 +61,14 @@ class Sidebar extends React.Component {
                   <i className="fa fa-user"></i>Review Overview
                 </Sidebar_Link_WithRouter>
                 <Sidebar_Link_WithRouter
+                  to="/view/review/history">
+                  <i className="fa fa-user"></i>Review History
+                </Sidebar_Link_WithRouter>
+                <Sidebar_Link_WithRouter
+                  to="/view/review/edit">
+                  <i className="fa fa-user"></i>Review Edit
+                </Sidebar_Link_WithRouter>
+                <Sidebar_Link_WithRouter
                   to="/view/statistic-all">
                   <i className="fa fa-user"></i>Statistic All
                 </Sidebar_Link_WithRouter>
