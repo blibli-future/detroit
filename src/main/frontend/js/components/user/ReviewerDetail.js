@@ -25,30 +25,34 @@ class ReviewerDetail extends BaseDetroitComponent {
         reviewerRole: [''],
       },
       editMode: false,
+      createMode: false,
       roleList: [],
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.switchEditMode = this.switchEditMode.bind(this);
     this.saveEditData = this.saveEditData.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
+    this.createReviewer = this.createReviewer.bind(this);
   }
 
   componentDidMount(){
-    let component = this;
     this.getRoleList();
-    this.getUserData(this.props.match.params.reviewerId)
-      .then(data => {
-        component.setState({user: data})
-      });
+
+    if (this.props.match.params.reviewerId === 'create') {
+      this.setState({editMode:true, createMode:true});
+    } else {
+      this.getUserData();
+    }
   }
 
-  getUserData(id) {
-    return this.auth.apiCall('/api/v1/users/' + id, {
+  getUserData() {
+    let component = this;
+    return this.auth.apiCall('/api/v1/users/' + this.props.match.params.reviewerId, {
       method: 'GET',
     }).then((response) => response.json())
       .then((json) => {
-        return json.content;
-      })
+        component.setState({user: json.content})
+      });
   }
 
   getRoleList() {
@@ -67,6 +71,7 @@ class ReviewerDetail extends BaseDetroitComponent {
 
   saveEditData(event) {
     event.preventDefault();
+    let component = this;
     return this.auth.apiCall('/api/v1/users/reviewer/' + this.state.user.id, {
       method: 'PATCH',
       body: JSON.stringify(this.state.user)
@@ -100,6 +105,24 @@ class ReviewerDetail extends BaseDetroitComponent {
           }
         });
     });
+  }
+
+  createReviewer(event) {
+    event.preventDefault();
+    let component = this;
+    return this.auth.apiCall('/api/v1/users/reviewer/', {
+      method: 'POST',
+      body: JSON.stringify(component.state.user)
+    }).then((response) => response.json())
+      .then((json) => {
+        if (json.success) {
+          swal("Success", "New user has been created", "success");
+          component.setState({editMode: false, createMode: false});
+          component.props.history.push('/view/reviewer-list');
+        } else {
+          swal('error', json.errorMessage, 'error');
+        }
+      });
   }
 
   handleInputChange(event) {
@@ -139,6 +162,8 @@ class ReviewerDetail extends BaseDetroitComponent {
                   onChange={ this.handleInputChange }
                   saveEditData={ this.saveEditData }
                   deleteUser={ this.deleteUser }
+                  createMode={this.state.createMode}
+                  createUser={this.createReviewer}
                   { ...this.props }>
 
 

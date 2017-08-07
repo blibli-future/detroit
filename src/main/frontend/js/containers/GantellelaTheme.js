@@ -35,10 +35,11 @@ export class InputSelect extends React.Component {
         <label htmlFor={this.props.name} className="control-label col-md-3 col-sm-3 col-xs-12">
           {this.props.label}
         </label>
-        <Select name="categories" className="col-md-6 col-sm-6 col-xs-12"
+        <Select name={this.props.name} className="col-md-6 col-sm-6 col-xs-12"
                 value={this.props.value}
                 options={this.props.options}
-                onChange={this.props.onChange} />
+                onChange={this.props.onChange}
+                disabled={this.props.disabled? this.props.disabled : false}/>
       </div>
     );
   }

@@ -1,6 +1,7 @@
 package com.blibli.future.detroit.controller.api;
 
 
+import com.blibli.future.detroit.model.AgentChannel;
 import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.dto.AgentDto;
 import com.blibli.future.detroit.model.dto.ReviewerDto;
@@ -25,6 +26,7 @@ public class UserController {
     public static final String GET_ONE_USER = BASE_PATH + "/{userId}";
     public static final String UPDATE_USER = BASE_PATH + "/{userId}";
     public static final String CHECK_AUTH = BASE_PATH + "/login";
+    public static final String CREATE_AGENT = BASE_PATH + "/agent";
     public static final String UPDATE_AGENT = BASE_PATH + "/agent/{agentId}";
     public static final String UPDATE_REVIEWER = BASE_PATH + "/reviewer/{reviewerId}";
     public static final String GET_PARAMETER_ROLE_LIST = BASE_PATH + "/role-list";
@@ -80,6 +82,12 @@ public class UserController {
     @PatchMapping(UPDATE_USER)
     public BaseRestResponse updateUser(@PathVariable Long userId, @RequestBody NewUserRequest request) {
         userService.updateUser(userId, request);
+        return new BaseRestResponse();
+    }
+
+    @PostMapping(CREATE_AGENT)
+    public BaseRestResponse createAgent(@RequestBody AgentDto request) {
+        userService.createAgent(request);
         return new BaseRestResponse();
     }
 

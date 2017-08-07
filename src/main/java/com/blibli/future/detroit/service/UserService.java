@@ -87,6 +87,17 @@ public class UserService {
         return true;
     }
 
+    public User createAgent(AgentDto request) {
+        User agent = modelMapper.modelMapper().map(request, User.class);
+        agent.setAgentChannel(
+            agentChannelRepository.findByName(request.getAgentChannel()));
+        agent.setAgentPosition(
+            agentPositionRepository.findByName(request.getAgentPosition()));
+        userRepository.saveAndFlush(agent);
+
+        return agent;
+    }
+
     public User updateAgent(Long agentId, AgentDto request) {
         User agent = userRepository.getOne(request.getId());
         modelMapper.modelMapper().map(request, agent);

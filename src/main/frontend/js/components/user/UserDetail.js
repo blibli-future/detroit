@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import BaseDetroitComponent from '../BaseDetroitComponent';
+import {InputSelect} from "../../containers/GantellelaTheme";
 
 class UserDetail extends BaseDetroitComponent {
 
@@ -37,12 +38,40 @@ class UserDetail extends BaseDetroitComponent {
       </div>
     );
 
+    this.buttonsInCreateMode = (
+      <div className="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+        <button className="btn btn-warning"
+                onClick={this.props.createUser}>
+          Create user
+        </button>
+      </div>
+    );
+
+    this.genderOptions = [
+      {label: 'Male', value: 'PRIA'},
+      {label: 'Female', value: 'WANITA'},
+      {label: '-', value: 'UNSPECIFIED'},
+    ];
+
     this.buttons = this.buttonsInViewMode
   }
 
+  handleGenderChange(data) {
+    let event = {
+      target: {
+        type: 'select',
+        name: 'gender',
+        value: data.value,
+      }
+    };
+    this.props.onChange(event);
+  }
+
   render() {
-    if (this.props.editMode) {
+    if (this.props.editMode && !this.props.createMode) {
       this.buttons = this.buttonsInEditMode
+    } else if (this.props.editMode && this.props.createMode) {
+      this.buttons = this.buttonsInCreateMode;
     } else {
       this.buttons = this.buttonsInViewMode
     }
@@ -139,19 +168,12 @@ class UserDetail extends BaseDetroitComponent {
                       </div>
                     </div>
 
-                    <div className="form-group">
-                      <label className="control-label col-md-3 col-sm-3 col-xs-12">Gender</label>
-                      <div className="col-md-6 col-sm-6 col-xs-12">
-                        <select name="gender"
-                                value={ this.props.user.gender }
-                                onChange={ this.props.onChange }
-                                readOnly={!this.props.editMode}>
-                          <option value="PRIA">Pria</option>
-                          <option value="WANITA">Wanita</option>
-                          <option value="UNSPECIFIED">-</option>
-                        </select>
-                      </div>
-                    </div>
+                    <InputSelect name="gender"
+                                 label="Gender"
+                                 value={this.props.user.gender}
+                                 options={this.genderOptions}
+                                 onChange={this.handleGenderChange.bind(this)}
+                                 disabled={!this.props.editMode} />
 
                     <div className="form-group">
                       <label className="control-label col-md-3 col-sm-3 col-xs-12">

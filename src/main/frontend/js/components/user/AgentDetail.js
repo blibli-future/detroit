@@ -26,15 +26,21 @@ class AgentDetail extends BaseDetroitComponent {
         agentPosition: '',
       },
       editMode: false,
+      createMode: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.switchEditMode = this.switchEditMode.bind(this);
     this.saveEditData = this.saveEditData.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
+    this.createAgent = this.createAgent.bind(this);
   }
 
   componentDidMount(){
-    this.getUserData();
+    if (this.props.match.params.userId === 'create') {
+      this.setState({editMode:true, createMode:true});
+    } else {
+      this.getUserData();
+    }
   }
 
   getUserData() {
@@ -85,6 +91,28 @@ class AgentDetail extends BaseDetroitComponent {
     });
   }
 
+  createAgent(event) {
+    event.preventDefault();
+    let component = this;
+    // Make sure id is not set
+    const user = this.state.user;
+    user.id = '';
+    this.setState({user});
+    return this.auth.apiCall('/api/v1/users/agent/', {
+      method: 'POST',
+      body: JSON.stringify(this.state.user)
+    }).then((response) => response.json())
+      .then((json) => {
+        if (json.success) {
+          swal("Success", "New agent has been created", "success");
+          component.setState({editMode: false, createMode: false});
+          this.props.history.push('/view/agent-list');
+        } else {
+          swal('error', json.errorMessage, 'error');
+        }
+      });
+  }
+
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -114,6 +142,8 @@ class AgentDetail extends BaseDetroitComponent {
                   onChange={ this.handleInputChange }
                   saveEditData={ this.saveEditData }
                   deleteUser={ this.deleteUser }
+                  createMode={this.state.createMode}
+                  createUser={this.createAgent}
                   { ...this.props }>
         <div className="form-group">
           <label htmlFor="agentPosition" className="control-label col-md-3 col-sm-3 col-xs-12">
