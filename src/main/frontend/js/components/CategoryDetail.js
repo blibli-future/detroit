@@ -1,7 +1,8 @@
 import React from 'react';
 
 import BaseDetroitComponent from './BaseDetroitComponent';
-import { InputText } from '../containers/GantellelaTheme';
+import {InputText, InputTextArea} from '../containers/GantellelaTheme';
+import {Col, ControlLabel, FormGroup} from "react-bootstrap";
 
 export default class CategoryDetail extends BaseDetroitComponent {
 
@@ -29,10 +30,20 @@ export default class CategoryDetail extends BaseDetroitComponent {
                    onChange={this.handleInputChange}
                    name="weight"
                    label="Weight" />
-        <InputText data={this.props.category.description}
-                   onChange={this.handleInputChange}
-                   name="description"
-                   label="Description" />
+
+        <FormGroup controlId="newCategory-description">
+          <Col componentClass={ControlLabel} sm={3}>
+            Description
+          </Col>
+          <Col sm={6}>
+            <InputTextArea
+              content={this.props.category.description}
+              onChange={this.handleInputChange}
+              name="description"
+              height={ 350 }
+            />
+          </Col>
+        </FormGroup>
 
         <div className="form-group">
           <div className="col-md-offset-3 col-md-6 col-sm-6 col-xs-12">

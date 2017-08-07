@@ -3,7 +3,7 @@ import { Modal, Form, FormControl, FormGroup, Button, Col, ControlLabel, HelpBlo
 import swal from 'sweetalert';
 
 import BaseDetroitComponent from './BaseDetroitComponent';
-import { InputText, InputSelect } from '../containers/GantellelaTheme';
+import {InputText, InputSelect, InputTextArea} from '../containers/GantellelaTheme';
 import CategoryDetail from './CategoryDetail';
 
 class ParameterDetail extends BaseDetroitComponent {
@@ -244,10 +244,19 @@ class ParameterDetail extends BaseDetroitComponent {
                     <InputText data={this.state.parameter.weight}
                                name="weight"
                                label="Weight"/>
-                    <InputText data={this.state.parameter.description}
-                               onChange={this.handleInputChange}
-                               name="description"
-                               label="Description" />
+                    <FormGroup controlId="newCategory-description">
+                      <Col componentClass={ControlLabel} sm={3}>
+                        Description
+                      </Col>
+                      <Col sm={6}>
+                        <InputTextArea
+                          content={this.state.parameter.description}
+                          onChange={this.handleInputChange}
+                          name="description"
+                          height={ 350 }
+                        />
+                      </Col>
+                    </FormGroup>
                     <InputSelect name="agentChannelId"
                                  label="Position / Channel"
                                  value={this.state.parameter.agentChannelId}
@@ -329,7 +338,8 @@ class AddNewCategoryModal extends React.Component {
               <Col sm={10}>
                 <FormControl type="text"
                              placeholder="Category name"
-                             value={this.props.newCategory.weight}/>
+                             value={this.props.newCategory.weight}
+                             disabled={true}/>
                 <FormControl.Feedback />
                 <HelpBlock>Please change weight after creating category.</HelpBlock>
               </Col>
@@ -340,12 +350,12 @@ class AddNewCategoryModal extends React.Component {
                 Description
               </Col>
               <Col sm={10}>
-                <FormControl type="text"
-                             placeholder="Category description"
-                             value={this.props.newCategory.description}
-                             onChange={this.props.onChange}
+                <InputTextArea
+                  content={this.props.newCategory.description}
+                  onChange={this.props.onChange}
+                  name="description"
+                  height={ 200 }
                 />
-                <FormControl.Feedback />
               </Col>
             </FormGroup>
 
