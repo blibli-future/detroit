@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import BaseDetroitComponent from './BaseDetroitComponent';
+import {ButtonGroup} from "react-bootstrap";
 
 class AgentList extends BaseDetroitComponent {
 
@@ -58,10 +59,16 @@ class AgentList extends BaseDetroitComponent {
 
   actionFormatter(cell, row) {
     return (
-      <Link to={'/view/agent/'+cell}
-            className="btn btn-info btn-xs">
-        Detail
-      </Link>
+      <ButtonGroup>
+        <Link to={'/view/agent/'+cell}
+              className="btn btn-info btn-xs">
+          Detail
+        </Link>
+        <Link to={'/view/statistic-individual/'+cell}
+              className="btn btn-success btn-xs">
+          Statistic
+        </Link>
+      </ButtonGroup>
     );
   }
 
