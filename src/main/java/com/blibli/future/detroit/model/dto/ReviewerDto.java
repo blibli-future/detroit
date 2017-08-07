@@ -10,11 +10,14 @@ public class ReviewerDto extends UserDto {
 
     List<String> reviewerRole;
 
+    Boolean isSuperAdmin;
+
     public ReviewerDto() {}
 
     public ReviewerDto(User user) {
         super(user);
 
+        this.isSuperAdmin = user.isSuperAdmin();
         this.reviewerRole = new ArrayList<>();
         for(UserRole role: user.getUserRole()) {
             if (role.getRole().startsWith("PARAM ")) {
@@ -29,5 +32,13 @@ public class ReviewerDto extends UserDto {
 
     public void setReviewerRole(List<String> reviewerRole) {
         this.reviewerRole = reviewerRole;
+    }
+
+    public Boolean getSuperAdmin() {
+        return isSuperAdmin;
+    }
+
+    public void setSuperAdmin(Boolean superAdmin) {
+        isSuperAdmin = superAdmin;
     }
 }

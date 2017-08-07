@@ -120,6 +120,18 @@ public class UserService {
         User reviewer = userRepository.getOne(request.getId());
         modelMapper.modelMapper().map(request, reviewer);
 
+        // Update super admin status
+        if (request.getSuperAdmin() != reviewer.isSuperAdmin()) {
+            userRoleRepository.delete(userRoleRepository.findByEmailOnlyType(reviewer.getEmail()));
+            if(request.getSuperAdmin()) {
+                reviewer.setUserType(UserType.SUPER_ADMIN);
+                userRoleRepository.save(new UserRole(reviewer.getEmail(), UserType.SUPER_ADMIN.toString()));
+            } else {
+                reviewer.setUserType(UserType.REVIEWER);
+                userRoleRepository.save(new UserRole(reviewer.getEmail(), UserType.REVIEWER.toString()));
+            }
+        }
+
         // Update reviewer role
         List<UserRole> oldRole = userRoleRepository.findReviewerRoleByEmail(reviewer.getEmail());
         LOG.info("Deleting reviewer %s roles: %s", reviewer.getEmail(), oldRole);

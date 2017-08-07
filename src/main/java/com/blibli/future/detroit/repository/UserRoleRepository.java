@@ -13,6 +13,10 @@ import java.util.List;
 public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
     List<UserRole> findByEmail(String email);
 
+    @Query("SELECT ur FROM UserRole ur WHERE ur.email = :email " +
+           "AND (ur.role LIKE 'REVIEWER' OR ur.role LIKE 'SUPER_ADMIN' OR ur.role LIKE 'AGENT')")
+    UserRole findByEmailOnlyType(@Param("email") String email);
+
     @Query("SELECT ur FROM UserRole ur WHERE ur.email = :email AND ur.role LIKE 'PARAM %'")
     List<UserRole> findReviewerRoleByEmail(@Param("email") String email);
 }

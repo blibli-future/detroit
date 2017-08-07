@@ -80,3 +80,21 @@ export class InputTextArea extends React.Component {
     )
   }
 }
+
+export class InputCheckbox extends React.Component {
+  render() {
+    return (
+      <div className="form-group">
+        <label htmlFor={this.props.name} className="control-label col-md-3 col-sm-3 col-xs-12">
+          {this.props.label}
+        </label>
+        <div className="col-md-6 col-sm-6 col-xs-12">
+          <input id={this.props.name}
+                 type="checkbox" name={this.props.name}
+                 onChange={ this.props.onChange }
+                 checked={ this.props.value }/>
+        </div>
+      </div>
+    );
+  }
+}

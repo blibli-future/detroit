@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 
 import BaseDetroitComponent from '../BaseDetroitComponent';
 import UserDetail from './UserDetail';
+import {InputCheckbox} from "../../containers/GantellelaTheme";
 
 class ReviewerDetail extends BaseDetroitComponent {
 
@@ -23,6 +24,7 @@ class ReviewerDetail extends BaseDetroitComponent {
         userType: '',
         teamLeader: '',
         reviewerRole: [''],
+        superAdmin: false,
       },
       editMode: false,
       createMode: false,
@@ -180,6 +182,13 @@ class ReviewerDetail extends BaseDetroitComponent {
                     disabled={!this.state.editMode} />
           </div>
         </div>
+
+        <InputCheckbox name="superAdmin"
+                       label="Super Admin status"
+                       value={this.state.user.superAdmin}
+                       onChange={this.handleInputChange}
+                       disabled={!this.props.editMode} />
+
       </UserDetail>
     )
   }
