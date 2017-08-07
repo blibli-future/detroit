@@ -51,6 +51,12 @@ public class UserService {
         if (userType == null) {
             return getAllUser();
         }
+        // Super admin is considered a reviewer too.
+        if (userType == UserType.REVIEWER) {
+            List<User> users = userRepository.findByUserType(UserType.REVIEWER);
+            users.addAll(userRepository.findByUserType(UserType.SUPER_ADMIN));
+            return users;
+        }
         return userRepository.findByUserType(userType);
     }
 

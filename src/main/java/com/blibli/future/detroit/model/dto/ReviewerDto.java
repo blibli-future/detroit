@@ -17,7 +17,9 @@ public class ReviewerDto extends UserDto {
 
         this.reviewerRole = new ArrayList<>();
         for(UserRole role: user.getUserRole()) {
-            this.reviewerRole.add(role.getRole());
+            if (role.getRole().startsWith("PARAM ")) {
+                this.reviewerRole.add(role.getRole());
+            }
         }
     }
 

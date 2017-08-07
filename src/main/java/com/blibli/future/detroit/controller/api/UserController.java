@@ -47,6 +47,8 @@ public class UserController {
         List<UserDto> response;
         if (type != null && type == UserType.AGENT) {
             response = allUser.stream().map(AgentDto::new).collect(Collectors.toList());
+        } else if (type != null && type == UserType.REVIEWER) {
+            response = allUser.stream().map(ReviewerDto::new).collect(Collectors.toList());
         } else {
             response = allUser.stream().map(UserDto::new).collect(Collectors.toList());
         }

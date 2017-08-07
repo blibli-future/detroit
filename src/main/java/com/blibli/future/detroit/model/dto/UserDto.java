@@ -99,11 +99,11 @@ public class UserDto implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public UserType getUserRole() {
+    public UserType getUserType() {
         return userType;
     }
 
-    public void setUserRole(UserType userRole) {
-        this.userType = userRole;
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 }
