@@ -34,11 +34,6 @@ class Sidebar extends React.Component {
               <h3>General</h3>
               <ul className="nav side-menu">
                 <Sidebar_Link_WithRouter
-                  to="/view/review-overview"
-                  currentLink="testign">
-                  <i className="fa fa-clone"></i>Review Overview
-                </Sidebar_Link_WithRouter>
-                <Sidebar_Link_WithRouter
                     to="/view/parameter-management">
                   <i className="fa fa-list-ol" /> Parameter Management
                 </Sidebar_Link_WithRouter>
@@ -53,28 +48,16 @@ class Sidebar extends React.Component {
                   <i className="fa fa-user"></i>Reviewer Management
                 </Sidebar_Link_WithRouter>
                 <Sidebar_Link_WithRouter
-                  to="/view/review/form/">
-                  <i className="fa fa-user"></i>Review Form
-                </Sidebar_Link_WithRouter>
-                <Sidebar_Link_WithRouter
                   to="/view/review/overview">
-                  <i className="fa fa-user"></i>Review Overview
+                  <i className="fa fa-pencil-square-o"></i>Review Overview
                 </Sidebar_Link_WithRouter>
                 <Sidebar_Link_WithRouter
                   to="/view/review/history">
-                  <i className="fa fa-user"></i>Review History
-                </Sidebar_Link_WithRouter>
-                <Sidebar_Link_WithRouter
-                  to="/view/review/edit">
-                  <i className="fa fa-user"></i>Review Edit
+                  <i className="fa fa-clock-o"></i>Review History
                 </Sidebar_Link_WithRouter>
                 <Sidebar_Link_WithRouter
                   to="/view/statistic-all">
-                  <i className="fa fa-user"></i>Statistic All
-                </Sidebar_Link_WithRouter>
-                <Sidebar_Link_WithRouter
-                  to="/view/statistic-individual">
-                  <i className="fa fa-user"></i>Statistic Individual
+                  <i className="fa fa-line-chart"></i>Statistic All
                 </Sidebar_Link_WithRouter>
                 <li><a><i className="fa fa-cog"></i> Settings</a>
                 </li>
