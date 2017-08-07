@@ -1,4 +1,5 @@
 import React from 'react';
+import renderHTML from 'react-render-html';
 
 import BaseDetroitComponent from './BaseDetroitComponent';
 import { InputText, InputTextArea } from '../containers/GantellelaTheme';
@@ -24,9 +25,11 @@ export default class CategoryForm extends BaseDetroitComponent {
         </div>
         <div className="col-md-offset-3 col-md-6 col-sm-6 col-xs-12">
           <h2>Description : </h2>
-          <h4>
-            { this.props.category.description }
-          </h4>
+          <div className="panel panel-default">
+            <div class="panel-body">
+              { renderHTML(this.props.category.description) }
+            </div>
+          </div>
         </div>
         <div className="col-md-12 col-sm-12 col-xs-12">
           <InputText data={this.props.category.score}
