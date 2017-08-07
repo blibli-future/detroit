@@ -1,5 +1,6 @@
 const _singleton = Symbol();
 const TOKEN_KEY = 'token';
+const EMAIL = 'email';
 
 class AuthenticationService {
   constructor(singletonToken) {
@@ -20,6 +21,7 @@ class AuthenticationService {
     return this._checkValidCredential(token).then((valid) => {
       if (valid) {
         localStorage.setItem(TOKEN_KEY, token);
+        localStorage.setItem(EMAIL, email);
       }
       return valid;
     });
@@ -44,6 +46,20 @@ class AuthenticationService {
       "Content-Type": "application/json",
     };
     return fetch(url, object);
+  }
+
+  async isLoggedIn() {
+    let token = localStorage.getItem(TOKEN_KEY);
+    if (token === undefined) {
+      return false;
+    }
+    return this._checkValidCredential(token).then((valid) => {
+      return valid;
+    });
+  }
+
+  getEmail() {
+    return localStorage.getItem(EMAIL);
   }
 
   _checkValidCredential(token) {

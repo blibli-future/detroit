@@ -2,8 +2,23 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import AuthenticationService from "../services/AuthenticationService";
 
 class Sidebar extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      email: 'NOT LOGGED IN',
+    };
+    this.auth = AuthenticationService.instance;
+  }
+
+  componentDidMount() {
+    if(this.auth.isLoggedIn()) {
+      this.setState({email: this.auth.getEmail()});
+    }
+  }
 
   render() {
     return (
@@ -16,22 +31,19 @@ class Sidebar extends React.Component {
 
           <div className="clearfix"></div>
 
-
           <div className="profile">
-            <div className="profile_pic">
-              <img src="/images/img.jpg" alt="..." className="img-circle profile_img"/>
-            </div>
-            <div className="profile_info">
-              <span>Welcome Admin,</span>
-              <h2>John Doe</h2>
+            <div className="profile_info" style={{width:'100%'}}>
+              <span>Logged in as,</span>
+              <h2>{this.state.email}</h2>
             </div>
           </div>
 
           <br />
 
+          <div className="clearfix"></div>
+
           <div id="sidebar-menu" className="main_menu_side hidden-print main_menu">
             <div className="menu_section">
-              <h3>General</h3>
               <ul className="nav side-menu">
                 <Sidebar_Link_WithRouter
                     to="/view/parameter-management">
