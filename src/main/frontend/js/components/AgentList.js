@@ -87,27 +87,27 @@ class AgentList extends BaseDetroitComponent {
                     </TableHeaderColumn>
                     <TableHeaderColumn dataField="fullname"
                                        dataSort={true}
-                                       filter={{ type: 'TextFilter', delay: 1000 }}>
+                                       filter={{ type: 'TextFilter' }}>
                       Fullname
                     </TableHeaderColumn>
                     <TableHeaderColumn dataField="nickname"
                                        dataSort={true}
-                                       filter={{ type: 'TextFilter', delay: 1000 }}>
+                                       filter={{ type: 'TextFilter' }}>
                       Nickname
                     </TableHeaderColumn>
                     <TableHeaderColumn dataField="email"
                                        dataSort={true}
-                                       filter={{ type: 'TextFilter', delay: 1000 }}>
+                                       filter={{ type: 'TextFilter' }}>
                       Email
                     </TableHeaderColumn>
                     <TableHeaderColumn dataField="agentPosition"
                                        dataSort={true}
-                                       filter={{ type: 'TextFilter', delay: 1000 }}>
+                                       filter={{ type: 'TextFilter' }}>
                       Position
                     </TableHeaderColumn>
                     <TableHeaderColumn dataField="agentChannel"
                                        dataSort={true}
-                                       filter={{ type: 'TextFilter', delay: 1000 }}>
+                                       filter={{ type: 'TextFilter' }}>
                       Channel
                     </TableHeaderColumn>
                     <TableHeaderColumn dataField="id" dataFormat={this.actionFormatter}>
