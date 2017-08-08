@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import AuthenticationService from "../services/AuthenticationService";
+import {Button} from "react-bootstrap";
 
 class Sidebar extends React.Component {
 
@@ -10,17 +11,40 @@ class Sidebar extends React.Component {
     super(props);
     this.state = {
       email: 'NOT LOGGED IN',
+      loggedIn: false,
     };
     this.auth = AuthenticationService.instance;
   }
 
   componentDidMount() {
-    if(this.auth.isLoggedIn()) {
-      this.setState({email: this.auth.getEmail()});
-    }
+    let component = this;
+    this.auth.isLoggedIn().then(isLoggedIn => {
+      if (isLoggedIn) {
+        component.setState({
+          email: component.auth.getEmail(),
+          loggedIn: true,
+        });
+      }
+    });
   }
 
   render() {
+    let profile;
+    if (this.state.loggedIn) {
+      profile =
+        <div className="profile_info" style={{width:'100%'}}>
+          <span>Logged in as,</span>
+          <h2>{this.state.email}</h2>
+          <hr/>
+          <Button bsStyle="default" bsSize="xs" onClick={this.auth.logout}>Logout</Button>
+        </div>
+    } else {
+      profile =
+      <div className="profile_info" style={{width:'100%'}}>
+        <span>You are not logged in</span>
+      </div>
+    }
+
     return (
       <div className="col-md-3 left_col">
         <div className="left_col scroll-view">
@@ -32,10 +56,7 @@ class Sidebar extends React.Component {
           <div className="clearfix"></div>
 
           <div className="profile">
-            <div className="profile_info" style={{width:'100%'}}>
-              <span>Logged in as,</span>
-              <h2>{this.state.email}</h2>
-            </div>
+            {profile}
           </div>
 
           <br />

@@ -29,7 +29,7 @@ class AuthenticationService {
 
   redirectIfNotAuthenticated() {
     let token = localStorage.getItem(TOKEN_KEY);
-    if (token === undefined) {
+    if (token === undefined || token === null || token === '') {
       window.location.assign("/view/login?error=NO_AUTH");
     }
     this._checkValidCredential(token).then((valid) => {
@@ -57,16 +57,21 @@ class AuthenticationService {
 
   async isLoggedIn() {
     let token = localStorage.getItem(TOKEN_KEY);
-    if (token === undefined) {
+    if (token === undefined || token === null || token === '') {
       return false;
     }
-    return this._checkValidCredential(token).then((valid) => {
+    return await this._checkValidCredential(token).then((valid) => {
       return valid;
     });
   }
 
   getEmail() {
     return localStorage.getItem(EMAIL);
+  }
+
+  logout() {
+    localStorage.clear();
+    window.location.assign("/view/login?error=LOGOUT");
   }
 
   _checkValidCredential(token) {
