@@ -56,7 +56,6 @@ module.exports = {
                 options: {
                     outputPath: "./src/main/resources/static/fonts/",
                     publicPath: function(url) {
-                        console.log("/fonts/" + url.split('/').pop())
                         return "/fonts/" + url.split('/').pop();
                     }
                 }
