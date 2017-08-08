@@ -81,7 +81,7 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .hasAuthority(SUPER_ADMIN)
             .antMatchers(HttpMethod.PATCH,
                 "/api/v1/parameters/**", "/api/v1/parameters/**", "/api/v1/agent-positions/**",
-                "/api/v1/agent-channels/**", "/api/v1/users/reviewers/**", "/api/v1/users/*")
+                "/api/v1/agent-channels/**", "/api/v1/users/reviewer/**", "/api/v1/users/*")
             .hasAuthority(SUPER_ADMIN)
             .antMatchers(HttpMethod.PUT, "/api/v1/parameters/**")
             .hasAuthority(SUPER_ADMIN)
