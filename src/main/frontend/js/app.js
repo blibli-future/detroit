@@ -34,6 +34,7 @@ import ReviewHistory from './components/ReviewHistory';
 import ReviewEdit from './components/ReviewEdit';
 import AgentPositionManagement from "./components/AgentPositionManagement";
 import AgentReport from './components/AgentReport';
+import SettingPage from './components/SettingPage';
 
 class App extends React.Component {
 
@@ -64,6 +65,7 @@ class App extends React.Component {
               <Route exact path="/view/agent-position" component={AgentPositionManagement} />
 
               <Route exact path="/view/login" component={LoginPage} />
+              <Route exact path="/view/setting" component={SettingPage} />
 
               <Footer />
             </div>

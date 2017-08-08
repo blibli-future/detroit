@@ -9,13 +9,14 @@ import com.blibli.future.detroit.model.response.StatisticDiagramIndividualRespon
 import com.blibli.future.detroit.model.response.StatisticDiagramResponseNew;
 import com.blibli.future.detroit.model.response.StatisticInfoResponse;
 import com.blibli.future.detroit.repository.*;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 @Service
 public class StatisticService {
@@ -371,5 +372,38 @@ public class StatisticService {
             }
         }
         return agentReviewNoteResponses;
+    }
+
+    public byte[] exportData() throws IOException {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet();
+
+        Row header = sheet.createRow(0);
+        header.createCell(0).setCellValue("Type");
+        header.createCell(1).setCellValue("Parameter/Category Name");
+        header.createCell(2).setCellValue("Agent Email");
+        header.createCell(3).setCellValue("Score");
+        header.createCell(4).setCellValue("CutOff Period (Begin)");
+        header.createCell(5).setCellValue("CutOff Period (End)");
+
+        int rowNum = 1;
+        for(ScoreSummary scoreSummary: scoreSummaryRepository.findAll()){
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(scoreSummary.getScoreType().toString());
+            row.createCell(1).setCellValue(scoreSummary.getName());
+            if(scoreSummary.getAgent() != null) {
+                row.createCell(2).setCellValue(scoreSummary.getAgent().getEmail());
+            } else {
+                row.createCell(2).setCellValue("");
+            }
+            row.createCell(3).setCellValue(scoreSummary.getScore());
+            row.createCell(4).setCellValue(scoreSummary.getCutOffHistory().getBeginInISOFormat());
+            row.createCell(5).setCellValue(scoreSummary.getCutOffHistory().getEndInISOFormat());
+        }
+
+        ByteArrayOutputStream  os = new ByteArrayOutputStream ();
+        workbook.write(os);
+        os.close();
+        return os.toByteArray();
     }
 }

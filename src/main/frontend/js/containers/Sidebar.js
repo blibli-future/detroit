@@ -96,8 +96,10 @@ class Sidebar extends React.Component {
                   to="/view/statistic-all">
                   <i className="fa fa-line-chart"></i>Statistic All
                 </Sidebar_Link_WithRouter>
-                <li><a><i className="fa fa-cog"></i> Settings</a>
-                </li>
+                <Sidebar_Link_WithRouter
+                  to="/view/setting">
+                  <i className="fa fa-cog"></i>Settings
+                </Sidebar_Link_WithRouter>
               </ul>
             </div>
 
