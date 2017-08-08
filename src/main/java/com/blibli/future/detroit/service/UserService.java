@@ -1,5 +1,7 @@
 package com.blibli.future.detroit.service;
 
+import com.blibli.future.detroit.model.AgentChannel;
+import com.blibli.future.detroit.model.AgentPosition;
 import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.UserRole;
 import com.blibli.future.detroit.model.dto.AgentDto;
@@ -94,10 +96,15 @@ public class UserService {
 
     public User createAgent(AgentDto request) {
         User agent = modelMapper.modelMapper().map(request, User.class);
-        agent.setAgentChannel(
-            agentChannelRepository.findByName(request.getAgentChannel()));
+        agent.setUserType(UserType.AGENT);
         agent.setAgentPosition(
             agentPositionRepository.findByName(request.getAgentPosition()));
+        for (AgentChannel channel: agent.getAgentPosition().getAgentChannels()) {
+            if (channel.getName().equals(request.getAgentChannel())) {
+                agent.setAgentChannel(channel);
+                break;
+            }
+        }
         userRepository.saveAndFlush(agent);
 
         return agent;

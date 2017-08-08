@@ -20,7 +20,7 @@ class AgentDetail extends BaseDetroitComponent {
         gender: '',
         location: '',
         phoneNumber: '',
-        userType: '',
+        userType: 'AGENT',
         teamLeader: '',
         agentChannel: '',
         agentPosition: '',
