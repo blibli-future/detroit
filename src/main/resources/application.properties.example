@@ -1,10 +1,1 @@
 spring.profiles.active = development
-
-# postgresql setting
-spring.datasource.url= jdbc:postgresql://localhost:5432/detroit
-spring.datasource.username=postgres
-spring.datasource.password=postgres@123
-spring.jpa.hibernate.ddl-auto=create-drop
-
-# joda time integration with postgresql
-spring.jpa.properties.jadira.usertype.autoRegisterUserTypes = true

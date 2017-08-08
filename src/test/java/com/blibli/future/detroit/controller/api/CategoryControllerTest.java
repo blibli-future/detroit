@@ -1,16 +1,21 @@
 package com.blibli.future.detroit.controller.api;
 
+import com.blibli.future.detroit.configuration.Converter;
 import com.blibli.future.detroit.model.Category;
 import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
 import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
-import com.blibli.future.detroit.service.CategoryService;
+import com.blibli.future.detroit.repository.CategoryRepository;
+import com.blibli.future.detroit.repository.ParameterRepository;
+import com.blibli.future.detroit.service.*;
 import com.blibli.future.detroit.util.Constant;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -35,6 +40,15 @@ public class CategoryControllerTest {
 
     @MockBean
     private CategoryService categoryService;
+
+    @Mock
+    private CategoryRepository categoryRepository;
+    @Mock
+    private ParameterRepository parameterRepository;
+    @Mock
+    private ParameterService parameterService;
+    @Autowired
+    Converter modelMapper;
 
     @LocalServerPort
     private int serverPort;
@@ -95,7 +109,7 @@ public class CategoryControllerTest {
         } catch (Exception e) {
             assert false;
         }
-        when(categoryService.createCategory(PARAMETER_ID, eq(request))).thenReturn(Category);
+        when(categoryService.createCategory(eq(PARAMETER_ID), eq(request))).thenReturn(Category);
 
         given()
             .contentType("application/json")
@@ -107,7 +121,7 @@ public class CategoryControllerTest {
             .body(containsString("true"))
             .statusCode(200);
 
-        verify(categoryService).createCategory(PARAMETER_ID, eq(request));
+        verify(categoryService).createCategory(eq(PARAMETER_ID), eq(request));
     }
 
     @Test

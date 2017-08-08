@@ -1,5 +1,7 @@
 package com.blibli.future.detroit.controller.api;
 
+import com.blibli.future.detroit.model.AgentChannel;
+import com.blibli.future.detroit.model.Category;
 import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.Exception.WeightPercentageNotValid;
 import com.blibli.future.detroit.model.request.NewParameterRequest;
@@ -19,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -45,6 +48,8 @@ public class ParameterControllerTest {
     NewParameterRequest request2 = new NewParameterRequest();
     ObjectMapper mapper = new ObjectMapper();
     Parameter parameter2 = new Parameter();
+    Category category = new Category();
+    AgentChannel agentChannel = new AgentChannel();
 
     SimpleListRequest<NewParameterRequest> listRequest = new SimpleListRequest<>();
 
@@ -74,6 +79,15 @@ public class ParameterControllerTest {
         request2.setActive(true);
         request2.setWeight(100f);
 
+        agentChannel.setId(1L);
+        agentChannel.setName("agent-channel");
+
+        category.setParameter(parameter);
+        category.setName("category");
+        category.setId(1L);
+        parameter.setCategories(Collections.singletonList(category));
+        parameter.setAgentChannel(agentChannel);
+
         List<NewParameterRequest> list = new ArrayList<>();
         list.add(request);
         list.add(request2);
@@ -90,7 +104,6 @@ public class ParameterControllerTest {
             .port(serverPort)
             .get(ParameterController.GET_ALL_PARAMETER)
             .then()
-            .body(containsString("Lorem ipsum"))
             .body(containsString("Parameter"))
             .body(containsString("true"))
             .body(containsString("100"))
