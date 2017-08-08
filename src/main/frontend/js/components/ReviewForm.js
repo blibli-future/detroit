@@ -111,7 +111,7 @@ class ReviewForm extends BaseDetroitComponent {
           });
           component.props.history.push('/view/review/overview')
         } else {
-          swal("Error", json.errorMessage, "error");
+          swal("Error", json.errorMessage || json.message, "error");
         }
       });
   }

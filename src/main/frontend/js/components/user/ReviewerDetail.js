@@ -84,7 +84,7 @@ class ReviewerDetail extends BaseDetroitComponent {
           component.setState({editMode: false});
           component.getUserData();
         } else {
-          swal('error', json.errorMessage, 'error');
+          swal('error', json.errorMessage || json.message, 'error');
         }
       });
   }
@@ -103,7 +103,7 @@ class ReviewerDetail extends BaseDetroitComponent {
           if (json.success) {
             this.props.history.push('/view/reviewer-list');
           } else {
-            swal('Error', json.errorMessage, 'error');
+            swal('Error', json.errorMessage || json.message, 'error');
           }
         });
     });
@@ -122,7 +122,7 @@ class ReviewerDetail extends BaseDetroitComponent {
           component.setState({editMode: false, createMode: false});
           component.props.history.push('/view/reviewer-list');
         } else {
-          swal('error', json.errorMessage, 'error');
+          swal('error', json.errorMessage || json.message, 'error');
         }
       });
   }

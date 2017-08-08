@@ -127,7 +127,7 @@ class ParameterDetail extends BaseDetroitComponent {
           });
           swal("Success", "Parameter data has been saved.", "success");
         } else {
-          return swal("Error", json.errorMessage, "error");
+          return swal("Error", json.errorMessage || json.message, "error");
         }
       });
   }
@@ -158,7 +158,7 @@ class ParameterDetail extends BaseDetroitComponent {
           component.getParameterData();
           swal('Success', 'Category has been deleted.', 'success');
         } else {
-          return swal('Error', json.errorMessage, 'error');
+          return swal('Error', json.errorMessage || json.message, 'error');
         }
       });
   }
@@ -191,7 +191,7 @@ class ParameterDetail extends BaseDetroitComponent {
             component.setState({showAddModal:false});
           });
         } else {
-          swal("Error", json.errorMessage, "error");
+          swal("Error", json.errorMessage || json.message, "error");
         }
       });
   }

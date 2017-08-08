@@ -58,7 +58,7 @@ export default class ReviewHistory extends BaseDetroitComponent {
           component.getReviewHistory();
           swal('Success', 'Review has been deleted.', 'success');
         } else {
-          return swal('Error', json.errorMessage, 'error');
+          return swal('Error', json.errorMessage || json.message, 'error');
         }
       });
   }

@@ -100,7 +100,7 @@ class ReviewEdit extends BaseDetroitComponent {
           });
           component.props.history.push('/view/review/history');
         } else {
-          swal("Error", json.errorMessage, "error");
+          swal("Error", json.errorMessage || json.message, "error");
         }
       });
   }

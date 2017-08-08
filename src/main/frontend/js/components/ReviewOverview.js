@@ -186,7 +186,7 @@ class TabContentBulkUpload extends BaseDetroitComponent {
           });
           this.props.getReview();
         } else {
-          swal("Error", json.errorMessage, "error");
+          swal("Error", json.errorMessage || json.message, "error");
         }
       });
   }

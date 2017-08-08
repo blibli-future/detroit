@@ -66,7 +66,7 @@ class AgentDetail extends BaseDetroitComponent {
           component.setState({editMode: false});
           component.getUserData();
         } else {
-          swal('error', json.errorMessage, 'error');
+          swal('error', json.errorMessage || json.message, 'error');
         }
       });
   }
@@ -85,7 +85,7 @@ class AgentDetail extends BaseDetroitComponent {
         if (json.success) {
           this.props.history.push('/view/agent-list');
         } else {
-          swal('Error', json.errorMessage, 'error');
+          swal('Error', json.errorMessage || json.message, 'error');
         }
       });
     });
@@ -108,7 +108,7 @@ class AgentDetail extends BaseDetroitComponent {
           component.setState({editMode: false, createMode: false});
           this.props.history.push('/view/agent-list');
         } else {
-          swal('error', json.errorMessage, 'error');
+          swal('error', json.errorMessage || json.message, 'error');
         }
       });
   }

@@ -60,7 +60,7 @@ class ParameterManagement extends BaseDetroitComponent {
           component.getAgentData();
           swal("Success", "Parameter has been deleted.", "success");
         } else {
-          swal("Failed to save data", json.errorMessage, "error");
+          swal("Failed to save data", json.errorMessage || json.message, "error");
         }
       });
   }
@@ -77,7 +77,7 @@ class ParameterManagement extends BaseDetroitComponent {
         if (json.success) {
           swal("Success", "New weight saved.", "success");
         } else {
-          swal("Failed to save data", json.errorMessage, "error");
+          swal("Failed to save data", json.errorMessage || json.message, "error");
         }
       });
   }
