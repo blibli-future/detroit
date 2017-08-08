@@ -90,6 +90,11 @@ class ReviewerList extends BaseDetroitComponent {
             <div className="col-md-12 col-sm-12 col-xs-12">
               <div className="x_panel">
                 <div className="x_content">
+                  <Link to="/view/agent/create"
+                        className="btn btn-success">
+                    <i className="fa fa-plus"/>&nbsp;
+                    Create new User
+                  </Link>
                   <BootstrapTable data={this.state.reviewerList} striped pagination>
                     <TableHeaderColumn dataField="id" isKey dataFormat={this.columnNumberFormatter} width="100">
                       #
