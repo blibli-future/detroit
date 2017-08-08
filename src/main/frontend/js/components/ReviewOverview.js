@@ -1,4 +1,5 @@
 import React from 'react';
+import swal from 'sweetalert';
 
 import BaseDetroitComponent from './BaseDetroitComponent';
 import { Link } from 'react-router-dom'
@@ -13,6 +14,7 @@ class ReviewOverview extends BaseDetroitComponent {
       reviewOverviews: [
         {
           role: '',
+          bulkStatus: '',
           agents: [
             {
               idAgent: 0,
@@ -27,11 +29,10 @@ class ReviewOverview extends BaseDetroitComponent {
         }
       ]
     }
-    this.getReviewOverview();
   }
 
   componentDidMount() {
-
+    this.getReviewOverview();
   }
 
   getReviewOverview() {
@@ -61,11 +62,20 @@ class ReviewOverview extends BaseDetroitComponent {
             <Tab key={ counter }>{ item['role'] }</Tab>
         )
 
-        reviewData.push(
-          <TabPanel key={ counter }>
-            <TabContent key={ counter } title={ item['role'] } data={ item['agents'] } />
-          </TabPanel>
-        )
+        if(item['bulkStatus'] == true) {
+          reviewData.push(
+            <TabPanel key={ counter }>
+              <TabContentBulkUpload key={ counter } title={ item['role'] } data={ item['agents'] } getReview={ this.getReviewOverview.bind(this) }  />
+            </TabPanel>
+          )
+        } else {
+          reviewData.push(
+            <TabPanel key={ counter }>
+              <TabContent key={ counter } title={ item['role'] } data={ item['agents'] } />
+            </TabPanel>
+          )
+        }
+
       })
     }
 
@@ -117,7 +127,7 @@ class TabContent extends React.Component {
     super(props);
     this.state = {
       title: this.props.title,
-        data: this.props.data
+      data: this.props.data
     }
   }
 
@@ -127,9 +137,79 @@ class TabContent extends React.Component {
 
   render() {
     return (
+      <div className="x_panel">
+        <div className="x_title">
+          <h2> { this.props.title } Review Table</h2>
+          <div className="clearfix"></div>
+        </div>
+        <div className="x_content">
+          <BootstrapTable data={this.props.data}>
+            <TableHeaderColumn dataField='email' isKey>Email</TableHeaderColumn>
+            <TableHeaderColumn dataField='nickname'>Nickname</TableHeaderColumn>
+            <TableHeaderColumn dataField='position'>Position</TableHeaderColumn>
+            <TableHeaderColumn dataField='channel'>Channel</TableHeaderColumn>
+            <TableHeaderColumn dataField='reviewCount'>Review Count</TableHeaderColumn>
+            <TableHeaderColumn dataField='idAgent' dataFormat={this.rowFormatter}>Action</TableHeaderColumn>
+          </BootstrapTable>
+        </div>
+      </div>
+    )
+  }
+}
+
+class TabContentBulkUpload extends BaseDetroitComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: this.props.title,
+        data: this.props.data
+    }
+  }
+
+  sendFile() {
+    var fd = new FormData();
+    fd.append('file', this.refs.file.files[0]);
+
+    this.auth.apiCall("/api/v1/reviews/upload/"+ this.props.title, {
+      method: 'POST',
+      headers: {
+        'X' : "hublaa"
+      },
+      body: fd,
+    }).then(response => response.json())
+      .then(json => {
+        if (json.success) {
+          swal({
+            title: "Success",
+            text: "Your upload has been inserted.",
+            type: "success",
+          });
+          this.props.getReview();
+        } else {
+          swal("Error", json.errorMessage, "error");
+        }
+      });
+  }
+
+  rowFormatter(cell, row) {
+    return <a href={ "form/"+row.idParameter+"/"+cell } className="btn btn-success btn-xs">Review</a>;
+  }
+
+  clickUpload() {
+    this.refs.file.click();
+  }
+
+  render() {
+    return (
         <div className="x_panel">
           <div className="x_title">
             <h2> { this.props.title } Review Table</h2>
+            <ul className="nav navbar-right panel_toolbox">
+              {/*<a id="delete-btn" className="btn btn-danger"><label className="fa fa-trash"></label>  Delete All Data</a>*/}
+              <a id="upload-btn" className="btn btn-success" onClick={ this.clickUpload.bind(this) }><label className="fa fa-plus-circle"></label>  Upload Data</a>
+              <a id="send-btn" className="btn btn-info" onClick={ this.sendFile.bind(this) }><label className="fa fa-plus-circle"></label>  Send</a>
+              <input id="file" name="file" type="file" ref="file" accept=".xlsx" className="btn btn-success" style={ {display: "none"} }/>
+            </ul>
             <div className="clearfix"></div>
           </div>
           <div className="x_content">
@@ -138,8 +218,7 @@ class TabContent extends React.Component {
             <TableHeaderColumn dataField='nickname'>Nickname</TableHeaderColumn>
             <TableHeaderColumn dataField='position'>Position</TableHeaderColumn>
             <TableHeaderColumn dataField='channel'>Channel</TableHeaderColumn>
-            <TableHeaderColumn dataField='reviewCount'>Review Count</TableHeaderColumn>
-            <TableHeaderColumn dataField='idAgent' dataFormat={this.rowFormatter}>Action</TableHeaderColumn>
+              <TableHeaderColumn dataField='reviewCount'>Review Score</TableHeaderColumn>
             </BootstrapTable>
           </div>
         </div>

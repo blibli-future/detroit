@@ -16,4 +16,6 @@ public interface ParameterRepository extends JpaRepository<Parameter, Long> {
 
     @Query("SELECT p.name FROM Parameter p")
     List<String> getAllParameterNames();
+
+    List<Parameter> findByName(String parameterName);
 }

@@ -254,4 +254,122 @@ public class StatisticService {
         }
         return agentReviewNoteResponses;
     }
+
+    public StatisticDiagramIndividualResponse getAgentDiagram(User agent) {
+        List<LocalDate> dates = new ArrayList<>();
+        List<Float> totalScore = new ArrayList<>();
+
+        LocalDate now = new LocalDate();
+        List<CutOffHistory> cutOffHistories = new ArrayList<>();
+
+        for(CutOffHistory cutOffHistory : cutOffRepository.findAll()) {
+            if(cutOffHistory.getEndCutOff() != null) {
+                if(cutOffHistory.getEndCutOff().getYear() == now.getYear()) {
+                    cutOffHistories.add(cutOffHistory);
+                    dates.add(cutOffHistory.getEndCutOff());
+                }
+            }
+        }
+
+        for(CutOffHistory cutOffHistory : cutOffHistories) {
+            for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistoryAndAgent(cutOffHistory, agent)) {
+                if (scoreSummary.getScoreType() == ScoreType.USER_TOTAL) {
+                    totalScore.add(scoreSummary.getScore());
+                }
+            }
+        }
+
+        List<Float> parameterScore = new ArrayList<>();
+        List<Float> categoryScore = new ArrayList<>();
+
+        List<StatisticDto> parameterStatistics = new ArrayList<>();
+        List<StatisticDto> categoryStatistics = new ArrayList<>();
+
+        for(Parameter parameter : agent.getAgentChannel().getParameters()) {
+            parameterScore = new ArrayList<>();
+            categoryStatistics = new ArrayList<>();
+            for(Category category : parameter.getCategories()) {
+                parameterScore = new ArrayList<>();
+                for(CutOffHistory cutOffHistory : cutOffHistories) {
+                    for (ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistoryAndAgent(cutOffHistory,agent)) {
+                        if (parameter.getName().equalsIgnoreCase(scoreSummary.getName()) && parameter.getId().equals(scoreSummary.getFkId()) && scoreSummary.getAgent() != null) {
+                            parameterScore.add(scoreSummary.getScore());
+                        }
+                        if (category.getName().equalsIgnoreCase(scoreSummary.getName()) && category.getId().equals(scoreSummary.getFkId()) && scoreSummary.getAgent() != null) {
+                            categoryScore.add(scoreSummary.getScore());
+                        }
+                    }
+                }
+                categoryStatistics.add(new StatisticDto(category.getName(), categoryScore));
+                categoryScore = new ArrayList<>();
+            }
+            parameterStatistics.add(new StatisticDto(parameter.getName(), parameterScore, categoryStatistics));
+        }
+
+        return new StatisticDiagramIndividualResponse(dates, totalScore, parameterStatistics);
+    }
+
+    public StatisticInfoResponse getAgentInfo(User agent) {
+
+        CutOffHistory lastCutOff = cutOffRepository.findByEndCutOff(
+            cutOffRepository.findByEndCutOffIsNull().getBeginCutOff()
+        );
+        CutOffHistory beforeLastCutOff = cutOffRepository.findByEndCutOff(lastCutOff.getBeginCutOff());
+
+        Float totalScore = 0f;
+        Float totalScoreDiff = 0f;
+        Float channelDiff = 0f;
+        List<ChannelStatisticInfo> channelStatisticInfos = new ArrayList<>();
+
+        for(ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistoryAndAgent(lastCutOff, agent)) {
+            if(scoreSummary.getScoreType().equals(ScoreType.USER_TOTAL)) {
+                totalScore = scoreSummary.getScore();
+            }
+            if(scoreSummary.getScoreType().equals(ScoreType.USER_PARAMETER)) {
+                channelStatisticInfos.add(
+                    new ChannelStatisticInfo(scoreSummary.getName()
+                        , scoreSummary.getScore()));
+            }
+        }
+
+        for(ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistoryAndAgent(beforeLastCutOff, agent)) {
+            if(scoreSummary.getScoreType().equals(ScoreType.USER_TOTAL)) {
+                totalScoreDiff = totalScore - scoreSummary.getScore();
+            }
+            if(scoreSummary.getScoreType().equals(ScoreType.USER_PARAMETER)) {
+                for(ChannelStatisticInfo channelStatisticInfo : channelStatisticInfos) {
+                    Parameter parameter = parameterRepository.findOne(scoreSummary.getFkId());
+                    String parameterName = parameter.getName();
+                    if(channelStatisticInfo.getName().equalsIgnoreCase(parameterName)) {
+                        channelDiff = channelStatisticInfo.getScore() - scoreSummary.getScore();
+                        channelStatisticInfo.setDiffScore(channelDiff);
+                    }
+                }
+            }
+        }
+
+        return new StatisticInfoResponse(totalScore, totalScoreDiff, channelStatisticInfos);
+    }
+
+    public List<AgentReviewNoteResponse> getAgentNote(User agent) {
+        List<AgentReviewNoteResponse> agentReviewNoteResponses = new ArrayList<>();
+
+        CutOffHistory cutOffLast = cutOffRepository.findByEndCutOffIsNull();
+        CutOffHistory cutOff = cutOffRepository.findByEndCutOff(cutOffLast.getBeginCutOff());
+
+        List<Review> reviewList = reviewRepository.findByAgentAndCutOffHistory(agent, cutOff);
+
+        for (Review review : reviewList) {
+            for (DetailReview detailReview : detailReviewRepository.findByReview(review)) {
+                if(detailReview.getNote() == null) {
+                    continue;
+                }
+                String categoryName = review.getParameter().getName()+"-"+detailReview.getCategory().getName();
+                Float detailReviewScore = detailReview.getScore();
+                String note = detailReview.getNote();
+                agentReviewNoteResponses.add(new AgentReviewNoteResponse(categoryName, detailReviewScore, note));
+            }
+        }
+        return agentReviewNoteResponses;
+    }
 }

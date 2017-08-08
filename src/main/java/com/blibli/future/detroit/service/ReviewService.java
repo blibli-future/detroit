@@ -4,6 +4,7 @@ import com.blibli.future.detroit.model.*;
 import com.blibli.future.detroit.model.Exception.NotAuthorizedException;
 import com.blibli.future.detroit.model.dto.DetailReviewDto;
 import com.blibli.future.detroit.model.dto.ReviewHistoryDto;
+import com.blibli.future.detroit.model.dto.UploadModelDto;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
 import com.blibli.future.detroit.model.response.AgentOverviewResponse;
@@ -11,10 +12,16 @@ import com.blibli.future.detroit.model.response.OneReviewResponse;
 import com.blibli.future.detroit.model.response.UserReviewResponse;
 import com.blibli.future.detroit.repository.*;
 import com.blibli.future.detroit.util.configuration.Converter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,6 +107,50 @@ public class ReviewService {
         return newReview;
     }
 
+    public Boolean uploadReviewBulkUpload(User currentUser, String parameterName, MultipartFile file) throws NotAuthorizedException, IOException {
+        Parameter parameter = parameterRepository.findByName(parameterName).get(0);
+        checkReviewerIsAuthorized(currentUser, parameter);
+
+        CutOffHistory currentCutOff = cutOffRepository.findByEndCutOffIsNull();
+
+        Workbook workbook = new XSSFWorkbook(file.getInputStream());
+        Sheet sheet = workbook.getSheetAt(0);
+
+        for(int i=1; i<=sheet.getLastRowNum(); i++) {
+            Row row = sheet.getRow(i);
+            String email = row.getCell(0).toString();
+            Float value = Float.valueOf(row.getCell(1).toString());
+
+            User agent = userRepository.findByEmail(email);
+            Parameter currentParameter = parameterRepository.findByNameAndAgentChannel(parameterName, agent.getAgentChannel());
+            if(currentParameter == null) {
+                continue;
+            }
+            Category currentCategory = currentParameter.getCategories().get(0);
+
+            List<Review> reviews = reviewRepository.findByParameterAndCutOffHistory(currentParameter, currentCutOff);
+            if(reviews.size() > 0 ) {
+                reviewRepository.delete(reviews);
+            }
+
+            Review review = new Review();
+            review.setParameter(currentParameter);
+            review.setCutOffHistory(currentCutOff);
+            review.setAgent(agent);
+            review.setReviewer(currentUser);
+            review.setScore(value);
+            review = reviewRepository.saveAndFlush(review);
+
+            DetailReview detailReview = new DetailReview();
+            detailReview.setReview(review);
+            detailReview.setCategory(currentCategory);
+            detailReview.setScore(value);
+            detailReviewRepository.save(detailReview);
+        }
+
+        return true;
+    }
+
     public Review updateReview(User user, NewReviewRequest request) throws NotAuthorizedException {
         Parameter parameter = parameterRepository.findOne(request.getParameter());
         checkReviewerIsAuthorized(user, parameter);
@@ -162,6 +213,8 @@ public class ReviewService {
         AgentOverviewResponse agentOverviewResponse = new AgentOverviewResponse();
         List<String> roleList = new ArrayList<>();
 
+        CutOffHistory currentCutOff = cutOffRepository.findByEndCutOffIsNull();
+
         for (UserRole userRole : currentUser.getUserRole()) {
             String rolePrefix = userRole.getRole().substring(0,5);
             if(rolePrefix.equalsIgnoreCase("PARAM")) {
@@ -170,32 +223,56 @@ public class ReviewService {
             }
         }
 
-        Integer reviewcount = 0;
-
         for(UserRole userRole : currentUser.getUserRole()) {
             String role = userRole.getRole().substring(6);
             for(Parameter parameter : parameterService.getAllParameter()) {
                 if (role.equalsIgnoreCase(parameter.getName())) {
                     for(User agent : parameter.getAgentChannel().getUsers()) {
-                        agentList.add(agent);
+                        if(!agentList.contains(agent)) {
+                            agentList.add(agent);
+                        }
                     }
                 }
             }
         }
 
+        Float reviewcount = 0f;
+
         if(roleList.size() >0) {
             for(String roles : roleList) {
                 for (User agent: agentList) {
-                    for (Parameter parameter :  agent.getAgentChannel().getParameters() /*parameterService.getAllParameter()*/) {
+                    for (Parameter parameter :  agent.getAgentChannel().getParameters()) {
                         if (roles.equalsIgnoreCase(parameter.getName())) {
-                            List<Review> reviewList = reviewRepository.findByAgentAndParameter(agent, parameter);
-                            reviewcount = reviewList.size();
-                            Long idAgent = agent.getId();
-                            String agentName = agent.getNickname();
-                            String agentEmail = agent.getEmail();
-                            String agentPosition = agent.getAgentPosition().getName();
-                            String agentChannel = agent.getAgentChannel().getName();
-                            agentOverviewResponse.addAgents(idAgent, parameter.getId(), agentName, agentEmail, agentPosition, agentChannel, reviewcount);
+                            if(parameter.isBulkStatus()) {
+                                List<Review> reviewList = reviewRepository.findByParameterAndCutOffHistory(parameter, currentCutOff);
+
+                                if(reviewList.size() > 0) {
+                                    for(Review review : reviewList) {
+                                        User userAgent = review.getAgent();
+
+                                        reviewcount = review.getScore();
+                                        Long idAgent = userAgent.getId();
+                                        String agentName = userAgent.getNickname();
+                                        String agentEmail = userAgent.getEmail();
+                                        String agentPosition = userAgent.getAgentPosition().getName();
+                                        String agentChannel = userAgent.getAgentChannel().getName();
+                                        agentOverviewResponse.addAgents(idAgent, parameter.getId(), agentName, agentEmail, agentPosition, agentChannel, reviewcount);
+                                    }
+                                }
+
+                                agentOverviewResponse.setBulkStatus(parameter.isBulkStatus());
+                            } else {
+                                List<Review> reviewList = reviewRepository.findByAgentAndParameter(agent, parameter);
+                                reviewcount = Float.valueOf(reviewList.size());
+                                Long idAgent = agent.getId();
+                                String agentName = agent.getNickname();
+                                String agentEmail = agent.getEmail();
+                                String agentPosition = agent.getAgentPosition().getName();
+                                String agentChannel = agent.getAgentChannel().getName();
+                                agentOverviewResponse.addAgents(idAgent, parameter.getId(), agentName, agentEmail, agentPosition, agentChannel, reviewcount);
+
+                                agentOverviewResponse.setBulkStatus(parameter.isBulkStatus());
+                            }
                         }
                     }
                 }

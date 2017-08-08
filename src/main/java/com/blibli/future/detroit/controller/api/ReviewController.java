@@ -1,7 +1,6 @@
 package com.blibli.future.detroit.controller.api;
 
 import com.blibli.future.detroit.model.Exception.NotAuthorizedException;
-import com.blibli.future.detroit.model.Review;
 import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.dto.ReviewHistoryDto;
 import com.blibli.future.detroit.model.request.NewReviewRequest;
@@ -9,8 +8,9 @@ import com.blibli.future.detroit.model.response.*;
 import com.blibli.future.detroit.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
 
 @RestController
 public class ReviewController {
@@ -18,6 +18,7 @@ public class ReviewController {
     public static final String GET_ALL_REVIEW = BASE_PATH + "/user/{userId}"; // TODO get userId from auth system
     public static final String GET_ONE_REVIEW = BASE_PATH + "/{reviewId}";
     public static final String CREATE_REVIEW  = BASE_PATH;
+    public static final String UPLOAD_REVIEW_BULK_UPLOAD = BASE_PATH + "/upload" + "/{parameterName}";
     public static final String UPDATE_REVIEW  = BASE_PATH + "/{reviewId}";
     public static final String DELETE_REVIEW = BASE_PATH + "/{reviewId}";
     public static final String GET_REVIEW_OVERVIEW = BASE_PATH + "/overviews";
@@ -58,6 +59,15 @@ public class ReviewController {
             return new BaseRestResponse(false, e.getClass().getSimpleName(), e.getMessage());
         }
         return new BaseRestResponse();
+    }
+
+    @PostMapping(UPLOAD_REVIEW_BULK_UPLOAD)
+    public BaseRestResponse<Boolean> uploadReviewBulkUpload(@RequestParam("file") MultipartFile file, @PathVariable String parameterName) {
+        try {
+            return new BaseRestResponse<>(reviewService.uploadReviewBulkUpload(authenticationService.getCurrentUser(), parameterName, file));
+        } catch (NotAuthorizedException | IOException e) {
+            return new BaseRestResponse(false, e.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
     @PatchMapping(UPDATE_REVIEW)

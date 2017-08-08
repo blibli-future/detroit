@@ -166,6 +166,10 @@ public class DataSeeder implements ApplicationRunner {
 //            reviewer.getEmail(), "PARAM Best Conversation");
 //        userRoleRepository.save(reviewerParameter1);
 
+        UserRole reviewerParameter2 = new UserRole(
+            reviewer.getEmail(), "PARAM Absence");
+        userRoleRepository.save(reviewerParameter2);
+
         // API KEY = c3VwZXJhZG1pbkBleGFtcGxlLmNvbTpzZWNyZXQ=
         User superAdmin = new User();
         superAdmin.setEmail("superadmin@example.com");
@@ -245,6 +249,36 @@ public class DataSeeder implements ApplicationRunner {
         categoryList1.add(category3);
         parameter1.setCategories(categoryList1);
         parameter1 = parameterRepository.saveAndFlush(parameter1);
+
+        Parameter parameter2 = new Parameter();
+        parameter2.setAgentChannel(agentChannel);
+        parameter2.setName("Absence");
+        parameter2.setDescription("Agent's Absence");
+        parameter2.setWeight(100f);
+        parameter2.setBulkStatus(true);
+        parameter2 = parameterRepository.saveAndFlush(parameter2);
+
+        Category category4 = new Category();
+        category4.setName("Absence");
+        category4.setDescription("Agent's Absence");
+        category4.setWeight(100f);
+        category4.setParameter(parameter2);
+        category4 = categoryRepository.saveAndFlush(category4);
+
+        Parameter parameter3 = new Parameter();
+        parameter3.setAgentChannel(agentChannel1);
+        parameter3.setName("Absence");
+        parameter3.setDescription("Agent's Absence");
+        parameter3.setWeight(100f);
+        parameter3.setBulkStatus(true);
+        parameter3 = parameterRepository.saveAndFlush(parameter3);
+
+        Category category5 = new Category();
+        category5.setName("Absence");
+        category5.setDescription("Agent's Absence");
+        category5.setWeight(100f);
+        category5.setParameter(parameter3);
+        category5 = categoryRepository.saveAndFlush(category5);
 
         // START Give specific role to reviewer
 

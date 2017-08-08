@@ -41,10 +41,17 @@ class AuthenticationService {
 
   apiCall(url, object) {
     this.redirectIfNotAuthenticated();
-    object.headers = {
-      'Authorization': 'Basic '+ localStorage.getItem(TOKEN_KEY),
-      "Content-Type": "application/json",
-    };
+    if(!object.headers) {
+      object.headers = {
+        'Authorization': 'Basic ' + localStorage.getItem(TOKEN_KEY),
+        "Content-Type": "application/json",
+      }
+    } else if(object.headers && !object.headers['Content-Type']) {
+      object.headers['Authorization'] = 'Basic ' + localStorage.getItem(TOKEN_KEY);
+      // object.headers['Content-Type'] = "application/json";
+    } else if(object.headers && object.headers['Content-Type']) {
+      object.headers['Authorization'] = 'Basic ' + localStorage.getItem(TOKEN_KEY);
+    }
     return fetch(url, object);
   }
 

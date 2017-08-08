@@ -5,10 +5,12 @@ import java.util.List;
 
 public class AgentOverviewResponse {
     private String role;
+    private Boolean bulkStatus;
     private List<AgentOverview> agents;
 
     public AgentOverviewResponse() {
         this.role = new String();
+        this.bulkStatus = false;
         this.agents = new ArrayList<>();
     }
 
@@ -20,6 +22,14 @@ public class AgentOverviewResponse {
         this.role = role;
     }
 
+    public Boolean getBulkStatus() {
+        return bulkStatus;
+    }
+
+    public void setBulkStatus(Boolean bulkStatus) {
+        this.bulkStatus = bulkStatus;
+    }
+
     public List<AgentOverview> getAgents() {
         return agents;
     }
@@ -28,7 +38,7 @@ public class AgentOverviewResponse {
         this.agents = agents;
     }
 
-    public void addAgents(Long idAgent, Long idParameter, String nickname, String email, String position, String channel, Integer reviewCount) {
+    public void addAgents(Long idAgent, Long idParameter, String nickname, String email, String position, String channel, Float reviewCount) {
         this.agents.add(new AgentOverview(idAgent, idParameter, nickname, email, position, channel, reviewCount));
     }
 
@@ -39,9 +49,9 @@ public class AgentOverviewResponse {
         private String email;
         private String position;
         private String channel;
-        private Integer reviewCount;
+        private Float reviewCount;
 
-        public AgentOverview(Long idAgent, Long idParameter, String nickname, String email, String position, String channel, Integer reviewCount) {
+        public AgentOverview(Long idAgent, Long idParameter, String nickname, String email, String position, String channel, Float reviewCount) {
             this.idAgent = idAgent;
             this.idParameter = idParameter;
             this.nickname = nickname;
@@ -99,11 +109,11 @@ public class AgentOverviewResponse {
             this.channel = channel;
         }
 
-        public Integer getReviewCount() {
+        public Float getReviewCount() {
             return reviewCount;
         }
 
-        public void setReviewCount(Integer reviewCount) {
+        public void setReviewCount(Float reviewCount) {
             this.reviewCount = reviewCount;
         }
     }

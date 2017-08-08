@@ -1,8 +1,11 @@
 package com.blibli.future.detroit.controller.api;
 
+import com.blibli.future.detroit.model.Exception.NotAuthorizedException;
 import com.blibli.future.detroit.model.StatisticInfo;
 import com.blibli.future.detroit.model.StatisticInfoIndividual;
+import com.blibli.future.detroit.model.User;
 import com.blibli.future.detroit.model.response.*;
+import com.blibli.future.detroit.service.AuthenticationService;
 import com.blibli.future.detroit.service.StatisticService;
 import com.blibli.future.detroit.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +23,15 @@ public class StatisticController {
     public static final String GET_INDIVIDUAL_STATISTIC_INFO = BASE_PATH + "/info" + "/{agentId}";
     public static final String GET_INDIVIDUAL_STATISTIC_DIAGRAM = BASE_PATH + "/{agentId}";
     public static final String GET_INDIVIDUAL_REVIEW_NOTE = BASE_PATH + "/review/note" + "/{agentId}";
+    public static final String GET_AGENT_DIAGRAM_REPORT = BASE_PATH + "/agent-report/diagram";
+    public static final String GET_AGENT_INFO_REPORT = BASE_PATH + "/agent-report/info";
+    public static final String GET_AGENT_NOTE_REPORT = BASE_PATH + "/agent-report/note";
 
     @Autowired
     StatisticService statisticService;
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     @GetMapping(GET_ALL_STATISTIC_DATA)
     public BaseRestResponse<StatisticDiagramResponseNew> getAllStatisticData() {
@@ -47,5 +56,23 @@ public class StatisticController {
     @GetMapping(GET_INDIVIDUAL_REVIEW_NOTE)
     public BaseRestListResponse<AgentReviewNoteResponse> getIndividualReviewNote(@PathVariable Long agentId) {
         return new BaseRestListResponse<>(statisticService.getIndividualReviewNote(agentId));
+    }
+
+    @GetMapping(GET_AGENT_DIAGRAM_REPORT)
+    public BaseRestResponse<StatisticDiagramIndividualResponse> getAgentDiagram() {
+        User currentUser = authenticationService.getCurrentUser();
+        return new BaseRestResponse<>(statisticService.getAgentDiagram(currentUser));
+    }
+
+    @GetMapping(GET_AGENT_INFO_REPORT)
+    public BaseRestResponse<StatisticInfoResponse> getAgentInfo() {
+        User currentUser = authenticationService.getCurrentUser();
+        return new BaseRestResponse<>(statisticService.getAgentInfo(currentUser));
+    }
+
+    @GetMapping(GET_AGENT_NOTE_REPORT)
+    public BaseRestListResponse<AgentReviewNoteResponse> getAgentNote() {
+        User currentUser = authenticationService.getCurrentUser();
+        return new BaseRestListResponse<>(statisticService.getAgentNote(currentUser));
     }
 }

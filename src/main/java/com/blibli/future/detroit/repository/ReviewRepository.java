@@ -25,4 +25,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByAgentAndCutOffHistoryAndParameter(User agent, CutOffHistory cutOffHistory, Parameter parameter);
 
     List<Review> findByReviewerAndCutOffHistory(User reviewer, CutOffHistory cutOffHistory);
+
+    List<Review> findByParameterAndCutOffHistory(Parameter parameter, CutOffHistory cutOffHistory);
 }
