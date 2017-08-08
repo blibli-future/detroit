@@ -23,7 +23,7 @@ dist/
 nbdist/
 .nb-gradle/
 
-application.properties
+src/main/resources/*.properties
 .mvn
 
 node_modules
