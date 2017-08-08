@@ -25,8 +25,8 @@ public class AgentPositionService {
     }
 
     public AgentPosition createAgentPosition(NewAgentPositionRequest request) {
-        AgentPosition newAgentPosition = modelMapper.modelMapper()
-            .map(request, AgentPosition.class);
+        AgentPosition newAgentPosition = new AgentPosition();
+        newAgentPosition.setName(request.getName());
         agentPositionRepository.saveAndFlush(newAgentPosition);
         return newAgentPosition;
     }

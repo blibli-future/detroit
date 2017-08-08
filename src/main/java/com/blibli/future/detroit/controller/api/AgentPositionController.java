@@ -1,6 +1,7 @@
 package com.blibli.future.detroit.controller.api;
 
 import com.blibli.future.detroit.model.AgentPosition;
+import com.blibli.future.detroit.model.dto.AgentPositionDto;
 import com.blibli.future.detroit.model.request.NewAgentPositionRequest;
 import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class AgentPositionController {
@@ -24,14 +26,15 @@ public class AgentPositionController {
     private AgentPositionService agentPositionService;
 
     @GetMapping(GET_ALL_AGENT_POSITION)
-    public BaseRestListResponse<AgentPosition> getAllAgentPosition() {
-        List<AgentPosition> allAgentPosition = agentPositionService.getAllAgentPosition();
+    public BaseRestListResponse<AgentPositionDto> getAllAgentPosition() {
+        List<AgentPositionDto> allAgentPosition = agentPositionService.getAllAgentPosition().stream()
+            .map(AgentPositionDto::new).collect(Collectors.toList());
         return new BaseRestListResponse<>(allAgentPosition);
     }
 
     @GetMapping(GET_ONE_AGENT_POSITION)
-    public BaseRestResponse<AgentPosition> getOneAgentPosition(@PathVariable Long agentPositionId) {
-        AgentPosition agentPosition = agentPositionService.getOneAgentPosition(agentPositionId);
+    public BaseRestResponse<AgentPositionDto> getOneAgentPosition(@PathVariable Long agentPositionId) {
+        AgentPositionDto agentPosition= new AgentPositionDto(agentPositionService.getOneAgentPosition(agentPositionId));
         return new BaseRestResponse<>(agentPosition);
     }
 
