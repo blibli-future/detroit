@@ -26,7 +26,7 @@ export default class CategoryForm extends BaseDetroitComponent {
         <div className="col-md-offset-3 col-md-6 col-sm-6 col-xs-12">
           <h2>Description : </h2>
           <div className="panel panel-default">
-            <div class="panel-body">
+            <div className="panel-body">
               { renderHTML(this.props.category.description) }
             </div>
           </div>

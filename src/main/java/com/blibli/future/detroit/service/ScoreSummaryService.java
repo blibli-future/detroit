@@ -157,11 +157,12 @@ public class ScoreSummaryService {
         for(AgentChannel channel : agentChannelRepository.findAll()) {
             for (User user : channel.getUsers()) {
                 for(ScoreSummary scoreSummary : scoreSummaryRepository.findByCutOffHistoryAndAgentAndScoreType(currentCutOff, user, ScoreType.USER_TOTAL)) {
+                    System.out.println(scoreSummary.getName()+"-"+scoreSummary.getScore());
                     finalChannel = finalChannel + scoreSummary.getScore();
                     countChannel++;
                 }
             }
-            if(channel.getUsers().size() >0) {
+            if(channel.getUsers().size() >0 && countChannel!=0) {
                 finalChannel = finalChannel / countChannel;
                 scoreSummaryRepository.save(
                     new ScoreSummary(channel.getName(),

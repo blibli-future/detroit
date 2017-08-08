@@ -1,8 +1,11 @@
 import React from 'react';
 import swal from 'sweetalert';
 
-import BaseDetroitComponent from './BaseDetroitComponent';
 import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router';
+
+import BaseDetroitComponent from './BaseDetroitComponent';
+
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -132,7 +135,14 @@ class TabContent extends React.Component {
   }
 
   rowFormatter(cell, row) {
-    return <a href={ "form/"+row.idParameter+"/"+cell } className="btn btn-success btn-xs">Review</a>;
+    return (
+      <div>
+        <Link to={"form/"+row.idParameter+"/"+cell}
+              className="btn btn-success btn-xs">
+          Review
+        </Link>
+      </div>
+    )
   }
 
   render() {
@@ -227,4 +237,4 @@ class TabContentBulkUpload extends BaseDetroitComponent {
 }
 
 
-export default ReviewOverview;
+export default withRouter(ReviewOverview);
