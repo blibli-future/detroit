@@ -10,6 +10,7 @@ import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
 import com.blibli.future.detroit.model.response.BaseRestListResponse;
 import com.blibli.future.detroit.model.response.BaseRestResponse;
+import com.blibli.future.detroit.service.AuthenticationService;
 import com.blibli.future.detroit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +31,12 @@ public class UserController {
     public static final String UPDATE_AGENT = BASE_PATH + "/agent/{agentId}";
     public static final String UPDATE_REVIEWER = BASE_PATH + "/reviewer/{reviewerId}";
     public static final String GET_PARAMETER_ROLE_LIST = BASE_PATH + "/role-list";
+    public static final String GET_CURRENT_USER = BASE_PATH + "/current";
 
     @Autowired
-    private UserService userService;
+    UserService userService;
+    @Autowired
+    AuthenticationService authenticationService;
 
     @PostMapping(CHECK_AUTH)
     @ResponseBody
@@ -70,6 +74,20 @@ public class UserController {
     @GetMapping(GET_ONE_USER)
     public BaseRestResponse<UserDto> getOneUser(@PathVariable Long userId) {
         User user = userService.getOneUser(userId);
+        UserDto response;
+
+        if (user.isReviewer() || user.isSuperAdmin()) {
+            response = new ReviewerDto(user);
+        } else {
+            response = new AgentDto(user);
+        }
+
+        return new BaseRestResponse<>(response);
+    }
+
+    @GetMapping(GET_CURRENT_USER)
+    public BaseRestResponse<UserDto> getCurrentUser() {
+        User user = authenticationService.getCurrentUser();
         UserDto response;
 
         if (user.isReviewer() || user.isSuperAdmin()) {

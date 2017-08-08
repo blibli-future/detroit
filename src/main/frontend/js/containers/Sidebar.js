@@ -76,6 +76,10 @@ class Sidebar extends React.Component {
                   <i className="fa fa-users"></i>Agent Management
                 </Sidebar_Link_WithRouter>
                 <Sidebar_Link_WithRouter
+                  to="/view/agent-report">
+                  <i className="fa fa-users"></i>Agent Report
+                </Sidebar_Link_WithRouter>
+                <Sidebar_Link_WithRouter
                   to="/view/reviewer-list"
                   currentLink="testign">
                   <i className="fa fa-user"></i>Reviewer Management

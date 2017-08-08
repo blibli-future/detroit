@@ -33,6 +33,7 @@ import ParameterDetail from './components/ParameterDetail.js';
 import ReviewHistory from './components/ReviewHistory';
 import ReviewEdit from './components/ReviewEdit';
 import AgentPositionManagement from "./components/AgentPositionManagement";
+import AgentReport from './components/AgentReport';
 
 class App extends React.Component {
 
@@ -47,6 +48,7 @@ class App extends React.Component {
 
               <Route exact path="/view/statistic-all" component={StatisticAll} />
               <Route exact path="/view/statistic-individual/:agentId" component={StatisticIndividual} />
+              <Route exact path="/view/agent-report" component={AgentReport} />
               <Route exact path="/view/review/overview" component={ReviewOverview} />
               <Route exact path="/view/review/form/:parameterId/:agentId" component={ReviewForm} />
               <Route exact path="/view/review/history" component={ReviewHistory} />

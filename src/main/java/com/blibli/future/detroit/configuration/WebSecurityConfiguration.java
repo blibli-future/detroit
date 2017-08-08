@@ -89,7 +89,7 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             // Agent is forbidden
             .antMatchers(HttpMethod.GET,
                 // User controller
-                GET_PARAMETER_ROLE_LIST, DELETE_USER, CREATE_USER, GET_ALL_USER,
+                GET_PARAMETER_ROLE_LIST, GET_ALL_USER,
                 // Statistic controller
                 GET_ALL_STATISTIC_DATA, GET_ALL_STATISTIC_INFO,
                 // Review controller
