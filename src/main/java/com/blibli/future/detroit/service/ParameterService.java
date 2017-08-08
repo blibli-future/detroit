@@ -41,13 +41,20 @@ public class ParameterService {
     }
 
     public Parameter createParameter(NewParameterRequest request) {
-        Parameter newParameter = modelMapper.modelMapper()
-            .map(request, Parameter.class);
-        newParameter.setAgentChannel(
-            agentChannelRepository.getOne(request.getAgentChannelId()));
-        parameterRepository.saveAndFlush(newParameter);
+        // Update parameter data
+        Parameter parameter = new Parameter();
+        parameter.setName(request.getName());
+        parameter.setWeight(0f);
+        parameter.setBulkStatus(request.isBulkStatus());
+        parameter.setActive(request.isActive());
+        parameter.setDescription(request.getDescription());
 
-        return newParameter;
+        // Update channel
+        AgentChannel agentChannel = agentChannelRepository.getOne(request.getAgentChannelId());
+        parameter.setAgentChannel(agentChannel);
+
+        parameterRepository.save(parameter);
+        return parameter;
     }
 
     public boolean deleteParameter(Long parameterId) {

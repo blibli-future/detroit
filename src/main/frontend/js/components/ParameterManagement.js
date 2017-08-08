@@ -149,7 +149,8 @@ class ParameterManagement extends BaseDetroitComponent {
                       Action
                     </TableHeaderColumn>
                   </BootstrapTable>
-                  <button onClick={this.batchSaveParameterWeight.bind(this)}>Save weight data</button>
+                  <button onClick={this.batchSaveParameterWeight.bind(this)} className="btn btn-default">Save weight data</button>
+                  <a href="/view/parameter-detail/create" className="btn btn-success">Create new Parameter</a>
                 </div>
               </div>
             </div>

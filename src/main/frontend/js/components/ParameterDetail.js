@@ -5,6 +5,7 @@ import swal from 'sweetalert';
 import BaseDetroitComponent from './BaseDetroitComponent';
 import {InputText, InputSelect, InputTextArea} from '../containers/GantellelaTheme';
 import CategoryDetail from './CategoryDetail';
+import {withRouter} from "react-router-dom";
 
 class ParameterDetail extends BaseDetroitComponent {
 
@@ -35,13 +36,21 @@ class ParameterDetail extends BaseDetroitComponent {
       },
       unsavedChanges: false,
       showAddModal: false,
+      createMode: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleCategoryInputChange = this.handleCategoryInputChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.onDeleteCategoryClick = this.onDeleteCategoryClick.bind(this);
-    this.getParameterData();
+  }
+
+  componentDidMount() {
     this.getAgentChannelPositionData();
+    if (this.props.match.params.parameterId === 'create') {
+      this.setState({createMode:true});
+    } else {
+      this.getParameterData();
+    }
   }
 
   getParameterData() {
@@ -116,20 +125,38 @@ class ParameterDetail extends BaseDetroitComponent {
 
     // Save to API
     let component = this;
-    this.auth.apiCall('/api/v1/parameters/' + this.state.parameter.id, {
-      method: 'PUT',
-      body: JSON.stringify(component.state.parameter),
-    }).then((response) => response.json())
-      .then((json) => {
-        if (json.success) {
-          component.setState({
-            unsavedChanges: false,
-          });
-          swal("Success", "Parameter data has been saved.", "success");
-        } else {
-          return swal("Error", json.errorMessage || json.message, "error");
-        }
-      });
+    if(this.state.createMode) {
+      this.auth.apiCall('/api/v1/parameters/', {
+        method: 'POST',
+        body: JSON.stringify(component.state.parameter),
+      }).then((response) => response.json())
+        .then((json) => {
+          if (json.success) {
+            component.setState({
+              unsavedChanges: false,
+            });
+            swal("Success", "Parameter data has been saved.", "success");
+            this.props.history.push('/view/parameter-management');
+          } else {
+            return swal("Error", json.errorMessage || json.message, "error");
+          }
+        });
+    } else {
+      this.auth.apiCall('/api/v1/parameters/' + this.state.parameter.id, {
+        method: 'PUT',
+        body: JSON.stringify(component.state.parameter),
+      }).then((response) => response.json())
+        .then((json) => {
+          if (json.success) {
+            component.setState({
+              unsavedChanges: false,
+            });
+            swal("Success", "Parameter data has been saved.", "success");
+          } else {
+            return swal("Error", json.errorMessage || json.message, "error");
+          }
+        });
+    }
   }
 
   onDeleteCategoryClick(event, categoryId) {
@@ -286,7 +313,7 @@ class ParameterDetail extends BaseDetroitComponent {
                       </button>
                       <button className="btn"
                               onClick={this.openAddModal.bind(this)}>
-                        Add new parameter
+                        Add new category
                       </button>
                     </div>
                   </form>
@@ -374,4 +401,4 @@ class AddNewCategoryModal extends React.Component {
   }
 }
 
-export default ParameterDetail;
+export default withRouter(ParameterDetail);
