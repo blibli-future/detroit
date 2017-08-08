@@ -3,7 +3,7 @@ package com.blibli.future.detroit.service;
 import com.blibli.future.detroit.model.AgentChannel;
 import com.blibli.future.detroit.model.request.NewAgentChannelRequest;
 import com.blibli.future.detroit.repository.AgentChannelRepository;
-import com.blibli.future.detroit.util.configuration.Converter;
+import com.blibli.future.detroit.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

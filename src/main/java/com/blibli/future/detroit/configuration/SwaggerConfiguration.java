@@ -1,4 +1,4 @@
-package com.blibli.future.detroit.util.configuration;
+package com.blibli.future.detroit.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

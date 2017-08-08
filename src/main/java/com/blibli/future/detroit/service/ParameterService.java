@@ -10,17 +10,13 @@ import com.blibli.future.detroit.model.dto.BatchUpdateParameterDto;
 import com.blibli.future.detroit.model.dto.CategoryDetailDto;
 import com.blibli.future.detroit.model.dto.ParameterDetailDto;
 import com.blibli.future.detroit.model.request.NewParameterRequest;
-import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.repository.AgentChannelRepository;
 import com.blibli.future.detroit.repository.CategoryRepository;
 import com.blibli.future.detroit.repository.ParameterRepository;
-import com.blibli.future.detroit.util.configuration.Converter;
-import org.modelmapper.PropertyMap;
-import org.modelmapper.TypeMap;
+import com.blibli.future.detroit.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Convert;
 import java.util.ArrayList;
 import java.util.List;
 

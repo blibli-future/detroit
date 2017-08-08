@@ -3,7 +3,7 @@ package com.blibli.future.detroit.service;
 import com.blibli.future.detroit.model.AgentPosition;
 import com.blibli.future.detroit.model.request.NewAgentPositionRequest;
 import com.blibli.future.detroit.repository.AgentPositionRepository;
-import com.blibli.future.detroit.util.configuration.Converter;
+import com.blibli.future.detroit.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

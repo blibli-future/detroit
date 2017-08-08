@@ -5,15 +5,12 @@ import com.blibli.future.detroit.model.Parameter;
 import com.blibli.future.detroit.model.request.NewParameterRequest;
 import com.blibli.future.detroit.repository.AgentChannelRepository;
 import com.blibli.future.detroit.repository.ParameterRepository;
-import com.blibli.future.detroit.util.configuration.Converter;
+import com.blibli.future.detroit.configuration.Converter;
 import org.junit.*;
 import org.mockito.*;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.repository.query.Param;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

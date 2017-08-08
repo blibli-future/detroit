@@ -7,7 +7,7 @@ import com.blibli.future.detroit.model.request.NewCategoryRequest;
 import com.blibli.future.detroit.model.request.SimpleListRequest;
 import com.blibli.future.detroit.repository.CategoryRepository;
 import com.blibli.future.detroit.repository.ParameterRepository;
-import com.blibli.future.detroit.util.configuration.Converter;
+import com.blibli.future.detroit.configuration.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

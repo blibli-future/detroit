@@ -7,11 +7,10 @@ import com.blibli.future.detroit.model.dto.ReviewerDto;
 import com.blibli.future.detroit.model.enums.UserType;
 import com.blibli.future.detroit.model.request.NewUserRequest;
 import com.blibli.future.detroit.repository.*;
-import com.blibli.future.detroit.util.configuration.Converter;
+import com.blibli.future.detroit.configuration.Converter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
