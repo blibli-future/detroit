@@ -21,7 +21,7 @@ class ReviewerDetail extends BaseDetroitComponent {
         gender: '',
         location: '',
         phoneNumber: '',
-        userType: '',
+        userType: 'REVIEWER',
         teamLeader: '',
         reviewerRole: [''],
         superAdmin: false,

@@ -27,6 +27,7 @@ public class UserController {
     public static final String UPDATE_USER = BASE_PATH + "/{userId}";
     public static final String CHECK_AUTH = BASE_PATH + "/login";
     public static final String CREATE_AGENT = BASE_PATH + "/agent";
+    public static final String CREATE_REVIEWER = BASE_PATH + "/reviewer";
     public static final String UPDATE_AGENT = BASE_PATH + "/agent/{agentId}";
     public static final String UPDATE_REVIEWER = BASE_PATH + "/reviewer/{reviewerId}";
     public static final String GET_PARAMETER_ROLE_LIST = BASE_PATH + "/role-list";
@@ -96,6 +97,12 @@ public class UserController {
     @PatchMapping(UPDATE_AGENT)
     public BaseRestResponse updateAgent(@PathVariable Long agentId, @RequestBody AgentDto request) {
         userService.updateAgent(agentId, request);
+        return new BaseRestResponse();
+    }
+
+    @PostMapping(CREATE_REVIEWER)
+    public BaseRestResponse createReviewer(@RequestBody ReviewerDto request) {
+        userService.createReviewer(request);
         return new BaseRestResponse();
     }
 

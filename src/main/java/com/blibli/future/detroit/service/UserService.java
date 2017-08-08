@@ -156,4 +156,20 @@ public class UserService {
     public List<String> getParameterRoles() {
         return parameterRepository.getAllParameterNames();
     }
+
+    public User createReviewer(ReviewerDto request) {
+        User reviewer = userRepository.getOne(request.getId());
+        modelMapper.modelMapper().map(request, reviewer);
+
+        for (String role: request.getReviewerRole()) {
+            UserRole ur = new UserRole(reviewer, role);
+            userRoleRepository.save(ur);
+        }
+        if (request.getSuperAdmin()) {
+            reviewer.setUserType(UserType.SUPER_ADMIN);
+        }
+        userRoleRepository.save(new UserRole(reviewer.getEmail(), reviewer.getUserType().toString()));
+        userRepository.saveAndFlush(reviewer);
+        return reviewer;
+    }
 }
