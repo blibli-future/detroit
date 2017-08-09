@@ -112,7 +112,7 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
             // Agent only
             .antMatchers("/api/v1/statistic/agent-report/*")
-            .hasAuthority(REVIEWER)
+            .hasAuthority(AGENT)
 
             // Anything else is free for all roles
             .antMatchers("/api/**")
