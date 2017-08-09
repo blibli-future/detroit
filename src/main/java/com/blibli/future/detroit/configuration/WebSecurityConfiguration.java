@@ -28,6 +28,7 @@ import static com.blibli.future.detroit.controller.api.AgentChannelController.*;
 import static com.blibli.future.detroit.controller.api.AgentPositionController.*;
 import static com.blibli.future.detroit.controller.api.CategoryController.*;
 import static com.blibli.future.detroit.controller.api.CutOffController.*;
+import static com.blibli.future.detroit.controller.api.ExportController.GET_DATA_EXPORT;
 import static com.blibli.future.detroit.controller.api.ParameterController.*;
 import static com.blibli.future.detroit.controller.api.ReviewController.*;
 import static com.blibli.future.detroit.controller.api.StatisticController.*;
@@ -70,7 +71,7 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             // Reviewer is forbidden
             .antMatchers(HttpMethod.GET,
                 // Review controller
-                END_REVIEW_PERIOD
+                END_REVIEW_PERIOD, GET_DATA_EXPORT
             )
             .hasAuthority(SUPER_ADMIN)
             .antMatchers(HttpMethod.DELETE, GET_ALL_AGENT_CHANNEL + "/*", GET_ALL_AGENT_POSITION + "/*",
