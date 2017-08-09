@@ -299,7 +299,7 @@ class ParameterDetail extends BaseDetroitComponent {
                       </div>
                     </div>
 
-                    {!this.state.editMode && categoryComponents}
+                    {!this.state.createMode && categoryComponents}
 
                     <div className="clearfix" />
                     <div className="ln_solid" />
