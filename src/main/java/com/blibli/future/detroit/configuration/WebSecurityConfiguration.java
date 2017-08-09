@@ -109,6 +109,9 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.DELETE, "/api/v1/reviews/**")
             .hasAnyAuthority(REVIEWER, SUPER_ADMIN)
 
+            // Agent only
+            .antMatchers("/api/v1/statistic/agent-report/*")
+            .hasAuthority(REVIEWER)
 
             // Anything else is free for all roles
             .antMatchers("/api/**")

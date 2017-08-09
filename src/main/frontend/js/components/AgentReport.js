@@ -32,9 +32,13 @@ class AgentReport extends BaseDetroitComponent {
       method: 'GET'
     }).then((response) => response.json())
       .then((json) => {
-        component.setState({
-          individualStatistic: json.content
-        });
+        if(json.success) {
+          component.setState({
+            individualStatistic: json.content
+          });
+        }else {
+          swal("Error", json.errorMessage || json.message, "error");
+        }
       });
   }
 
@@ -44,9 +48,13 @@ class AgentReport extends BaseDetroitComponent {
       method: 'GET'
     }).then((response) => response.json())
       .then((json) => {
-        component.setState({
-          individualInfo: json.content
-        });
+        if(json.success) {
+          component.setState({
+            individualInfo: json.content
+          });
+        } else {
+          swal("Error", json.errorMessage || json.message, "error");
+        }
       });
   }
 
