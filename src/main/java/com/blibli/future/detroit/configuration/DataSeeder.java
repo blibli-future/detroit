@@ -191,14 +191,14 @@ public class DataSeeder implements ApplicationRunner {
         parameter.setAgentChannel(agentChannel);
         parameter.setName("Live Monitoring");
         parameter.setDescription("Live Monitoring Parameter");
-        parameter.setWeight(100f);
+        parameter.setWeight(50f);
         parameter = parameterRepository.saveAndFlush(parameter);
 
         Parameter parameter1 = new Parameter();
         parameter1.setAgentChannel(agentChannel1);
         parameter1.setName("Best Conversation");
         parameter1.setDescription("Best Conversation Parameter");
-        parameter1.setWeight(100f);
+        parameter1.setWeight(50f);
         parameter1 = parameterRepository.saveAndFlush(parameter1);
 
         List<Parameter> parameters = new ArrayList<>();
@@ -254,7 +254,7 @@ public class DataSeeder implements ApplicationRunner {
         parameter2.setAgentChannel(agentChannel);
         parameter2.setName("Absence");
         parameter2.setDescription("Agent's Absence");
-        parameter2.setWeight(100f);
+        parameter2.setWeight(50f);
         parameter2.setBulkStatus(true);
         parameter2 = parameterRepository.saveAndFlush(parameter2);
 
@@ -269,7 +269,7 @@ public class DataSeeder implements ApplicationRunner {
         parameter3.setAgentChannel(agentChannel1);
         parameter3.setName("Absence");
         parameter3.setDescription("Agent's Absence");
-        parameter3.setWeight(100f);
+        parameter3.setWeight(50f);
         parameter3.setBulkStatus(true);
         parameter3 = parameterRepository.saveAndFlush(parameter3);
 
