@@ -158,8 +158,7 @@ public class UserService {
     }
 
     public User createReviewer(ReviewerDto request) {
-        User reviewer = userRepository.getOne(request.getId());
-        modelMapper.modelMapper().map(request, reviewer);
+        User reviewer = modelMapper.modelMapper().map(request, User.class);
 
         for (String role: request.getReviewerRole()) {
             UserRole ur = new UserRole(reviewer, role);

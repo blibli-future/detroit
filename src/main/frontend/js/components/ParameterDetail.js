@@ -263,6 +263,7 @@ class ParameterDetail extends BaseDetroitComponent {
               <div className="x_panel">
                 <div className="x_content">
                   <br />
+
                   <form id="form" data-parsley-validate className="form-horizontal form-label-left">
                     <InputText data={this.state.parameter.name}
                                onChange={this.handleInputChange}
@@ -298,7 +299,7 @@ class ParameterDetail extends BaseDetroitComponent {
                       </div>
                     </div>
 
-                    {categoryComponents}
+                    {!this.state.editMode && categoryComponents}
 
                     <div className="clearfix" />
                     <div className="ln_solid" />
@@ -311,10 +312,12 @@ class ParameterDetail extends BaseDetroitComponent {
                               disabled={!this.state.unsavedChanges}>
                         Save Changes
                       </button>
+                      { !this.state.createMode &&
                       <button className="btn"
                               onClick={this.openAddModal.bind(this)}>
                         Add new category
                       </button>
+                      }
                     </div>
                   </form>
 

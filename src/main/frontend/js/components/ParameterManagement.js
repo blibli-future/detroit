@@ -86,6 +86,10 @@ class ParameterManagement extends BaseDetroitComponent {
     return weight + "%";
   }
 
+  columnNumberFormatter(cell, row, formatExtraData, index) {
+    return index+1;
+  }
+
   actionButtonFormatter(id, row) {
     return (
       <ButtonGroup>
@@ -129,14 +133,20 @@ class ParameterManagement extends BaseDetroitComponent {
                 <div className="x_content">
                   <BootstrapTable data={this.state.parameterList}
                                   cellEdit={this.cellEditProp}
-                                  striped hover>
-                    <TableHeaderColumn isKey dataField='id'>ID</TableHeaderColumn>
+                                  striped hover pagination>
+                    <TableHeaderColumn isKey dataField='id' dataFormat={this.columnNumberFormatter.bind(this)} dataSort={true}>#</TableHeaderColumn>
                     <TableHeaderColumn
                       dataField='channelName'
-                      editable={ false }>
+                      editable={ false }
+                      dataSort={true}
+                      filter={{ type: 'TextFilter' }}>
                       Channel Name
                     </TableHeaderColumn>
-                    <TableHeaderColumn dataField='name'>Name</TableHeaderColumn>
+                    <TableHeaderColumn dataField='name'
+                                       dataSort={true}
+                                       filter={{ type: 'TextFilter' }}>
+                      Name
+                    </TableHeaderColumn>
                     <TableHeaderColumn
                       dataField='weight'
                       dataFormat={ this.weightFormatter }>
