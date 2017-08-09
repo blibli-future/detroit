@@ -153,12 +153,22 @@ class TabContent extends React.Component {
           <div className="clearfix"></div>
         </div>
         <div className="x_content">
-          <BootstrapTable data={this.props.data}>
-            <TableHeaderColumn dataField='email' isKey>Email</TableHeaderColumn>
-            <TableHeaderColumn dataField='nickname'>Nickname</TableHeaderColumn>
-            <TableHeaderColumn dataField='position'>Position</TableHeaderColumn>
-            <TableHeaderColumn dataField='channel'>Channel</TableHeaderColumn>
-            <TableHeaderColumn dataField='reviewCount'>Review Count</TableHeaderColumn>
+          <BootstrapTable data={this.props.data} hover striped pagination>
+            <TableHeaderColumn dataField='email' isKey
+                               dataSort={true}
+                               filter={{ type: 'TextFilter' }}>Email</TableHeaderColumn>
+            <TableHeaderColumn dataField='nickname'
+                               dataSort={true}
+                               filter={{ type: 'TextFilter' }}>Nickname</TableHeaderColumn>
+            <TableHeaderColumn dataField='position'
+                               dataSort={true}
+                               filter={{ type: 'TextFilter' }}>Position</TableHeaderColumn>
+            <TableHeaderColumn dataField='channel'
+                               dataSort={true}
+                               filter={{ type: 'TextFilter' }}>Channel</TableHeaderColumn>
+            <TableHeaderColumn dataField='reviewCount'
+                               dataSort={true}
+                               filter={{ type: 'NumberFilter' }}>Review Count</TableHeaderColumn>
             <TableHeaderColumn dataField='idAgent' dataFormat={this.rowFormatter}>Action</TableHeaderColumn>
           </BootstrapTable>
         </div>
@@ -223,12 +233,22 @@ class TabContentBulkUpload extends BaseDetroitComponent {
             <div className="clearfix"></div>
           </div>
           <div className="x_content">
-            <BootstrapTable data={this.props.data}>
-            <TableHeaderColumn dataField='email' isKey>Email</TableHeaderColumn>
-            <TableHeaderColumn dataField='nickname'>Nickname</TableHeaderColumn>
-            <TableHeaderColumn dataField='position'>Position</TableHeaderColumn>
-            <TableHeaderColumn dataField='channel'>Channel</TableHeaderColumn>
-              <TableHeaderColumn dataField='reviewCount'>Review Score</TableHeaderColumn>
+            <BootstrapTable data={this.props.data} hover striped pagination>
+            <TableHeaderColumn dataField='email' isKey
+                               dataSort={true}
+                               filter={{ type: 'TextFilter' }}>Email</TableHeaderColumn>
+            <TableHeaderColumn dataField='nickname'
+                               dataSort={true}
+                               filter={{ type: 'TextFilter' }}>Nickname</TableHeaderColumn>
+            <TableHeaderColumn dataField='position'
+                               dataSort={true}
+                               filter={{ type: 'TextFilter' }}>Position</TableHeaderColumn>
+            <TableHeaderColumn dataField='channel'
+                               dataSort={true}
+                               filter={{ type: 'TextFilter' }}>Channel</TableHeaderColumn>
+              <TableHeaderColumn dataField='reviewCount'
+                                 dataSort={true}
+                                 filter={{ type: 'NumberFilter' }}>Review Score</TableHeaderColumn>
             </BootstrapTable>
           </div>
         </div>
