@@ -115,13 +115,6 @@ class ParameterDetail extends BaseDetroitComponent {
 
   handleSave(event) {
     event.preventDefault();
-    // validate
-    let totalWeight = this.state.parameter.categories.reduce((sum, category) => {
-      return sum + Number(category.weight);
-    }, 0);
-    if (Math.abs(totalWeight - 100) > 0.001) {
-      return swal("Error", "Total weight of categories is not 100%.", "error");
-    }
 
     // Save to API
     let component = this;
@@ -135,13 +128,20 @@ class ParameterDetail extends BaseDetroitComponent {
             component.setState({
               unsavedChanges: false,
             });
-            swal("Success", "Parameter data has been saved.", "success");
+            swal("Success", "Parameter data has been created.", "success");
             this.props.history.push('/view/parameter-management');
           } else {
             return swal("Error", json.errorMessage || json.message, "error");
           }
         });
     } else {
+      // validate
+      let totalWeight = this.state.parameter.categories.reduce((sum, category) => {
+        return sum + Number(category.weight);
+      }, 0);
+      if (Math.abs(totalWeight - 100) > 0.001) {
+        return swal("Error", "Total weight of categories is not 100%.", "error");
+      }
       this.auth.apiCall('/api/v1/parameters/' + this.state.parameter.id, {
         method: 'PUT',
         body: JSON.stringify(component.state.parameter),
