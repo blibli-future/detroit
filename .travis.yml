@@ -1,6 +1,27 @@
 language: java
+dist: trusty
+sudo: false
+
 jdk:
   - oraclejdk8
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
+
+addons:
+  sonarcloud:
+    organization: "blibli-future2"
+    token:
+      secure: "qmz4dfmF1AA+ZpsJAaxMp+LNScwQNxMLnD0hKsFEYh2JtJk7ZHaTGKIVL1CTkV3DwpVGQUWYNWqdmQhLoliHOYpIyzvpprjlNAyMY8UAYU4rJFUPcI87yKlR0a5lDgmUUoZpx3lLsKsXTGPavmKp0pb0NB+CTxcYo9ZiU+qzPXyUIPYZNp4r5efWGVGTGr5mow7lUkf+1aN+8j7GO0BYs/2PTurv++AgoKVnhaQoj4rdT3WsNnKAYaoFd+P5mvSSwCyNkD+cebkjx8Gwv64lxuZT0dnElwn6KxIdBF9ni/zKrDnPWXS0E05Fw59Ttedl6zI52jHb7NMi4UHKxNDKH3EPI/FeNqVGFybtIubu54b1I/ZnOyGUZrJiscfRYiPY1QvsfRlR0BHy1FgaqNtOQRTX3A+uVrG3DnK9fuYQVd8/dhp5XpbYEkWe/FqPbrlii+F6gokWqoOn5iRuUqGDjtEUntXK/KboW065vfWznOhkemqdWZFzbOf9zeBKKKTtArl7hy2z5CqMloYeY56Ipo4Ru/lzDecATSJo+onN+WSDx0y0WU/UNd0GVLIqt3jj8NO0O/KHoiwh32GsEpWLqK7redjo4yo80INarHj2I+L/LDd7TfgY+tfHdnijdJhwpS6pz0cgxxpiQHvwLuG55Trs3QrOjS4BsPcNaYsDogU="
+    github_token:
+      secure: "hkhuoOd0bI59Zt0f7hGwnsW3S7VcRJq9OYQy657pL+W2gKaZVI0EWUQtGX58yag08ZU9rNhhL0iOR/6q+ZSJ4C2Yvzci552eIosTQRpPwZ0Y07OnIZ1CooeT03plTkYaRkUMHn5cbqUyaX6Wxdzpp7UwAO5BF4x2k5jsCLa0/rBkqM29agrh9Yk7WFn1SJBenpQL0cQU0rroEqsQZD2NQsBzRCVK+Y24ST9IIh3ewcV1ZTDv3TlzrsLSWHrzl7WSTWIoa8q87g2BKWziCadxEbkxNdJVMGi3PPv/eHZIaOjsMKul1D5vt3DUY9RIFXhEfaDydUJQHl1glOtAfcrnRPq4/ueOhosoZDzx6ClCu1XoLjjrPmcZCBKaYN4ItIFDfwM7aQygIYpj3SiaACrZx7yORrrCJmCOj3sq0BB0a+4K9jy4C6ziG+33ohrf6YYd0s3A2hhXNU8639Jdj7YN46hNTZNFo6xvPyRhTO0iji9Om9T+fR25qphO1wtxVeA1RRbxy6LGbBWF60GKuuQi6Q1xY46050X4Wlep0hEjho+ffleeY3Uu3MQQHZ//A0B8ln8jBzC0/qNkCBf7EjNGeCUCgvIifNA5qNFVEHj6W5uoBKeNuH1tNnZXriHfDaq/AEiFS3gJwK2tC6peYhUclpTMxw89iGUT8HmQzOi4mlo="
+
 install:
+    # Download mvn wrapper that could run in travis
   - mvn -N io.takari:maven:wrapper
-  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+    -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+    -Dsonar.projectKey=blibli-future2:detroit-project -Dsonar.projectName=detroit-project
+    -Dsonar.organization=blibli-future2
